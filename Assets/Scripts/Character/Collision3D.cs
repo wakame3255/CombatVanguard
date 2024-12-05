@@ -59,7 +59,6 @@ public class Collision3D : MonoBehaviour
                 _capsuleCollider, _cacheTransform.position, _cacheTransform.rotation, out colliderDirection, out colliderDistance);
 
             DoRepulsionMove(colliderDirection, colliderDistance);
-            print(_collisionRaycastHit[i].collider.name);
         }
     }
 
@@ -71,7 +70,6 @@ public class Collision3D : MonoBehaviour
     private void DoRepulsionMove(Vector3 direction, float distance)
     {
         _cacheTransform.position += -direction * distance;
-        print(direction);
     }
 
     private void OnDrawGizmos()
@@ -81,6 +79,5 @@ public class Collision3D : MonoBehaviour
             Gizmos.DrawSphere(_topCycleCenterPos, _capsuleCollider.radius);
             Gizmos.DrawSphere(_underCycleCenterPos, _capsuleCollider.radius);
         }
-      
     }
 }
