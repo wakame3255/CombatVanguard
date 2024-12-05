@@ -15,31 +15,39 @@ public class Collision3D : MonoBehaviour
     private RaycastHit[] _collisionRaycastHit;
     private Transform _cacheTransform;
 
+    private Vector3 _topCycleCenterPos;
+    private Vector3 _underCycleCenterPos;
+
+    private bool _isDrowGizmo = default;
+
     private void Awake()
     {
         _collisionRaycastHit = new RaycastHit[_collisionCount];
         _capsuleCollider = GetComponent<CapsuleCollider>();
         _cacheTransform = this.transform;
+        _isDrowGizmo = true;
     }
 
-    private void FixedUpdate()
-    {
-        CheckCollision();
-    }
-
+    /// <summary>
+    /// コリジョン判定メソッド
+    /// </summary>
     public void CheckCollision()
     {
-        Vector3 capsuleTopPos = _capsuleCollider.center + (Vector3.up * _capsuleCollider.height / 2);
+        Vector3 capsuleTopPos = transform.position + (Vector3.up * _capsuleCollider.height / 2);
         Vector3 capsuleUnderPos = capsuleTopPos + (Vector3.down * _capsuleCollider.height);
-        Vector3 topCycleCenterPos = capsuleTopPos + (Vector3.down * _capsuleCollider.radius);
-        Vector3 underCycleCenterPos = capsuleTopPos + (Vector3.up * _capsuleCollider.radius);
+        _topCycleCenterPos = capsuleTopPos + (Vector3.down * _capsuleCollider.radius);
+        _underCycleCenterPos = capsuleUnderPos + (Vector3.up * _capsuleCollider.radius);
 
         int collisionCount = Physics.CapsuleCastNonAlloc(
-            topCycleCenterPos, underCycleCenterPos, _capsuleCollider.radius, Vector3.up, _collisionRaycastHit, 0);
+            _topCycleCenterPos, _underCycleCenterPos, _capsuleCollider.radius, Vector3.up, _collisionRaycastHit, 0, _collisionLayer);
 
         DoRepulsionCheck(collisionCount);
     } 
     
+    /// <summary>
+    /// 反発を判断するメソッド
+    /// </summary>
+    /// <param name="collisionCount">ヒット個数</param>
     private void DoRepulsionCheck(int collisionCount)
     {      
         for (int i = 0; i < collisionCount; i++)
@@ -51,11 +59,28 @@ public class Collision3D : MonoBehaviour
                 _capsuleCollider, _cacheTransform.position, _cacheTransform.rotation, out colliderDirection, out colliderDistance);
 
             DoRepulsionMove(colliderDirection, colliderDistance);
+            print(_collisionRaycastHit[i].collider.name);
         }
     }
 
+    /// <summary>
+    /// 反発分移動させるメソッド
+    /// </summary>
+    /// <param name="direction">ヒットした角度</param>
+    /// <param name="distance">ヒットした距離</param>
     private void DoRepulsionMove(Vector3 direction, float distance)
     {
         _cacheTransform.position += -direction * distance;
+        print(direction);
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_isDrowGizmo)
+        {
+            Gizmos.DrawSphere(_topCycleCenterPos, _capsuleCollider.radius);
+            Gizmos.DrawSphere(_underCycleCenterPos, _capsuleCollider.radius);
+        }
+      
     }
 }
