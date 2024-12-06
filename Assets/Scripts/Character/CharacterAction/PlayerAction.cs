@@ -8,26 +8,56 @@ public class PlayerAction : MonoBehaviour
     [Header("アクションを置く親")]
     private GameObject _actionPosition;
 
+    private Transform _playerCamera;
     private MoveAction _moveAction;
     private AttackAction _attackAction;
+
+    private static readonly Vector3 RESET_DIRECTION = new Vector3(1f, 0, 1f);
 
     private void Awake()
     {
         _moveAction = this.CheckComponentMissing<MoveAction>(_actionPosition);
-        _moveAction.SetTransform(transform);
         _attackAction = this.CheckComponentMissing<AttackAction>(_actionPosition);
+
+        _playerCamera = Camera.main.gameObject.transform;
+        _moveAction.SetTransform(transform);
     }
 
+    /// <summary>
+    /// 入力関連を購読するメソッド
+    /// </summary>
+    /// <param name="inputInformation"></param>
     public void SetInputEvent(IInputInformation inputInformation)
     {
         MyExtensionClass.CheckArgumentNull(inputInformation, nameof(inputInformation));
 
+        //舞フレーム更新の移動入力購読
         Observable.EveryUpdate()
     .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
-    .Subscribe(inputXY => _moveAction.DoMove(inputXY));
+    .Subscribe(inputXY => _moveAction.DoMove(GetChangeInput(inputXY, _playerCamera.forward)));
 
+        //攻撃ボタンの入力購読
         inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack).Subscribe(isAttack => _attackAction.DoAction());
 
+        //ジャンプボタンの入力購読
         inputInformation.ReactivePropertyJump.Where(isJump => isJump).Subscribe(isJump => print("jump"));
+    }
+
+
+    /// <summary>
+    /// vecter2の入力をカメラ基準に変換するメソッド
+    /// </summary>
+    /// <param name="input">移動入力</param>
+    /// <param name="axisDir">向いている方向</param>
+    /// <returns>移動方向</returns>
+    private Vector3 GetChangeInput(Vector2 input, Vector3 axisDir)
+    {
+        print(input+" "+axisDir);
+        //axisDirectionを基準にした進行方向
+        Vector3 axisForward = Vector3.Scale(axisDir, RESET_DIRECTION.normalized);
+        Vector3 inputMoveDirection = axisForward.normalized * input.y - Vector3.Cross(axisDir, transform.up).normalized * input.x;
+
+        print(inputMoveDirection);
+        return inputMoveDirection;
     }
 }

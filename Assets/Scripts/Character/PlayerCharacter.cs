@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collision3D))]
 public class PlayerCharacter : MonoBehaviour
 {
+
     private Collision3D _collision3D;
     private PlayerAction _playerAction;
 

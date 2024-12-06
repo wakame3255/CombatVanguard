@@ -12,10 +12,10 @@ public class MoveAction : MonoBehaviour
     /// <summary>
     /// “®‚­ƒƒ\ƒbƒh
     /// </summary>
-    /// <param name="inputXY"></param>
-   public void DoMove(Vector2 inputXY)
+    /// <param name="moveDirection">ˆÚ“®‚·‚é•ûŒü</param>
+    public void DoMove(Vector3 moveDirection)
     {
-        _characterTransform.position += new Vector3(inputXY.x, 0, inputXY.y).normalized* _speed * Time.deltaTime; 
+        _characterTransform.position += moveDirection.normalized* _speed * Time.deltaTime; 
     }
 
     /// <summary>
