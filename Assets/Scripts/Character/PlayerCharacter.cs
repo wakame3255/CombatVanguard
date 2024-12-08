@@ -13,6 +13,9 @@ public class PlayerCharacter : MonoBehaviour
     {
         _collision3D = this.CheckComponentMissing<Collision3D>();
         _playerAction = this.CheckComponentMissing<PlayerAction>();
+    }
+    private void Start()
+    {
         _playerAction.SetInputEvent(PlayerInput.Instance);
     }
 

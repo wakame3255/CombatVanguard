@@ -52,12 +52,10 @@ public class PlayerAction : MonoBehaviour
     /// <returns>ˆÚ“®•ûŒü</returns>
     private Vector3 GetChangeInput(Vector2 input, Vector3 axisDir)
     {
-        print(input+" "+axisDir);
         //axisDirection‚ğŠî€‚É‚µ‚½is•ûŒü
         Vector3 axisForward = Vector3.Scale(axisDir, RESET_DIRECTION.normalized);
         Vector3 inputMoveDirection = axisForward.normalized * input.y - Vector3.Cross(axisDir, transform.up).normalized * input.x;
 
-        print(inputMoveDirection);
         return inputMoveDirection;
     }
 }
