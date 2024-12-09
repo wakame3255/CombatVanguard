@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveAction : MonoBehaviour
+public class MoveAction : MonoBehaviour, ISetTransform
 {
     [SerializeField]
     private float _speed;
@@ -17,12 +17,8 @@ public class MoveAction : MonoBehaviour
     {
         _characterTransform.position += moveDirection.normalized* _speed * Time.deltaTime; 
     }
-
-    /// <summary>
-    /// トランスフォームをもらうメソッド
-    /// </summary>
-    /// <param name="characterTransform">キャラクターのトランスフォーム</param>
-    public void SetTransform(Transform characterTransform)
+   
+    public void SetCharacterTransform(Transform characterTransform)
     {
         _characterTransform = characterTransform;
     }
