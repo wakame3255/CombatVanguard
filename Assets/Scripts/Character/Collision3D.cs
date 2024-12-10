@@ -33,7 +33,7 @@ public class Collision3D : MonoBehaviour
     /// </summary>
     public void CheckCollision()
     {
-        Vector3 capsuleTopPos = transform.position + (Vector3.up * _capsuleCollider.height / 2);
+        Vector3 capsuleTopPos = transform.position + (Vector3.up * _capsuleCollider.height) / 2 + _capsuleCollider.center;
         Vector3 capsuleUnderPos = capsuleTopPos + (Vector3.down * _capsuleCollider.height);
         _topCycleCenterPos = capsuleTopPos + (Vector3.down * _capsuleCollider.radius);
         _underCycleCenterPos = capsuleUnderPos + (Vector3.up * _capsuleCollider.radius);

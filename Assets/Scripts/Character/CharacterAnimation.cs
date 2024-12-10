@@ -21,6 +21,6 @@ public class CharacterAnimation : MonoBehaviour
     }
     private void Update()
     {
-        _animationSystem.UpdateLocomotion(Vector3.forward, 0.00001f);
+        _animationSystem.UpdateLocomotion(Vector3.forward, 0f);
     }
 }
