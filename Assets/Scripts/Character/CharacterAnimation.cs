@@ -6,21 +6,19 @@ using UnityEngine;
 public class CharacterAnimation : MonoBehaviour
 {
     [SerializeField]
-    private AnimationClip _idleAnimation;
-
-    [SerializeField]
-    private AnimationClip _walkAnimation;
+    private WalkAnimationInformation _walkAnimationInfo;
 
     private Animator _animator;
-    private AnimationSystem _animationSystem;
+    private WalkAnimationSystem _walkAnimationSystem;
 
     private void Awake()
     {
         _animator = this.CheckComponentMissing<Animator>();
-        _animationSystem = new AnimationSystem(_animator, _idleAnimation, _walkAnimation);
+        _walkAnimationSystem = new(_animator, _walkAnimationInfo);
     }
-    private void Update()
+   
+   public void DoMoveAnimation(Vector2 inputXY)
     {
-        _animationSystem.UpdateLocomotion(Vector3.forward, 0f);
+        _walkAnimationSystem.UpdateLocomotion(inputXY, 1f);
     }
 }

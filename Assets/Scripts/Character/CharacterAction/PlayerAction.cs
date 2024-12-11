@@ -12,6 +12,7 @@ public class PlayerAction : MonoBehaviour
     private RotationMove _rotationMove;
     private MoveAction _moveAction;
     private AttackAction _attackAction;
+    private CharacterAnimation _characterAnimation;
 
     private static readonly Vector3 RESET_DIRECTION = new Vector3(1f, 0, 1f);
 
@@ -20,10 +21,11 @@ public class PlayerAction : MonoBehaviour
         _moveAction = this.CheckComponentMissing<MoveAction>(_actionPosition);
         _attackAction = this.CheckComponentMissing<AttackAction>(_actionPosition);
         _rotationMove = this.CheckComponentMissing<RotationMove>(_actionPosition);
+        _characterAnimation = this.CheckComponentMissing<CharacterAnimation>();
 
         _playerCamera = Camera.main.gameObject.transform;
         _moveAction.SetCharacterTransform(transform);
-        _rotationMove.SetCharacterTransform(transform);
+        //_rotationMove.SetCharacterTransform(transform);
     }
 
     /// <summary>
@@ -42,6 +44,10 @@ public class PlayerAction : MonoBehaviour
         Observable.EveryUpdate()
     .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
     .Subscribe(inputXY => _rotationMove.DoRotation(GetChangeInput(inputXY, _playerCamera.forward)));
+
+        Observable.EveryUpdate()
+   .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
+   .Subscribe(inputXY => _characterAnimation.DoMoveAnimation(GetChangeInput(inputXY, _playerCamera.forward)));
 
         //UŒ‚ƒ{ƒ^ƒ“‚Ì“ü—Íw“Ç
         inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack).Subscribe(isAttack => _attackAction.DoAction());
