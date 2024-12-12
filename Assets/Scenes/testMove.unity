@@ -227,10 +227,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _walkAnimationInfo:
     _idleAnimation: {fileID: 7400002, guid: a3422ad278cd9a94aa3da8e6bff9deea, type: 3}
-    _forwardWalkAnimation: {fileID: 7400010, guid: 83ed209ea436efc4aba715fe2858546f, type: 3}
-    _backWalkAnimation: {fileID: 7400000, guid: 83ed209ea436efc4aba715fe2858546f, type: 3}
-    _rightWalkAnimation: {fileID: 7400008, guid: 83ed209ea436efc4aba715fe2858546f, type: 3}
-    _leftWalkAnimation: {fileID: 7400006, guid: 83ed209ea436efc4aba715fe2858546f, type: 3}
+    _forwardWalkAnimation: {fileID: 1695192892109923712, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
+    _forwardWalkRightAnimation: {fileID: 1922147897020755831, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
+    _forwardWalkLeftAnimation: {fileID: -4806549469666548942, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
+    _backWalkRightAnimation: {fileID: -9013019248230706172, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
+    _backWalkLeftAnimation: {fileID: -596700691782342955, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
+    _backWalkAnimation: {fileID: 122471509461140758, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
+    _rightWalkAnimation: {fileID: 5265780745243343361, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
+    _leftWalkAnimation: {fileID: 5659637821263495846, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
 --- !u!95 &184573695
 Animator:
   serializedVersion: 7
@@ -241,7 +245,7 @@ Animator:
   m_GameObject: {fileID: 184573693}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 24fc2c3e62c52bf4e9e63fd980b8e85d, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 772d720bee4d51542b7946c4cb5ca0a1, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

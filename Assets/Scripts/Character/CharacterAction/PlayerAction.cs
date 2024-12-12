@@ -25,7 +25,7 @@ public class PlayerAction : MonoBehaviour
 
         _playerCamera = Camera.main.gameObject.transform;
         _moveAction.SetCharacterTransform(transform);
-        //_rotationMove.SetCharacterTransform(transform);
+        _rotationMove.SetCharacterTransform(transform);
     }
 
     /// <summary>
@@ -41,13 +41,13 @@ public class PlayerAction : MonoBehaviour
     .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
     .Subscribe(inputXY => _moveAction.DoMove(GetChangeInput(inputXY, _playerCamera.forward)));
 
-        Observable.EveryUpdate()
-    .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
-    .Subscribe(inputXY => _rotationMove.DoRotation(GetChangeInput(inputXY, _playerCamera.forward)));
+    //    Observable.EveryUpdate()
+    //.WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
+    //.Subscribe(inputXY => _rotationMove.DoRotation(GetChangeInput(inputXY, _playerCamera.forward)));
 
         Observable.EveryUpdate()
    .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
-   .Subscribe(inputXY => _characterAnimation.DoMoveAnimation(GetChangeInput(inputXY, _playerCamera.forward)));
+   .Subscribe(inputXY => _characterAnimation.DoMoveAnimation(inputXY));
 
         //UŒ‚ƒ{ƒ^ƒ“‚Ì“ü—Íw“Ç
         inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack).Subscribe(isAttack => _attackAction.DoAction());

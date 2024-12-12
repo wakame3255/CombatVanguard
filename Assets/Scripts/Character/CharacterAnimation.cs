@@ -19,6 +19,6 @@ public class CharacterAnimation : MonoBehaviour
    
    public void DoMoveAnimation(Vector2 inputXY)
     {
-        _walkAnimationSystem.UpdateLocomotion(inputXY, 1f);
+        _walkAnimationSystem.UpdateLocomotion(inputXY.normalized, 1f);
     }
 }

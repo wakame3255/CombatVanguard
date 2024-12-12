@@ -48,7 +48,6 @@ public class PlayerInput : MonoBehaviour, IInputInformation
         float inputY = Keyboard.current.sKey.isPressed ? -1 : Keyboard.current.wKey.isPressed ? 1 : 0;
 
         _reactivePropertyMove.Value = new Vector2(inputX, inputY);
-        print(_reactivePropertyMove.Value);
     }
 
     private void SetButton()
