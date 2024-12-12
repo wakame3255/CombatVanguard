@@ -22,7 +22,7 @@ public class PlayerAction : MonoBehaviour
         _attackAction = this.CheckComponentMissing<AttackAction>(_actionPosition);
         _rotationMove = this.CheckComponentMissing<RotationMove>(_actionPosition);
         _characterAnimation = this.CheckComponentMissing<CharacterAnimation>();
-
+        
         _playerCamera = Camera.main.gameObject.transform;
         _moveAction.SetCharacterTransform(transform);
         _rotationMove.SetCharacterTransform(transform);

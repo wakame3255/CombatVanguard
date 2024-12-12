@@ -235,6 +235,8 @@ MonoBehaviour:
     _backWalkAnimation: {fileID: 122471509461140758, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
     _rightWalkAnimation: {fileID: 5265780745243343361, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
     _leftWalkAnimation: {fileID: 5659637821263495846, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
+  _moveInputXName: X
+  _moveInputYName: Y
 --- !u!95 &184573695
 Animator:
   serializedVersion: 7
