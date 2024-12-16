@@ -235,7 +235,7 @@ MonoBehaviour:
     _rightTurnAnimation: {fileID: 7400004, guid: 75ce8c4ee28dede4aa90f9ca8a6c9329, type: 3}
     _LeftTurnAnimation: {fileID: 7400002, guid: 75ce8c4ee28dede4aa90f9ca8a6c9329, type: 3}
   _walkAnimationSystem: {fileID: 184573702}
-  _animationClip: {fileID: 7400006, guid: a57ac3f83414fb440b6c52cb6be60350, type: 3}
+  _animationClip: {fileID: 7400000, guid: b5fb9fa7a3e19744292c7a51adbb8560, type: 3}
   _moveInputXName: InputX
   _moveInputYName: InputY
 --- !u!95 &184573695
@@ -359,21 +359,21 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
+      value: 0
+      inSlope: 6.265789
+      outSlope: 6.265789
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.04190036
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
+      inSlope: 6.361934
+      outSlope: 6.361934
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.033148423
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

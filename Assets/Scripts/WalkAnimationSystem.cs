@@ -109,8 +109,14 @@ public class WalkAnimationSystem : MonoBehaviour
         _reactivePropertyIsAnimation.Value = false;
     }
 
+
+    /// <summary>
+    /// 割り込ませるアニメーションの生成メソッド
+    /// </summary>
+    /// <param name="animClip">割り込ませたいアニメクリップ</param>
     private void SetupNewPlayable(AnimationClip animClip)
     {
+        //割り込みアニメを生成
         _playable = AnimationClipPlayable.Create(_playableGraph, animClip);
 
         _playableOutput.SetSourcePlayable(_playable);
