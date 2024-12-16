@@ -225,18 +225,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 815969f53b81b2f4395d008e5db8391b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _walkDamp: 0.1
   _walkAnimationInfo:
-    _idleAnimation: {fileID: 7400002, guid: a3422ad278cd9a94aa3da8e6bff9deea, type: 3}
-    _forwardWalkAnimation: {fileID: 1695192892109923712, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
-    _forwardWalkRightAnimation: {fileID: 1922147897020755831, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
-    _forwardWalkLeftAnimation: {fileID: -4806549469666548942, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
-    _backWalkRightAnimation: {fileID: -9013019248230706172, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
-    _backWalkLeftAnimation: {fileID: -596700691782342955, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
-    _backWalkAnimation: {fileID: 122471509461140758, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
-    _rightWalkAnimation: {fileID: 5265780745243343361, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
-    _leftWalkAnimation: {fileID: 5659637821263495846, guid: b3f3ac3565beb18429901d070f0eec02, type: 3}
-  _moveInputXName: X
-  _moveInputYName: Y
+    _forwardTurnAnimation: {fileID: 7400002, guid: ebe6e7ef299029b4f9d792cfa0c5ca2a, type: 3}
+    _backTurnAnimation: {fileID: 7400004, guid: ebe6e7ef299029b4f9d792cfa0c5ca2a, type: 3}
+    _rightTurnAnimation: {fileID: 7400004, guid: 75ce8c4ee28dede4aa90f9ca8a6c9329, type: 3}
+    _LeftTurnAnimation: {fileID: 7400002, guid: 75ce8c4ee28dede4aa90f9ca8a6c9329, type: 3}
+  _moveInputXName: InputX
+  _moveInputYName: InputY
 --- !u!95 &184573695
 Animator:
   serializedVersion: 7

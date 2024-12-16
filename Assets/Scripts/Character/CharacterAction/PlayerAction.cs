@@ -13,6 +13,7 @@ public class PlayerAction : MonoBehaviour
     private MoveAction _moveAction;
     private AttackAction _attackAction;
     private CharacterAnimation _characterAnimation;
+    private CompositeDisposable _disposables = new CompositeDisposable();
 
     private static readonly Vector3 RESET_DIRECTION = new Vector3(1f, 0, 1f);
 
@@ -22,10 +23,11 @@ public class PlayerAction : MonoBehaviour
         _attackAction = this.CheckComponentMissing<AttackAction>(_actionPosition);
         _rotationMove = this.CheckComponentMissing<RotationMove>(_actionPosition);
         _characterAnimation = this.CheckComponentMissing<CharacterAnimation>();
-        
+
         _playerCamera = Camera.main.gameObject.transform;
         _moveAction.SetCharacterTransform(transform);
         _rotationMove.SetCharacterTransform(transform);
+        _characterAnimation.SetCharacterTransform(transform);
     }
 
     /// <summary>
@@ -38,22 +40,27 @@ public class PlayerAction : MonoBehaviour
 
         //舞フレーム更新の移動入力購読
         Observable.EveryUpdate()
-    .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
-    .Subscribe(inputXY => _moveAction.DoMove(GetChangeInput(inputXY, _playerCamera.forward)));
-
-    //    Observable.EveryUpdate()
-    //.WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
-    //.Subscribe(inputXY => _rotationMove.DoRotation(GetChangeInput(inputXY, _playerCamera.forward)));
+     .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
+     .Subscribe(inputXY => _moveAction.DoMove(GetChangeInput(inputXY, _playerCamera.forward)))
+     .AddTo(_disposables);
 
         Observable.EveryUpdate()
-   .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
-   .Subscribe(inputXY => _characterAnimation.DoMoveAnimation(inputXY));
+     .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
+     .Subscribe(inputXY => _rotationMove.DoRotation(GetChangeInput(inputXY, _playerCamera.forward)))
+     .AddTo(_disposables);
+
+        Observable.EveryUpdate()
+     .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
+     .Subscribe(inputXY => _characterAnimation.DoMoveAnimation(GetChangeInput(inputXY, _playerCamera.forward)))
+     .AddTo(_disposables);
 
         //攻撃ボタンの入力購読
-        inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack).Subscribe(isAttack => _attackAction.DoAction());
+        inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack).Subscribe(isAttack => _attackAction.DoAction())
+        .AddTo(_disposables);
 
         //ジャンプボタンの入力購読
-        inputInformation.ReactivePropertyJump.Where(isJump => isJump).Subscribe(isJump => print("jump"));
+        inputInformation.ReactivePropertyJump.Where(isJump => isJump).Subscribe(isJump => _characterAnimation.DoTurn())
+        .AddTo(_disposables);
     }
 
 
@@ -70,5 +77,10 @@ public class PlayerAction : MonoBehaviour
         Vector3 inputMoveDirection = axisForward.normalized * input.y - Vector3.Cross(axisDir, transform.up).normalized * input.x;
 
         return inputMoveDirection;
+    }
+
+    void OnDestroy()
+    {
+        _disposables.Dispose();
     }
 }

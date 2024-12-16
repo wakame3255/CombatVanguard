@@ -7,38 +7,56 @@ using UnityEngine;
 public class CharacterAnimation : MonoBehaviour
 {
     [SerializeField]
-    private WalkAnimationInformation _walkAnimationInfo;
+    private float _walkDamp;
 
+    [SerializeField]
+    private WalkTurnAnimationInformation _walkAnimationInfo;
     [SerializeField]
     private string _moveInputXName;
     [SerializeField]
     private string _moveInputYName;
 
+    private Transform _characterTransform;
     private Animator _animator;
     private WalkAnimationSystem _walkAnimationSystem;
 
-    private int _moveInputXHash { get; init; }
-    private int _moveInputYHash { get; init; }
-
-    public CharacterAnimation()
-    {
-       
-    }
+    private int _moveInputXHash;
+    private int _moveInputYHash;
 
     private void Awake()
     {
         _animator = this.CheckComponentMissing<Animator>();
-        _walkAnimationSystem = new(_animator, _walkAnimationInfo);
+        _walkAnimationSystem = new(_animator);
 
-        //_moveInputXHash = new int(Animator.StringToHash(_moveInputXName));
-        //_moveInputYHash = Animator.StringToHash(_moveInputYName);
+        _moveInputXHash = Animator.StringToHash(_moveInputXName);
+        _moveInputYHash = Animator.StringToHash(_moveInputYName);
     }
    
-   public void DoMoveAnimation(Vector2 inputXY)
+   public void DoMoveAnimation(Vector3 moveDirection)
     {
-        _walkAnimationSystem.UpdateLocomotion(inputXY.normalized, 1f);
-        //_animator.SetFloat(_moveInputXHash, inputXY.x);
-        //_animator.SetFloat(_moveInputYHash, inputXY.y);
+        Vector2 changeInput = GetdirectionToAnimationValue(moveDirection);
+        _animator.SetFloat(_moveInputXHash, changeInput.x, _walkDamp, Time.deltaTime);
+        _animator.SetFloat(_moveInputYHash, changeInput.y, _walkDamp, Time.deltaTime);
+    }
+
+    public void DoTurn()
+    {
+        _walkAnimationSystem.AnimationPlay(0.2f, _walkAnimationInfo.ForwardTurnAnimation);
+    }
+
+    public void SetCharacterTransform(Transform characterTransform)
+    {
+        _characterTransform = characterTransform;
+    }
+
+    private Vector2 GetdirectionToAnimationValue(Vector3 moveDirection)
+    {
+        MyExtensionClass.CheckArgumentNull(moveDirection, nameof(moveDirection));
+
+        float inputX = Vector3.Dot(moveDirection, _characterTransform.right);
+        float inputY = Vector3.Dot(moveDirection, _characterTransform.forward);
+
+        return new Vector2(inputX, inputY);
     }
 }
 
