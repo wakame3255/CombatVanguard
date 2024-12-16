@@ -33,24 +33,23 @@ public class WalkAnimationSystem: MonoBehaviour
 
     private PlayableGraph _playableGraph;
     private Playable _playable;
-    readonly AnimationPlayableOutput _playableOutput;
+    private AnimationPlayableOutput _playableOutput;
 
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
+        _playableGraph = PlayableGraph.Create();
+        _playableOutput = AnimationPlayableOutput.Create(_playableGraph, name, _animator);
+        _playableOutput.SetWeight(0f);
+    }
     void OnDestroy()
     {
         CleanupPlayable();
     }
 
-    public WalkAnimationSystem(Animator animator)
-    {
-        _animator = animator;
-        _playableGraph = PlayableGraph.Create();
-        _playableOutput = AnimationPlayableOutput.Create(_playableGraph, name, animator);
-        _playableOutput.SetWeight(0f);
-    }
-
     public IEnumerator AnimationPlay(float time, AnimationClip animationClip)
     {
-        MyExtensionClass.CheckArgumentNull(animationClip, nameof(animationClip));
+        print("開始");
 
         CleanupPlayable();
         SetupNewPlayable(animationClip);
@@ -69,6 +68,7 @@ public class WalkAnimationSystem: MonoBehaviour
         yield return StartTransition(time, false);
 
         CleanupPlayable();
+        print("終了");
     }
 
     private void SetupNewPlayable(AnimationClip animClip)
@@ -100,7 +100,6 @@ public class WalkAnimationSystem: MonoBehaviour
         if (_playableGraph.IsValid()) 
         {
             _playableGraph.Destroy(); //明示的にDestroy
-            _playableGraph = default;
         }
         Debug.Log("Playable破壊");
     }

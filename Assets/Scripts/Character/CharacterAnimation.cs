@@ -12,13 +12,17 @@ public class CharacterAnimation : MonoBehaviour
     [SerializeField]
     private WalkTurnAnimationInformation _walkAnimationInfo;
     [SerializeField]
+    private WalkAnimationSystem _walkAnimationSystem;
+    [SerializeField]
+    private AnimationClip _animationClip;
+
+    [SerializeField]
     private string _moveInputXName;
     [SerializeField]
     private string _moveInputYName;
 
     private Transform _characterTransform;
     private Animator _animator;
-    private WalkAnimationSystem _walkAnimationSystem;
 
     private int _moveInputXHash;
     private int _moveInputYHash;
@@ -26,7 +30,6 @@ public class CharacterAnimation : MonoBehaviour
     private void Awake()
     {
         _animator = this.CheckComponentMissing<Animator>();
-        _walkAnimationSystem = new(_animator);
 
         _moveInputXHash = Animator.StringToHash(_moveInputXName);
         _moveInputYHash = Animator.StringToHash(_moveInputYName);
@@ -41,7 +44,7 @@ public class CharacterAnimation : MonoBehaviour
 
     public void DoTurn()
     {
-        _walkAnimationSystem.AnimationPlay(0.2f, _walkAnimationInfo.ForwardTurnAnimation);
+        StartCoroutine(_walkAnimationSystem.AnimationPlay(0.2f, _animationClip));
     }
 
     public void SetCharacterTransform(Transform characterTransform)
