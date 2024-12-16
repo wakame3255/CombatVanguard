@@ -1,10 +1,10 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
+using R3;
 
 [Serializable]
 public class WalkTurnAnimationInformation
@@ -24,38 +24,70 @@ public class WalkTurnAnimationInformation
     public AnimationClip LeftTurnAnimation { get => _LeftTurnAnimation; }
 }
 
-public class WalkAnimationSystem: MonoBehaviour
+public class WalkAnimationSystem : MonoBehaviour
 {
     [SerializeField]
-    AnimationCurve _curve;
+    private AnimationCurve _curve;
 
     private Animator _animator;
-
     private PlayableGraph _playableGraph;
     private Playable _playable;
     private AnimationPlayableOutput _playableOutput;
 
+    private ReactiveProperty<bool> _reactivePropertyIsAnimation = new ReactiveProperty<bool>(false);
+
+    public ReactiveProperty<bool> ReactivePropertyIsAnimation { get => _reactivePropertyIsAnimation; }
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-        _playableGraph = PlayableGraph.Create();
-        _playableOutput = AnimationPlayableOutput.Create(_playableGraph, name, _animator);
-        _playableOutput.SetWeight(0f);
+        InitializePlayableGraph();
     }
-    void OnDestroy()
+
+    private void OnDestroy()
     {
         CleanupPlayable();
+    }
+
+    private void OnValidate()
+    {
+        if (_curve == null)
+        {
+            _curve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1));
+        }
+    }
+
+    private void InitializePlayableGraph()
+    {
+        if (!_playableGraph.IsValid())
+        {
+            _playableGraph = PlayableGraph.Create();
+            _playableOutput = AnimationPlayableOutput.Create(_playableGraph, name, _animator);
+            _playableOutput.SetWeight(0f);
+        }
     }
 
     public IEnumerator AnimationPlay(float time, AnimationClip animationClip)
     {
-        print("開始");
+        MyExtensionClass.CheckArgumentNull(animationClip, nameof(animationClip));
 
-        CleanupPlayable();
+        Debug.Log("アニメーション開始");
+        _reactivePropertyIsAnimation.Value = true;
+
+        // グラフの初期化を確実に行う
+        InitializePlayableGraph();
+
+        // 既存のPlayableをクリーンアップ
+        if (_playable.IsValid())
+        {
+            _playable.Destroy();
+        }
+
+        // 新しいPlayableの設定
         SetupNewPlayable(animationClip);
 
         yield return StartTransition(time, true);
-        _animator.playableGraph.Stop();
+        _playableGraph.Stop();
 
         float playTime = animationClip.length - (time * 2);
 
@@ -64,11 +96,17 @@ public class WalkAnimationSystem: MonoBehaviour
             yield return new WaitForSeconds(playTime);
         }
 
-        _animator.playableGraph.Play();
+        _playableGraph.Play();
         yield return StartTransition(time, false);
 
-        CleanupPlayable();
-        print("終了");
+        // Playableのクリーンアップのみを行い、グラフは維持
+        if (_playable.IsValid())
+        {
+            _playable.Destroy();
+        }
+
+        Debug.Log("アニメーション終了");
+        _reactivePropertyIsAnimation.Value = false;
     }
 
     private void SetupNewPlayable(AnimationClip animClip)
@@ -78,14 +116,14 @@ public class WalkAnimationSystem: MonoBehaviour
         _playableGraph.Play();
     }
 
-    private IEnumerator StartTransition(float durection, bool isIn)
+    private IEnumerator StartTransition(float duration, bool isIn)
     {
         float startTime = Time.timeSinceLevelLoad;
-        float endTime = startTime + durection;
+        float endTime = startTime + duration;
 
         while (Time.timeSinceLevelLoad < endTime)
         {
-            float nowTime = (Time.timeSinceLevelLoad - startTime) / durection;
+            float nowTime = (Time.timeSinceLevelLoad - startTime) / duration;
             if (!isIn)
             {
                 nowTime = 1 - nowTime;
@@ -93,14 +131,30 @@ public class WalkAnimationSystem: MonoBehaviour
             _playableOutput.SetWeight(_curve.Evaluate(nowTime));
             yield return null;
         }
+
+        // 最終的な重みを確実に設定
+        _playableOutput.SetWeight(isIn ? 1f : 0f);
     }
 
     private void CleanupPlayable()
     {
-        if (_playableGraph.IsValid()) 
+        if (_playable.IsValid())
         {
-            _playableGraph.Destroy(); //明示的にDestroy
+            _playable.Destroy();
         }
-        Debug.Log("Playable破壊");
+
+        if (_playableGraph.IsValid())
+        {
+            _playableGraph.Destroy();
+            Debug.Log("PlayableGraphを破棄しました");
+        }
     }
+
+#if UNITY_EDITOR
+    private void OnDisable()
+    {
+        // エディタでの実行停止時にもリソースを解放
+        CleanupPlayable();
+    }
+#endif
 }

@@ -41,25 +41,30 @@ public class PlayerAction : MonoBehaviour
         //舞フレーム更新の移動入力購読
         Observable.EveryUpdate()
      .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
+     .Where(_ => !_characterAnimation.IsAnimation)
      .Subscribe(inputXY => _moveAction.DoMove(GetChangeInput(inputXY, _playerCamera.forward)))
      .AddTo(_disposables);
 
         Observable.EveryUpdate()
      .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
+      .Where(_ => !_characterAnimation.IsAnimation)
      .Subscribe(inputXY => _rotationMove.DoRotation(GetChangeInput(inputXY, _playerCamera.forward)))
      .AddTo(_disposables);
 
         Observable.EveryUpdate()
      .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
+      .Where(_ => !_characterAnimation.IsAnimation)
      .Subscribe(inputXY => _characterAnimation.DoMoveAnimation(GetChangeInput(inputXY, _playerCamera.forward)))
      .AddTo(_disposables);
 
         //攻撃ボタンの入力購読
-        inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack).Subscribe(isAttack => _attackAction.DoAction())
+        inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack).Where(_ => !_characterAnimation.IsAnimation)
+            .Subscribe(isAttack => _attackAction.DoAction())
         .AddTo(_disposables);
 
         //ジャンプボタンの入力購読
-        inputInformation.ReactivePropertyJump.Where(isJump => isJump).Subscribe(isJump => _characterAnimation.DoTurn())
+        inputInformation.ReactivePropertyJump.Where(_ => !_characterAnimation.IsAnimation).Where(isJump => isJump)
+            .Subscribe(isJump => _characterAnimation.DoTurn())
         .AddTo(_disposables);
     }
 

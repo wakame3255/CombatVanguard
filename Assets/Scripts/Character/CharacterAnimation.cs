@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
+using R3;
 
 [RequireComponent(typeof(Animator))]
 public class CharacterAnimation : MonoBehaviour
@@ -27,12 +28,16 @@ public class CharacterAnimation : MonoBehaviour
     private int _moveInputXHash;
     private int _moveInputYHash;
 
+    public bool IsAnimation { get; private set; }
+
     private void Awake()
     {
         _animator = this.CheckComponentMissing<Animator>();
 
         _moveInputXHash = Animator.StringToHash(_moveInputXName);
         _moveInputYHash = Animator.StringToHash(_moveInputYName);
+
+        _walkAnimationSystem.ReactivePropertyIsAnimation.Subscribe(isAnim => IsAnimation = isAnim);
     }
    
    public void DoMoveAnimation(Vector3 moveDirection)
@@ -44,7 +49,7 @@ public class CharacterAnimation : MonoBehaviour
 
     public void DoTurn()
     {
-        StartCoroutine(_walkAnimationSystem.AnimationPlay(0.2f, _animationClip));
+        StartCoroutine(_walkAnimationSystem.AnimationPlay(_animationClip.length / 2f, _animationClip));
     }
 
     public void SetCharacterTransform(Transform characterTransform)
