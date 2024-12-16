@@ -112,6 +112,7 @@ public class WalkAnimationSystem : MonoBehaviour
     private void SetupNewPlayable(AnimationClip animClip)
     {
         _playable = AnimationClipPlayable.Create(_playableGraph, animClip);
+
         _playableOutput.SetSourcePlayable(_playable);
         _playableGraph.Play();
     }

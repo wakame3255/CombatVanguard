@@ -49,7 +49,7 @@ public class CharacterAnimation : MonoBehaviour
 
     public void DoTurn()
     {
-        StartCoroutine(_walkAnimationSystem.AnimationPlay(_animationClip.length / 2f, _animationClip));
+        StartCoroutine(_walkAnimationSystem.AnimationPlay(_animationClip.length /2f , _animationClip));
     }
 
     public void SetCharacterTransform(Transform characterTransform)
