@@ -200,13 +200,13 @@ PrefabInstance:
       addedObject: {fileID: 184573702}
     - targetCorrespondingSourceObject: {fileID: 4132312772176831909, guid: 64b182395c0b6744a920c74bce3ece13, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 184573699}
-    - targetCorrespondingSourceObject: {fileID: 4132312772176831909, guid: 64b182395c0b6744a920c74bce3ece13, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 184573698}
     - targetCorrespondingSourceObject: {fileID: 4132312772176831909, guid: 64b182395c0b6744a920c74bce3ece13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 184573697}
+    - targetCorrespondingSourceObject: {fileID: 4132312772176831909, guid: 64b182395c0b6744a920c74bce3ece13, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 184573699}
     - targetCorrespondingSourceObject: {fileID: 4132312772176831909, guid: 64b182395c0b6744a920c74bce3ece13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 184573701}
@@ -358,22 +358,31 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 6.265789
-      outSlope: 6.265789
+      time: -0.0041656494
+      value: -0.009414673
+      inSlope: 3.4210942
+      outSlope: 3.4210942
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.04190036
+      outWeight: 0.11022364
     - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 6.361934
-      outSlope: 6.361934
+      time: 0.2982406
+      value: 0.80001616
+      inSlope: 0.84290683
+      outSlope: 0.84290683
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.033148423
+      inWeight: 0.40874282
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0002387
+      value: 1.0034364
+      inSlope: 0.0049803974
+      outSlope: 0.0049803974
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.21595417
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
