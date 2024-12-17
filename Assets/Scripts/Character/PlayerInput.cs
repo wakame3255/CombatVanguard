@@ -7,11 +7,13 @@ public class PlayerInput : MonoBehaviour, IInputInformation
     private ReactiveProperty<Vector2> _reactivePropertyMove = new ReactiveProperty<Vector2>();
     private ReactiveProperty<bool> _reactivePropertyAttack = new ReactiveProperty<bool>();
     private ReactiveProperty<bool> _reactivePropertyJump = new ReactiveProperty<bool>();
+    private ReactiveProperty<bool> _reactivePropertyDash = new ReactiveProperty<bool>();
 
     public static PlayerInput Instance { get; private set; }
 
     public ReactiveProperty<bool> ReactivePropertyAttack { get => _reactivePropertyAttack; }
     public ReactiveProperty<bool> ReactivePropertyJump { get => _reactivePropertyJump; }
+    public ReactiveProperty<bool> ReactivePropertyDash { get => _reactivePropertyDash; }
     public ReactiveProperty<Vector2> ReactivePropertyMove { get => _reactivePropertyMove; }
 
     private void Awake()
@@ -55,6 +57,8 @@ public class PlayerInput : MonoBehaviour, IInputInformation
         _reactivePropertyAttack.Value = Mouse.current.leftButton.wasPressedThisFrame;
 
         _reactivePropertyJump.Value = Keyboard.current.spaceKey.wasPressedThisFrame;
+
+        _reactivePropertyDash.Value = Keyboard.current.leftShiftKey.isPressed;
     }
 
 }

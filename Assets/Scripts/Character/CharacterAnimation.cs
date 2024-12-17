@@ -5,7 +5,7 @@ using UnityEngine;
 using R3;
 
 [RequireComponent(typeof(Animator))]
-public class CharacterAnimation : MonoBehaviour
+public class CharacterAnimation : MonoBehaviour, ISetTransform
 {
     [SerializeField]
     private float _walkDamp;
@@ -13,20 +13,23 @@ public class CharacterAnimation : MonoBehaviour
     [SerializeField]
     private WalkTurnAnimationInformation _walkAnimationInfo;
     [SerializeField]
-    private WalkAnimationSystem _walkAnimationSystem;
+    private AttackAnimationInformation _attackAnimationInfo;
     [SerializeField]
-    private AnimationClip _animationClip;
+    private InsertAnimationSystem _walkAnimationSystem;
 
     [SerializeField]
     private string _moveInputXName;
     [SerializeField]
     private string _moveInputYName;
+    [SerializeField]
+    private string _isDashName = "IsDash";
 
     private Transform _characterTransform;
     private Animator _animator;
 
     private int _moveInputXHash;
     private int _moveInputYHash;
+    private int _isDashHash;
 
     public bool IsAnimation { get; private set; }
 
@@ -36,20 +39,35 @@ public class CharacterAnimation : MonoBehaviour
 
         _moveInputXHash = Animator.StringToHash(_moveInputXName);
         _moveInputYHash = Animator.StringToHash(_moveInputYName);
+        _isDashHash = Animator.StringToHash(_isDashName);
 
         _walkAnimationSystem.ReactivePropertyIsAnimation.Subscribe(isAnim => IsAnimation = isAnim);
     }
    
-   public void DoMoveAnimation(Vector3 moveDirection)
+   public void DoWalkAnimation(Vector3 moveDirection)
     {
-        Vector2 changeInput = GetdirectionToAnimationValue(moveDirection);
+        Vector2 changeInput = GetDirectionToAnimationValue(moveDirection);
         _animator.SetFloat(_moveInputXHash, changeInput.x, _walkDamp, Time.deltaTime);
         _animator.SetFloat(_moveInputYHash, changeInput.y, _walkDamp, Time.deltaTime);
+
+        _animator.SetBool(_isDashHash, false);
     }
 
-    public void DoTurn()
+    public void DoDashAnimation(Vector3 moveDirection)
     {
-        StartCoroutine(_walkAnimationSystem.AnimationPlay(_animationClip.length / 2f, _animationClip));
+        Vector2 changeInput = GetDirectionToAnimationValue(moveDirection);
+        _animator.SetFloat(_moveInputXHash, changeInput.x, _walkDamp, Time.deltaTime);
+        _animator.SetFloat(_moveInputYHash, changeInput.y, _walkDamp, Time.deltaTime);
+        _animator.SetBool(_isDashHash, true);
+    }
+
+    public void DoTurnAnimation()
+    {
+        StartCoroutine(_walkAnimationSystem.AnimationPlay(_walkAnimationInfo.ForwardTurnAnimation.length / 2f, _walkAnimationInfo.ForwardTurnAnimation));
+    }
+    public void DoAttackAnimation()
+    {
+        StartCoroutine(_walkAnimationSystem.AnimationPlay(_attackAnimationInfo.JabAnimation.length / 2f, _attackAnimationInfo.JabAnimation));
     }
 
     public void SetCharacterTransform(Transform characterTransform)
@@ -57,7 +75,7 @@ public class CharacterAnimation : MonoBehaviour
         _characterTransform = characterTransform;
     }
 
-    private Vector2 GetdirectionToAnimationValue(Vector3 moveDirection)
+    private Vector2 GetDirectionToAnimationValue(Vector3 moveDirection)
     {
         MyExtensionClass.CheckArgumentNull(moveDirection, nameof(moveDirection));
 

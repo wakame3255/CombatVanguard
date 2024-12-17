@@ -2,10 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackAction : MonoBehaviour
+public class AttackAction : MonoBehaviour, ISetAnimation
 {
-   public void DoAction()
-    {
+    private CharacterAnimation _characterAnimation;
 
+    public void DoAction()
+    {
+        _characterAnimation.DoAttackAnimation();
+    }
+
+    public void SetAnimationComponent(CharacterAnimation characterAnimation)
+    {
+        _characterAnimation = characterAnimation;
     }
 }

@@ -7,5 +7,6 @@ public interface IInputInformation
 {
     public ReactiveProperty<bool> ReactivePropertyAttack { get; }
     public ReactiveProperty<bool> ReactivePropertyJump { get; }
+    public ReactiveProperty<bool> ReactivePropertyDash { get; }
     public ReactiveProperty<Vector2> ReactivePropertyMove { get; }
 }

@@ -7,6 +7,15 @@ using UnityEngine.Playables;
 using R3;
 
 [Serializable]
+public class AttackAnimationInformation
+{
+    [SerializeField]
+    private AnimationClip _jabAnimation;
+   
+    public AnimationClip JabAnimation { get => _jabAnimation; }
+}
+
+[Serializable]
 public class WalkTurnAnimationInformation
 {
     [SerializeField]
@@ -24,7 +33,7 @@ public class WalkTurnAnimationInformation
     public AnimationClip LeftTurnAnimation { get => _LeftTurnAnimation; }
 }
 
-public class WalkAnimationSystem : MonoBehaviour
+public class InsertAnimationSystem : MonoBehaviour
 {
     [SerializeField]
     private AnimationCurve _curve;

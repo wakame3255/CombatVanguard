@@ -1,6 +1,7 @@
 using R3;
 using System.ComponentModel.DataAnnotations;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerAction : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class PlayerAction : MonoBehaviour
 
     private Transform _playerCamera;
     private RotationMove _rotationMove;
-    private MoveAction _moveAction;
+    private PositionMoveAction _moveAction;
     private AttackAction _attackAction;
     private CharacterAnimation _characterAnimation;
     private CompositeDisposable _disposables = new CompositeDisposable();
@@ -19,15 +20,18 @@ public class PlayerAction : MonoBehaviour
 
     private void Awake()
     {
-        _moveAction = this.CheckComponentMissing<MoveAction>(_actionPosition);
+        _moveAction = this.CheckComponentMissing<PositionMoveAction>(_actionPosition);
         _attackAction = this.CheckComponentMissing<AttackAction>(_actionPosition);
         _rotationMove = this.CheckComponentMissing<RotationMove>(_actionPosition);
         _characterAnimation = this.CheckComponentMissing<CharacterAnimation>();
-
         _playerCamera = Camera.main.gameObject.transform;
-        _moveAction.SetCharacterTransform(transform);
-        _rotationMove.SetCharacterTransform(transform);
-        _characterAnimation.SetCharacterTransform(transform);
+
+        SetInformationComponent();
+    }
+
+    void OnDestroy()
+    {
+        _disposables.Dispose();
     }
 
     /// <summary>
@@ -45,16 +49,11 @@ public class PlayerAction : MonoBehaviour
      .Subscribe(inputXY => _moveAction.DoMove(GetChangeInput(inputXY, _playerCamera.forward)))
      .AddTo(_disposables);
 
+        //毎フレーム更新の向き変更更新
         Observable.EveryUpdate()
      .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
       .Where(_ => !_characterAnimation.IsAnimation)
      .Subscribe(inputXY => _rotationMove.DoRotation(GetChangeInput(inputXY, _playerCamera.forward)))
-     .AddTo(_disposables);
-
-        Observable.EveryUpdate()
-     .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
-      .Where(_ => !_characterAnimation.IsAnimation)
-     .Subscribe(inputXY => _characterAnimation.DoMoveAnimation(GetChangeInput(inputXY, _playerCamera.forward)))
      .AddTo(_disposables);
 
         //攻撃ボタンの入力購読
@@ -64,8 +63,13 @@ public class PlayerAction : MonoBehaviour
 
         //ジャンプボタンの入力購読
         inputInformation.ReactivePropertyJump.Where(_ => !_characterAnimation.IsAnimation).Where(isJump => isJump)
-            .Subscribe(isJump => _characterAnimation.DoTurn())
+            .Subscribe(isJump => _characterAnimation.DoTurnAnimation())
         .AddTo(_disposables);
+
+        //ダッシュボタンの入力購読
+        inputInformation.ReactivePropertyDash.Where(_ => !_characterAnimation.IsAnimation)
+           .Subscribe(isDash => _moveAction.SetDashTrigger(isDash))
+       .AddTo(_disposables);
     }
 
 
@@ -84,8 +88,18 @@ public class PlayerAction : MonoBehaviour
         return inputMoveDirection;
     }
 
-    void OnDestroy()
+   private void SetInformationComponent()
     {
-        _disposables.Dispose();
+        ISetTransform[] setTransforms = new ISetTransform[] { _moveAction, _rotationMove, _characterAnimation };
+        foreach (ISetTransform hasComp in setTransforms)
+        {
+            hasComp.SetCharacterTransform(transform);
+        }
+
+        ISetAnimation[] setAnimations = new ISetAnimation[] { _moveAction, _attackAction };
+        foreach (ISetAnimation hasComp in setAnimations)
+        {
+            hasComp.SetAnimationComponent(_characterAnimation);
+        }
     }
 }
