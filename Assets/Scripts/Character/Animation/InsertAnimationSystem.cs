@@ -20,17 +20,8 @@ public class WalkTurnAnimationInformation
 {
     [SerializeField]
     private MatchTargetAnimationData _forwardTurnAnimation;
-    [SerializeField]
-    private MatchTargetAnimationData _backTurnAnimation;
-    [SerializeField]
-    private MatchTargetAnimationData _rightTurnAnimation;
-    [SerializeField]
-    private MatchTargetAnimationData _LeftTurnAnimation;
 
     public MatchTargetAnimationData ForwardTurnAnimation { get => _forwardTurnAnimation; }
-    public MatchTargetAnimationData BackTurnAnimation { get => _backTurnAnimation; }
-    public MatchTargetAnimationData RightTurnAnimation { get => _rightTurnAnimation; }
-    public MatchTargetAnimationData LeftTurnAnimation { get => _LeftTurnAnimation; }
 }
 
 public class InsertAnimationSystem : MonoBehaviour
@@ -79,6 +70,16 @@ public class InsertAnimationSystem : MonoBehaviour
     public IEnumerator AnimationPlay(MatchTargetAnimationData animationClip)
     {
         MyExtensionClass.CheckArgumentNull(animationClip, nameof(animationClip));
+
+        Vector3 animationWeight = animationClip.AnimationTimeList[0].PositionWeight;
+        AvatarTarget avatarTarget = animationClip.AnimationTimeList[0].TargetBodyPart;
+        float startAnimTime = animationClip.AnimationTimeList[0].StartNormalizedTime;
+        float endAnimTime = animationClip.AnimationTimeList[0].EndNormalizedTime;
+
+        MatchTargetWeightMask targetWeightMask = new MatchTargetWeightMask(animationWeight, 0f);
+
+        _animator.MatchTarget
+           (transform.position + (transform.forward * 5), transform.rotation, avatarTarget, targetWeightMask, startAnimTime, endAnimTime);
 
         Debug.Log("アニメーション開始");
         _reactivePropertyIsAnimation.Value = true;
@@ -140,15 +141,8 @@ public class InsertAnimationSystem : MonoBehaviour
         float startTime = Time.timeSinceLevelLoad;
         float endTime = startTime + duration;
 
-        AvatarTarget avatarTarget = animationData.AnimationTimeList[0].TargetBodyPart;
-        float startAnimTime = animationData.AnimationTimeList[0].StartNormalizedTime;
-        float endAnimTime = animationData.AnimationTimeList[0].EndNormalizedTime;
-
         while (Time.timeSinceLevelLoad < endTime)
         {
-            _animator.MatchTarget
-            (transform.position + (transform.forward * 5), transform.rotation, avatarTarget, animationData.WeightMask, startAnimTime, endAnimTime);
-
             float nowTime = (Time.timeSinceLevelLoad - startTime) / duration;
             if (!isIn)
             {
