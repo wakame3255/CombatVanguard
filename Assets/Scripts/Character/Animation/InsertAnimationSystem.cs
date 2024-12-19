@@ -10,27 +10,27 @@ using R3;
 public class AttackAnimationInformation
 {
     [SerializeField]
-    private AnimationClip _jabAnimation;
+    private MatchTargetAnimationData _jabAnimation;
    
-    public AnimationClip JabAnimation { get => _jabAnimation; }
+    public MatchTargetAnimationData JabAnimation { get => _jabAnimation; }
 }
 
 [Serializable]
 public class WalkTurnAnimationInformation
 {
     [SerializeField]
-    private AnimationClip _forwardTurnAnimation;
+    private MatchTargetAnimationData _forwardTurnAnimation;
     [SerializeField]
-    private AnimationClip _backTurnAnimation;
+    private MatchTargetAnimationData _backTurnAnimation;
     [SerializeField]
-    private AnimationClip _rightTurnAnimation;
+    private MatchTargetAnimationData _rightTurnAnimation;
     [SerializeField]
-    private AnimationClip _LeftTurnAnimation;
+    private MatchTargetAnimationData _LeftTurnAnimation;
 
-    public AnimationClip ForwardTurnAnimation { get => _forwardTurnAnimation; }
-    public AnimationClip BackTurnAnimation { get => _backTurnAnimation; }
-    public AnimationClip RightTurnAnimation { get => _rightTurnAnimation; }
-    public AnimationClip LeftTurnAnimation { get => _LeftTurnAnimation; }
+    public MatchTargetAnimationData ForwardTurnAnimation { get => _forwardTurnAnimation; }
+    public MatchTargetAnimationData BackTurnAnimation { get => _backTurnAnimation; }
+    public MatchTargetAnimationData RightTurnAnimation { get => _rightTurnAnimation; }
+    public MatchTargetAnimationData LeftTurnAnimation { get => _LeftTurnAnimation; }
 }
 
 public class InsertAnimationSystem : MonoBehaviour
@@ -76,7 +76,7 @@ public class InsertAnimationSystem : MonoBehaviour
         }
     }
 
-    public IEnumerator AnimationPlay(float time, AnimationClip animationClip)
+    public IEnumerator AnimationPlay(MatchTargetAnimationData animationClip)
     {
         MyExtensionClass.CheckArgumentNull(animationClip, nameof(animationClip));
 
@@ -93,12 +93,12 @@ public class InsertAnimationSystem : MonoBehaviour
         }
 
         // 新しいPlayableの設定
-        SetupNewPlayable(animationClip);
+        SetupNewPlayable(animationClip.AnimationClip);
 
-        yield return StartTransition(time, true);
+        yield return StartTransition(animationClip.AnimationClip.length / 2f, true, animationClip);
         _playableGraph.Stop();
 
-        float playTime = animationClip.length - (time * 2);
+        float playTime = animationClip.AnimationClip.length - (animationClip.AnimationClip.length / 2f * 2);
 
         if (playTime > 0)
         {
@@ -106,7 +106,8 @@ public class InsertAnimationSystem : MonoBehaviour
         }
 
         _playableGraph.Play();
-        yield return StartTransition(time, false);
+       
+        yield return EndTransition(animationClip.AnimationClip.length / 2f, false);
 
         // Playableのクリーンアップのみを行い、グラフは維持
         if (_playable.IsValid())
@@ -130,9 +131,38 @@ public class InsertAnimationSystem : MonoBehaviour
 
         _playableOutput.SetSourcePlayable(_playable);
         _playableGraph.Play();
+
+        
     }
 
-    private IEnumerator StartTransition(float duration, bool isIn)
+    private IEnumerator StartTransition(float duration, bool isIn, MatchTargetAnimationData animationData)
+    {
+        float startTime = Time.timeSinceLevelLoad;
+        float endTime = startTime + duration;
+
+        AvatarTarget avatarTarget = animationData.AnimationTimeList[0].TargetBodyPart;
+        float startAnimTime = animationData.AnimationTimeList[0].StartNormalizedTime;
+        float endAnimTime = animationData.AnimationTimeList[0].EndNormalizedTime;
+
+        while (Time.timeSinceLevelLoad < endTime)
+        {
+            _animator.MatchTarget
+            (transform.position + (transform.forward * 5), transform.rotation, avatarTarget, animationData.WeightMask, startAnimTime, endAnimTime);
+
+            float nowTime = (Time.timeSinceLevelLoad - startTime) / duration;
+            if (!isIn)
+            {
+                nowTime = 1 - nowTime;
+            }
+            _playableOutput.SetWeight(_curve.Evaluate(nowTime));
+            yield return null;
+        }
+
+        // 最終的な重みを確実に設定
+        _playableOutput.SetWeight(isIn ? 1f : 0f);
+    }
+
+    private IEnumerator EndTransition(float duration, bool isIn)
     {
         float startTime = Time.timeSinceLevelLoad;
         float endTime = startTime + duration;

@@ -1,7 +1,6 @@
 using R3;
 using System.ComponentModel.DataAnnotations;
 using UnityEngine;
-using System.Collections.Generic;
 
 public class PlayerAction : MonoBehaviour
 {
@@ -67,7 +66,9 @@ public class PlayerAction : MonoBehaviour
         .AddTo(_disposables);
 
         //ダッシュボタンの入力購読
-        inputInformation.ReactivePropertyDash.Where(_ => !_characterAnimation.IsAnimation)
+        Observable.EveryUpdate()
+           .WithLatestFrom(inputInformation.ReactivePropertyDash, (_, move) => move)
+           .Where(_ => !_characterAnimation.IsAnimation)
            .Subscribe(isDash => _moveAction.SetDashTrigger(isDash))
        .AddTo(_disposables);
     }
@@ -88,7 +89,7 @@ public class PlayerAction : MonoBehaviour
         return inputMoveDirection;
     }
 
-   private void SetInformationComponent()
+    private void SetInformationComponent()
     {
         ISetTransform[] setTransforms = new ISetTransform[] { _moveAction, _rotationMove, _characterAnimation };
         foreach (ISetTransform hasComp in setTransforms)

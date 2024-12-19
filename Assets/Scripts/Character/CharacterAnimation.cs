@@ -63,11 +63,11 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
 
     public void DoTurnAnimation()
     {
-        StartCoroutine(_walkAnimationSystem.AnimationPlay(_walkAnimationInfo.ForwardTurnAnimation.length / 2f, _walkAnimationInfo.ForwardTurnAnimation));
+        StartCoroutine(_walkAnimationSystem.AnimationPlay(_walkAnimationInfo.ForwardTurnAnimation));
     }
     public void DoAttackAnimation()
     {
-        StartCoroutine(_walkAnimationSystem.AnimationPlay(_attackAnimationInfo.JabAnimation.length / 2f, _attackAnimationInfo.JabAnimation));
+        StartCoroutine(_walkAnimationSystem.AnimationPlay(_attackAnimationInfo.JabAnimation));
     }
 
     public void SetCharacterTransform(Transform characterTransform)

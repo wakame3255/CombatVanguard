@@ -16,6 +16,8 @@ public class PositionMoveAction : MonoBehaviour, ISetTransform, ISetAnimation
 
     private bool _isDash;
 
+    private const float TURN_ANGLE = 100f;
+
     /// <summary>
     /// 動くメソッド
     /// </summary>
@@ -33,6 +35,7 @@ public class PositionMoveAction : MonoBehaviour, ISetTransform, ISetAnimation
             DoMovePosition(moveDirection, _walkSpeed); 
             _characterAnimation.DoWalkAnimation(moveDirection);
         }
+        _cacheMoveDirecton = moveDirection;
     }
 
     public void SetDashTrigger(bool isDash)
@@ -55,12 +58,15 @@ public class PositionMoveAction : MonoBehaviour, ISetTransform, ISetAnimation
         _characterTransform.position += moveDirection.normalized * moveSpeed * Time.deltaTime;
     }
 
+    /// <summary>
+    /// ターンを行う判定メソッド
+    /// </summary>
+    /// <param name="moveDirection"></param>
     private void CheckDashTurn(Vector3 moveDirection)
     {
-        if (Vector3.Angle(moveDirection, _cacheMoveDirecton) > 120f)
+        if (Vector3.Angle(moveDirection, _cacheMoveDirecton) > TURN_ANGLE)
         {
             _characterAnimation.DoTurnAnimation();
         }
-        _cacheMoveDirecton = moveDirection;
     }
 }
