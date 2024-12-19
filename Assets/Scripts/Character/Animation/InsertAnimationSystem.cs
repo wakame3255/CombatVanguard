@@ -29,6 +29,9 @@ public class InsertAnimationSystem : MonoBehaviour
     [SerializeField]
     private AnimationCurve _curve;
 
+    [SerializeField]
+    private Transform _targetPos;
+
     private Animator _animator;
     private PlayableGraph _playableGraph;
     private Playable _playable;
@@ -70,16 +73,6 @@ public class InsertAnimationSystem : MonoBehaviour
     public IEnumerator AnimationPlay(MatchTargetAnimationData animationClip)
     {
         MyExtensionClass.CheckArgumentNull(animationClip, nameof(animationClip));
-
-        Vector3 animationWeight = animationClip.AnimationTimeList[0].PositionWeight;
-        AvatarTarget avatarTarget = animationClip.AnimationTimeList[0].TargetBodyPart;
-        float startAnimTime = animationClip.AnimationTimeList[0].StartNormalizedTime;
-        float endAnimTime = animationClip.AnimationTimeList[0].EndNormalizedTime;
-
-        MatchTargetWeightMask targetWeightMask = new MatchTargetWeightMask(animationWeight, 0f);
-
-        _animator.MatchTarget
-           (transform.position + (transform.forward * 5), transform.rotation, avatarTarget, targetWeightMask, startAnimTime, endAnimTime);
 
         Debug.Log("アニメーション開始");
         _reactivePropertyIsAnimation.Value = true;
@@ -140,9 +133,11 @@ public class InsertAnimationSystem : MonoBehaviour
     {
         float startTime = Time.timeSinceLevelLoad;
         float endTime = startTime + duration;
-
+        print("StartTransition");
         while (Time.timeSinceLevelLoad < endTime)
-        {
+        {         
+            MoveToTarget(animationData);
+
             float nowTime = (Time.timeSinceLevelLoad - startTime) / duration;
             if (!isIn)
             {
@@ -160,7 +155,7 @@ public class InsertAnimationSystem : MonoBehaviour
     {
         float startTime = Time.timeSinceLevelLoad;
         float endTime = startTime + duration;
-
+        print("EndTransition");
         while (Time.timeSinceLevelLoad < endTime)
         {
             float nowTime = (Time.timeSinceLevelLoad - startTime) / duration;
@@ -197,4 +192,35 @@ public class InsertAnimationSystem : MonoBehaviour
         CleanupPlayable();
     }
 #endif
+
+    private void MoveToTarget(MatchTargetAnimationData animationData)
+    {
+        foreach (MatchTargetAnimationData.StartAnimationTimeList animInfo in animationData.AnimationTimeList)
+        {
+            Vector3 targetPosition = _targetPos.position;
+            Quaternion targetRotation = _targetPos.rotation;
+
+            // アニメーションの進行度を計算
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            float normalizedTime = stateInfo.normalizedTime % 1f; // 0から1の範囲に制限
+
+            if (normalizedTime >= animInfo.StartNormalizedTime && normalizedTime <= animInfo.EndNormalizedTime)
+            {
+                float matchTargetDuration = animInfo.EndNormalizedTime - animInfo.StartNormalizedTime;
+                float progress = (normalizedTime - animInfo.StartNormalizedTime) / matchTargetDuration;
+                progress = Mathf.Clamp01(progress);
+
+                _animator.MatchTarget(
+                    targetPosition,
+                    targetRotation,
+                    animInfo.TargetBodyPart,
+                    new MatchTargetWeightMask(animInfo.PositionWeight, animationData.RotationWeight),
+                    animInfo.StartNormalizedTime,
+                    animInfo.EndNormalizedTime
+                );
+
+                Debug.Log($"MatchTarget Progress: {progress}");
+            }
+        }
+    }
 }
