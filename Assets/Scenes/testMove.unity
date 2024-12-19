@@ -230,12 +230,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _walkDamp: 0.1
   _walkAnimationInfo:
-    _forwardTurnAnimation: {fileID: 7400006, guid: a57ac3f83414fb440b6c52cb6be60350, type: 3}
+    _forwardTurnAnimation: {fileID: 11400000, guid: 2ceb0961ee30351409cbe7f034b12ac8, type: 2}
     _backTurnAnimation: {fileID: 7400004, guid: ebe6e7ef299029b4f9d792cfa0c5ca2a, type: 3}
     _rightTurnAnimation: {fileID: 7400004, guid: 75ce8c4ee28dede4aa90f9ca8a6c9329, type: 3}
     _LeftTurnAnimation: {fileID: 7400002, guid: 75ce8c4ee28dede4aa90f9ca8a6c9329, type: 3}
   _attackAnimationInfo:
-    _jabAnimation: {fileID: 7400000, guid: b5fb9fa7a3e19744292c7a51adbb8560, type: 3}
+    _jabAnimation: {fileID: 11400000, guid: 85a605d4332dc2d4bb72415ebd06815b, type: 2}
   _walkAnimationSystem: {fileID: 184573702}
   _moveInputXName: InputX
   _moveInputYName: InputY
