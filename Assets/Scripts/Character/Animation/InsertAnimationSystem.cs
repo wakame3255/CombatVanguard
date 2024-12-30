@@ -32,6 +32,7 @@ public class InsertAnimationSystem : MonoBehaviour
     [SerializeField]
     private Transform _targetPos;
 
+    MatchTargetAnimationData _animationClip;
     private Animator _animator;
     private PlayableGraph _playableGraph;
     private Playable _playable;
@@ -45,6 +46,13 @@ public class InsertAnimationSystem : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         InitializePlayableGraph();
+    }
+    private void Update()
+    {
+        if (_animator != null)
+        {
+            MoveToTarget(_animationClip);
+        }
     }
 
     private void OnDestroy()
@@ -89,7 +97,9 @@ public class InsertAnimationSystem : MonoBehaviour
         // 新しいPlayableの設定
         SetupNewPlayable(animationClip.AnimationClip);
 
+        _animationClip = animationClip;
         yield return StartTransition(animationClip.AnimationClip.length / 2f, true, animationClip);
+
         _playableGraph.Stop();
 
         float playTime = animationClip.AnimationClip.length - (animationClip.AnimationClip.length / 2f * 2);
@@ -110,6 +120,7 @@ public class InsertAnimationSystem : MonoBehaviour
         }
 
         Debug.Log("アニメーション終了");
+        _animationClip = null;
         _reactivePropertyIsAnimation.Value = false;
     }
 
@@ -136,8 +147,6 @@ public class InsertAnimationSystem : MonoBehaviour
         print("StartTransition");
         while (Time.timeSinceLevelLoad < endTime)
         {         
-            MoveToTarget(animationData);
-
             float nowTime = (Time.timeSinceLevelLoad - startTime) / duration;
             if (!isIn)
             {
@@ -195,6 +204,11 @@ public class InsertAnimationSystem : MonoBehaviour
 
     private void MoveToTarget(MatchTargetAnimationData animationData)
     {
+        if (animationData == null)
+        {
+            return;
+        }
+
         foreach (MatchTargetAnimationData.StartAnimationTimeList animInfo in animationData.AnimationTimeList)
         {
             Vector3 targetPosition = _targetPos.position;
