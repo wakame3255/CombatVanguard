@@ -18,24 +18,19 @@ public class MatchTargetAnimationData : ScriptableObject
         private AvatarTarget _targetBodyPart = AvatarTarget.Root;
 
         [Header("比率")]
-        [SerializeField]
-        private Vector3 _positionWeight = Vector3.one;
+        [SerializeField, Range(0, 1)]
+        private float _movePositionWeight = 1;
 
         public float StartNormalizedTime { get => _startNormalizedTime; }
         public float EndNormalizedTime { get => _endNormalizedTime; }
         public AvatarTarget TargetBodyPart { get => _targetBodyPart; }
-        public Vector3 PositionWeight { get => _positionWeight; }
+        public float MovePositionWeight { get => _movePositionWeight; }
 
 #if UNITY_EDITOR
         private void OnValidate()
         {
             // startTimeがendTimeを超えないようにする
             _endNormalizedTime = Mathf.Max(_startNormalizedTime, _endNormalizedTime);
-
-            // ウェイトを0-1の範囲に制限
-            _positionWeight.x = Mathf.Clamp01(_positionWeight.x);
-            _positionWeight.y = Mathf.Clamp01(_positionWeight.y);
-            _positionWeight.z = Mathf.Clamp01(_positionWeight.z);
         }
 #endif
     }

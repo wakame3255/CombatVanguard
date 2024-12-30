@@ -213,28 +213,17 @@ public class InsertAnimationSystem : MonoBehaviour
         {
             Vector3 targetPosition = _targetPos.position;
             Quaternion targetRotation = _targetPos.rotation;
+            Vector3 weighit = new Vector3(animInfo.MovePositionWeight, 0, animInfo.MovePositionWeight);
 
-            // アニメーションの進行度を計算
-            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-            float normalizedTime = stateInfo.normalizedTime % 1f; // 0から1の範囲に制限
-
-            if (normalizedTime >= animInfo.StartNormalizedTime && normalizedTime <= animInfo.EndNormalizedTime)
-            {
-                float matchTargetDuration = animInfo.EndNormalizedTime - animInfo.StartNormalizedTime;
-                float progress = (normalizedTime - animInfo.StartNormalizedTime) / matchTargetDuration;
-                progress = Mathf.Clamp01(progress);
-
-                _animator.MatchTarget(
+            _animator.MatchTarget(
                     targetPosition,
                     targetRotation,
                     animInfo.TargetBodyPart,
-                    new MatchTargetWeightMask(animInfo.PositionWeight, animationData.RotationWeight),
+                    new MatchTargetWeightMask(weighit , 0),
                     animInfo.StartNormalizedTime,
                     animInfo.EndNormalizedTime
                 );
-
-                Debug.Log($"MatchTarget Progress: {progress}");
-            }
+            
         }
     }
 }

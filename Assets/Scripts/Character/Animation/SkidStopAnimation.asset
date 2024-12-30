@@ -15,9 +15,9 @@ MonoBehaviour:
   _animationClip: {fileID: 7400006, guid: a57ac3f83414fb440b6c52cb6be60350, type: 3}
   _animationTimeList:
   - _startNormalizedTime: 0
-    _endNormalizedTime: 1
+    _endNormalizedTime: 0
     _targetBodyPart: 0
-    _positionWeight: {x: 0, y: 0, z: 0}
+    _movePositionWeight: 1
   _matchPosition: {x: 0, y: 0, z: 0}
   _matchRotationEuler: {x: 0, y: 0, z: 0}
   _rotationWeight: 0
