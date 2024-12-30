@@ -32,7 +32,7 @@ public class InsertAnimationSystem : MonoBehaviour
     [SerializeField]
     private Transform _targetPos;
 
-    MatchTargetAnimationData _animationClip;
+    private TargetMatchMove _targetMatchMove;
     private Animator _animator;
     private PlayableGraph _playableGraph;
     private Playable _playable;
@@ -44,15 +44,9 @@ public class InsertAnimationSystem : MonoBehaviour
 
     private void Awake()
     {
+        _targetMatchMove = gameObject.AddComponent<TargetMatchMove>();
         _animator = GetComponent<Animator>();
         InitializePlayableGraph();
-    }
-    private void Update()
-    {
-        if (_animator != null)
-        {
-            MoveToTarget(_animationClip);
-        }
     }
 
     private void OnDestroy()
@@ -96,8 +90,8 @@ public class InsertAnimationSystem : MonoBehaviour
 
         // 新しいPlayableの設定
         SetupNewPlayable(animationClip.AnimationClip);
+        _targetMatchMove.SetMatchTargetAnimationData(animationClip, _targetPos);
 
-        _animationClip = animationClip;
         yield return StartTransition(animationClip.AnimationClip.length / 2f, true, animationClip);
 
         _playableGraph.Stop();
@@ -120,7 +114,6 @@ public class InsertAnimationSystem : MonoBehaviour
         }
 
         Debug.Log("アニメーション終了");
-        _animationClip = null;
         _reactivePropertyIsAnimation.Value = false;
     }
 
@@ -201,29 +194,4 @@ public class InsertAnimationSystem : MonoBehaviour
         CleanupPlayable();
     }
 #endif
-
-    private void MoveToTarget(MatchTargetAnimationData animationData)
-    {
-        if (animationData == null)
-        {
-            return;
-        }
-
-        foreach (MatchTargetAnimationData.StartAnimationTimeList animInfo in animationData.AnimationTimeList)
-        {
-            Vector3 targetPosition = _targetPos.position;
-            Quaternion targetRotation = _targetPos.rotation;
-            Vector3 weighit = new Vector3(animInfo.MovePositionWeight, 0, animInfo.MovePositionWeight);
-
-            _animator.MatchTarget(
-                    targetPosition,
-                    targetRotation,
-                    animInfo.TargetBodyPart,
-                    new MatchTargetWeightMask(weighit , 0),
-                    animInfo.StartNormalizedTime,
-                    animInfo.EndNormalizedTime
-                );
-            
-        }
-    }
 }
