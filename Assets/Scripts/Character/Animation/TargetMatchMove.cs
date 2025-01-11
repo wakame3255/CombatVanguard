@@ -23,7 +23,6 @@ public class TargetMatchMove : MonoBehaviour
         _matchTargetAnimationData = matchTargetAnimationData;
         _animationTime = matchTargetAnimationData.AnimationClip.length;
         _target = target;
-        print(_animationTime);
     }
 
     private void MoveToTarget()
