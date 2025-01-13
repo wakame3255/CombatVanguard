@@ -12,9 +12,9 @@ namespace EnemyState
         private MoveState _moveState;
 
 
-        public StateMachine(EnemyInput enemyInput, NavMeshAgent navMeshAgent)
+        public StateMachine(EnemyCharacter enemyCharacter)
         {
-            _moveState = new MoveState(enemyInput, this, navMeshAgent);
+            _moveState = new MoveState(enemyCharacter, this);
 
             ChangeState(_moveState);
         }
