@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace EnemyState
 {
@@ -11,12 +12,11 @@ namespace EnemyState
         private MoveState _moveState;
 
 
-        public StateMachine(EnemyInput enemyInput)
+        public StateMachine(EnemyInput enemyInput, NavMeshAgent navMeshAgent)
         {
-            _moveState = new MoveState(enemyInput, this);
+            _moveState = new MoveState(enemyInput, this, navMeshAgent);
 
             ChangeState(_moveState);
-             Debug.Log("StateMachine");
         }
 
         public void ChangeState(IEnemyState newState)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyCharacter : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class EnemyCharacter : MonoBehaviour
     private EnemyAction _enemyAction;
     private Gravity _playerGravity;
     private EnemyInput _enemyInput;
+    private NavMeshAgent _navMeshAgent;
     private EnemyState.StateMachine _stateMachine;
 
     private void Awake()
@@ -17,8 +19,9 @@ public class EnemyCharacter : MonoBehaviour
         _enemyAction = this.CheckComponentMissing<EnemyAction>();
         _playerGravity = this.CheckComponentMissing<Gravity>();
         _enemyInput = this.CheckComponentMissing<EnemyInput>();
+        _navMeshAgent = this.CheckComponentMissing<NavMeshAgent>();
 
-        _stateMachine = new EnemyState.StateMachine(_enemyInput);
+        _stateMachine = new EnemyState.StateMachine(_enemyInput, _navMeshAgent);
     }
     private void Start()
     {
