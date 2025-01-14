@@ -14,6 +14,7 @@ public class EnemyAction : MonoBehaviour
     private PositionMoveAction _moveAction;
     private AttackAction _attackAction;
     private CharacterAnimation _characterAnimation;
+    private CharacterStatus _characterStatus;
     private CompositeDisposable _disposables = new CompositeDisposable();
 
     private static readonly Vector3 RESET_DIRECTION = new Vector3(1f, 0, 1f);
@@ -23,6 +24,7 @@ public class EnemyAction : MonoBehaviour
         _moveAction = this.CheckComponentMissing<PositionMoveAction>(_actionPosition);
         _attackAction = this.CheckComponentMissing<AttackAction>(_actionPosition);
         _rotationMove = this.CheckComponentMissing<RotationMove>(_actionPosition);
+        _characterStatus = this.CheckComponentMissing<CharacterStatus>();
         _characterAnimation = this.CheckComponentMissing<CharacterAnimation>();
 
         SetInformationComponent();
@@ -97,7 +99,7 @@ public class EnemyAction : MonoBehaviour
             hasComp.SetCharacterTransform(transform);
         }
 
-        ISetAnimation[] setAnimations = new ISetAnimation[] { _moveAction, _attackAction };
+        ISetAnimation[] setAnimations = new ISetAnimation[] { _moveAction, _attackAction, _characterStatus };
         foreach (ISetAnimation hasComp in setAnimations)
         {
             hasComp.SetAnimationComponent(_characterAnimation);

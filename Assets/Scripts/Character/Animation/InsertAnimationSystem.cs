@@ -11,8 +11,12 @@ public class AttackAnimationInformation
 {
     [SerializeField]
     private MatchTargetAnimationData _jabAnimation;
-   
+
+    [SerializeField]
+    private MatchTargetAnimationData _hitAnimation;
+
     public MatchTargetAnimationData JabAnimation { get => _jabAnimation; }
+    public MatchTargetAnimationData HitAnimation { get => _hitAnimation; }
 }
 
 [Serializable]

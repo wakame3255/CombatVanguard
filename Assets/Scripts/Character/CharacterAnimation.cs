@@ -69,6 +69,13 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
     {
         StartCoroutine(_walkAnimationSystem.AnimationPlay(_attackAnimationInfo.JabAnimation));
     }
+    public void DoHitAnimation()
+    {
+        if (IsAnimation != true)
+        {
+            StartCoroutine(_walkAnimationSystem.AnimationPlay(_attackAnimationInfo.HitAnimation));
+        }   
+    }
 
     public void SetCharacterTransform(Transform characterTransform)
     {

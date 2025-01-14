@@ -29,7 +29,6 @@ public class EnemyCharacter : MonoBehaviour
         _playerGravity = this.CheckComponentMissing<Gravity>();
         _enemyInput = this.CheckComponentMissing<EnemyInput>();
         _navMeshAgent = this.CheckComponentMissing<NavMeshAgent>();
-        this.CheckComponentMissing<CharacterStatus>();
 
         _transform = transform;
 

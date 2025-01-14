@@ -47,7 +47,7 @@ public class MoveState : MonoBehaviour, IEnemyState
             //ˆÚ“®“ü—Í
             _enemyInput.SetMoveInfomation(new Vector2(nextPointDirection.x, nextPointDirection.z));
 
-            if (Vector3.Distance(_targetTransform.position, _transform.position) < 2f)
+            if (Vector3.Distance(_targetTransform.position, _transform.position) < 1f)
             {
                 _stateMachine.ChangeState(_stateMachine.AttackState);
             }

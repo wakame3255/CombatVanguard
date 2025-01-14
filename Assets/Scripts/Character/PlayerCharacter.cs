@@ -16,7 +16,6 @@ public class PlayerCharacter : MonoBehaviour
         _collision3D = this.CheckComponentMissing<Collision3D>();
         _playerAction = this.CheckComponentMissing<PlayerAction>();
         _playerGravity = this.CheckComponentMissing<Gravity>();
-       this.CheckComponentMissing<CharacterStatus>();
     }
     private void Start()
     {
