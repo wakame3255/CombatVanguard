@@ -9,4 +9,9 @@ public class SceneChenger : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }

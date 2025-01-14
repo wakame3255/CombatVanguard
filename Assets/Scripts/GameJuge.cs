@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.SceneManagement;
 
 public class GameJuge : MonoBehaviour
 {
@@ -22,12 +21,12 @@ public class GameJuge : MonoBehaviour
 
     private void Update()
     {
-        if (_playerStatus.ReactivePropertyHp.Value <= 0)
+        if (_enemyStatus.ReactivePropertyHp.Value <= 0)
         {
             _sceneChenger.SceneChenge(ClearScene);
         }
-
-        if (_enemyStatus.ReactivePropertyHp.Value <= 0)
+        
+        if (_playerStatus.ReactivePropertyHp.Value <= 0)
         {
             _sceneChenger.SceneChenge(GameOverScene);
         }
