@@ -10,11 +10,15 @@ namespace EnemyState
         private IEnemyState _currentState;
 
         private MoveState _moveState;
+        private AttackState _attackState;
 
+        public MoveState MoveState { get => _moveState; }
+        public AttackState AttackState { get => _attackState; }
 
         public StateMachine(EnemyCharacter enemyCharacter)
         {
             _moveState = new MoveState(enemyCharacter, this);
+            _attackState = new AttackState(enemyCharacter, this);
 
             ChangeState(_moveState);
         }

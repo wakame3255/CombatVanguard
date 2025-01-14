@@ -27,12 +27,12 @@ public class TargetMatchMove : MonoBehaviour
 
     private void MoveToTarget()
     {
-        if (_matchTargetAnimationData == null || _target == null)
-        {
-            return;
-        }
+        //if (_matchTargetAnimationData == null || _target == null)
+        //{
+        //    return;
+        //}
        
-        transform.position = Vector3.MoveTowards(transform.position, _target.position, Time.deltaTime);
+        //transform.position = Vector3.MoveTowards(transform.position, _target.position, Time.deltaTime);
         
     }
 }
