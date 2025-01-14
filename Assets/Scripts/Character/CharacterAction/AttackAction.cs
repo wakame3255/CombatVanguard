@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackAction : MonoBehaviour, ISetAnimation
+public class AttackAction : MonoBehaviour, ISetAnimation, ISetTransform
 {
     private CharacterAnimation _characterAnimation;
+    private Transform _characterTransform;
 
     [SerializeField]
     private LayerMask _hitLayerMask;
@@ -13,14 +14,14 @@ public class AttackAction : MonoBehaviour, ISetAnimation
 
     private void Awake()
     {
-        _raycastHits = new RaycastHit[5];
+        _raycastHits = new RaycastHit[1];
     }
 
     public void DoAction()
     {
         _characterAnimation.DoAttackAnimation();
 
-        int hitCount = Physics.SphereCastNonAlloc(transform.position, 0.5f, transform.forward, _raycastHits, 1f, _hitLayerMask);
+        int hitCount = Physics.SphereCastNonAlloc(_characterTransform.position, 1f, _characterTransform.forward, _raycastHits, 1f, _hitLayerMask);
 
         for (int i = 0; i < hitCount; i++)
         {
@@ -28,12 +29,17 @@ public class AttackAction : MonoBehaviour, ISetAnimation
             {
                 character.DoDamage(1);
                 print("hit");
-            }
+            }      
         }
     }
 
     public void SetAnimationComponent(CharacterAnimation characterAnimation)
     {
         _characterAnimation = characterAnimation;
+    }
+
+    public void SetCharacterTransform(Transform characterTransform)
+    {
+        _characterTransform = characterTransform;
     }
 }

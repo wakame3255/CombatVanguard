@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animationClip: {fileID: 7400000, guid: b5fb9fa7a3e19744292c7a51adbb8560, type: 3}
   _animationTimeList:
-  - _startNormalizedTime: 0.723
-    _endNormalizedTime: 0.814
+  - _startNormalizedTime: 0
+    _endNormalizedTime: 0
     _targetBodyPart: 4
-    _movePositionWeight: 0.078
+    _movePositionWeight: 0
   _matchPosition: {x: 1, y: 1, z: 1}
   _matchRotationEuler: {x: 1, y: 1, z: 1}
   _rotationWeight: 0

@@ -91,7 +91,7 @@ public class EnemyAction : MonoBehaviour
 
     private void SetInformationComponent()
     {
-        ISetTransform[] setTransforms = new ISetTransform[] { _moveAction, _rotationMove, _characterAnimation };
+        ISetTransform[] setTransforms = new ISetTransform[] { _moveAction, _rotationMove, _characterAnimation, _attackAction};
         foreach (ISetTransform hasComp in setTransforms)
         {
             hasComp.SetCharacterTransform(transform);

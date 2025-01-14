@@ -40,7 +40,6 @@ public class MoveState : MonoBehaviour, IEnemyState
                     break;
                 }
             }
-            print(nextPosition);
 
             //ウェイポイントへの角度計算
             Vector3 nextPointDirection = (nextPosition - _transform.position).normalized;
@@ -48,7 +47,7 @@ public class MoveState : MonoBehaviour, IEnemyState
             //移動入力
             _enemyInput.SetMoveInfomation(new Vector2(nextPointDirection.x, nextPointDirection.z));
 
-            if (Vector3.Distance(_targetTransform.position, _transform.position) < 0.5f)
+            if (Vector3.Distance(_targetTransform.position, _transform.position) < 2f)
             {
                 _stateMachine.ChangeState(_stateMachine.AttackState);
             }
