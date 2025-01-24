@@ -28,18 +28,23 @@ public class Collision3D : MonoBehaviour
         _isDrowGizmo = true;
     }
 
+    private void FixedUpdate()
+    {
+        CheckCollision();
+    }
+
     /// <summary>
     /// コリジョン判定メソッド
     /// </summary>
     public void CheckCollision()
     {
-        Vector3 capsuleTopPos = transform.position + (Vector3.up * _capsuleCollider.height) / 2 + _capsuleCollider.center;
+        Vector3 capsuleTopPos = _cacheTransform.position + (Vector3.up * _capsuleCollider.height) / 2 + _capsuleCollider.center;
         Vector3 capsuleUnderPos = capsuleTopPos + (Vector3.down * _capsuleCollider.height);
         _topCycleCenterPos = capsuleTopPos + (Vector3.down * _capsuleCollider.radius);
         _underCycleCenterPos = capsuleUnderPos + (Vector3.up * _capsuleCollider.radius);
 
         int collisionCount = Physics.CapsuleCastNonAlloc(
-            _topCycleCenterPos, _underCycleCenterPos, _capsuleCollider.radius, Vector3.up, _collisionRaycastHit, 0, _collisionLayer);
+            _topCycleCenterPos, _underCycleCenterPos, _capsuleCollider.radius, Vector3.down, _collisionRaycastHit, 0, _collisionLayer);
 
         DoRepulsionCheck(collisionCount);
     } 
@@ -72,12 +77,12 @@ public class Collision3D : MonoBehaviour
         _cacheTransform.position += -direction * distance;
     }
 
-    private void OnDrawGizmos()
-    {
-        if (_isDrowGizmo)
-        {
-            Gizmos.DrawSphere(_topCycleCenterPos, _capsuleCollider.radius);
-            Gizmos.DrawSphere(_underCycleCenterPos, _capsuleCollider.radius);
-        }
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    if (_isDrowGizmo)
+    //    {
+    //        Gizmos.DrawSphere(_topCycleCenterPos, _capsuleCollider.radius);
+    //        Gizmos.DrawSphere(_underCycleCenterPos, _capsuleCollider.radius);
+    //    }
+    //}
 }

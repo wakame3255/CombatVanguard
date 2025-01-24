@@ -8,8 +8,8 @@ public class EnemyAction : MonoBehaviour
 {
     [SerializeField, Required]
     [Header("アクションを置く親")]
-
     private GameObject _actionPosition;
+
     private RotationMove _rotationMove;
     private PositionMoveAction _moveAction;
     private AttackAction _attackAction;
