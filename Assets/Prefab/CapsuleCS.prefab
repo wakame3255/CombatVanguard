@@ -124,7 +124,7 @@ MonoBehaviour:
   _collisionLayer:
     serializedVersion: 2
     m_Bits: 64
-  _collisionCount: 5
+  _collisionCount: 1
 --- !u!114 &-4874449293909680897
 MonoBehaviour:
   m_ObjectHideFlags: 0
