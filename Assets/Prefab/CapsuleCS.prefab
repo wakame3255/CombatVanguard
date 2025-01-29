@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 8304837937963595000}
   - component: {fileID: 1420408275782622317}
   - component: {fileID: 5427742037602788499}
-  - component: {fileID: -4874449293909680897}
   m_Layer: 8
   m_Name: CapsuleCS
   m_TagString: Untagged
@@ -124,17 +123,4 @@ MonoBehaviour:
   _collisionLayer:
     serializedVersion: 2
     m_Bits: 64
-  _collisionCount: 1
---- !u!114 &-4874449293909680897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 255971362687145259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26cd1be2d48c99c4b8bff755623988a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gravityForce: 1
+  _collisionCount: 5
