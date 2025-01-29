@@ -17,6 +17,8 @@ public class Collision3D : MonoBehaviour
 
     private Vector3 _topCycleCenterPos;
     private Vector3 _underCycleCenterPos;
+    private Vector3 _capsuleTopPos;
+    private Vector3 _capsuleUnderPos;
 
     private void Awake()
     {
@@ -35,10 +37,10 @@ public class Collision3D : MonoBehaviour
     /// </summary>
     public void CheckCollision()
     {
-        Vector3 capsuleTopPos = _cacheTransform.position + (Vector3.up * _capsuleCollider.height) / 2 + _capsuleCollider.center;
-        Vector3 capsuleUnderPos = capsuleTopPos + (Vector3.down * _capsuleCollider.height);
-        _topCycleCenterPos = capsuleTopPos + (Vector3.down * _capsuleCollider.radius);
-        _underCycleCenterPos = capsuleUnderPos + (Vector3.up * _capsuleCollider.radius);
+        _capsuleTopPos = _cacheTransform.position + (Vector3.up * _capsuleCollider.height) / 2 + _capsuleCollider.center;
+        _capsuleUnderPos = _capsuleTopPos + (Vector3.down * _capsuleCollider.height);
+        _topCycleCenterPos = _capsuleTopPos + (Vector3.down * _capsuleCollider.radius);
+        _underCycleCenterPos = _capsuleUnderPos + (Vector3.up * _capsuleCollider.radius);
 
         int collisionCount = Physics.CapsuleCastNonAlloc(
             _topCycleCenterPos, _underCycleCenterPos, _capsuleCollider.radius, Vector3.down, _collisionRaycastHit, 0, _collisionLayer);
@@ -47,21 +49,21 @@ public class Collision3D : MonoBehaviour
         {
             DoRepulsionCheck(collisionCount);
         }
-    } 
-    
+    }
+
     /// <summary>
     /// 反発を判断するメソッド
     /// </summary>
     /// <param name="collisionCount">ヒット個数</param>
     private void DoRepulsionCheck(int collisionCount)
-    {      
+    {
         for (int i = 0; i < collisionCount; i++)
         {
             Vector3 colliderDirection = default;
             float colliderDistance = default;
             Transform hitTransform = _collisionRaycastHit[i].transform;
 
-            Physics.ComputePenetration(_collisionRaycastHit[i].collider, hitTransform.transform.position, hitTransform.transform.rotation,
+            Physics.ComputePenetration(_collisionRaycastHit[i].collider, hitTransform.position, hitTransform.rotation,
                 _capsuleCollider, _cacheTransform.position, _cacheTransform.rotation, out colliderDirection, out colliderDistance);
 
             DoRepulsionMove(colliderDirection, colliderDistance);
@@ -75,6 +77,9 @@ public class Collision3D : MonoBehaviour
     /// <param name="distance">ヒットした距離</param>
     private void DoRepulsionMove(Vector3 direction, float distance)
     {
-        _cacheTransform.position += -direction * distance;
+        if (!float.IsNaN(direction.x) && !float.IsNaN(direction.y) && !float.IsNaN(direction.z) && !float.IsNaN(distance))
+        {
+            _cacheTransform.position += -direction * distance;
+        }
     }
 }
