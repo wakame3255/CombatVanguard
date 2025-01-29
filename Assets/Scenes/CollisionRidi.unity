@@ -3759,7 +3759,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.5
-  speed: 10
+  speed: 5
 --- !u!1 &1260450970
 GameObject:
   m_ObjectHideFlags: 0
@@ -4840,7 +4840,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _instanceObj: {fileID: 7470496254935963865, guid: 9898cb2817da351418c0f19c42fb9f59, type: 3}
-  _instanceCount: 100
+  _instanceCount: 350
 --- !u!4 &1696051747
 Transform:
   m_ObjectHideFlags: 0

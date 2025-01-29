@@ -2673,7 +2673,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 0.5
-  speed: 10
+  speed: 5
 --- !u!64 &1118575951
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3790,7 +3790,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _instanceObj: {fileID: 255971362687145259, guid: a6399180812c70949bebd83bbe188ca4, type: 3}
-  _instanceCount: 100
+  _instanceCount: 350
 --- !u!4 &1363410123
 Transform:
   m_ObjectHideFlags: 0
