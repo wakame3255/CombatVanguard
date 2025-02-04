@@ -80,7 +80,6 @@ public class InsertAnimationSystem : MonoBehaviour
     {
         MyExtensionClass.CheckArgumentNull(animationClip, nameof(animationClip));
 
-        Debug.Log("アニメーション開始");
         _reactivePropertyIsAnimation.Value = true;
 
         // グラフの初期化を確実に行う
@@ -116,8 +115,6 @@ public class InsertAnimationSystem : MonoBehaviour
         {
             _playable.Destroy();
         }
-
-        Debug.Log("アニメーション終了");
         _reactivePropertyIsAnimation.Value = false;
     }
 
@@ -141,7 +138,7 @@ public class InsertAnimationSystem : MonoBehaviour
     {
         float startTime = Time.timeSinceLevelLoad;
         float endTime = startTime + duration;
-        print("StartTransition");
+    
         while (Time.timeSinceLevelLoad < endTime)
         {         
             float nowTime = (Time.timeSinceLevelLoad - startTime) / duration;
@@ -187,7 +184,6 @@ public class InsertAnimationSystem : MonoBehaviour
         if (_playableGraph.IsValid())
         {
             _playableGraph.Destroy();
-            Debug.Log("PlayableGraphを破棄しました");
         }
     }
 
