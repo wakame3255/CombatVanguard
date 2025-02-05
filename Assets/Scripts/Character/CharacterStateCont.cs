@@ -14,15 +14,28 @@ public class CharacterStateCont
 
     public void ChangeState(CharacterStateType stateType)
     {
-        _currentStateType = stateType;
+       
+    }
+
+    public void CheckChangeState(CharacterStateType stateType)
+    {
+        if (_currentStateType == stateType)
+        {
+            return;
+        }
+        ChangeState(stateType);
     }
 }
 
+
 public enum CharacterStateType
 {
-    Normal,
+    Idle,
     Guard,
+    GurdHit,
     Attack,
+    Avoidance,
     Down,
+    Stan,
     Dead,
 }

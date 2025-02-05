@@ -23,6 +23,8 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
     private string _moveInputYName;
     [SerializeField]
     private string _isDashName = "IsDash";
+    [SerializeField]
+    private string _isGuard = "IsGuard";
 
     private Transform _characterTransform;
     private Animator _animator;
