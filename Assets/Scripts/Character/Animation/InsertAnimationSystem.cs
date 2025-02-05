@@ -48,18 +48,23 @@ public class InsertAnimationSystem : MonoBehaviour
 
     private void Awake()
     {
+        // TargetMatchMoveコンポーネントを追加
         _targetMatchMove = gameObject.AddComponent<TargetMatchMove>();
+        // Animatorコンポーネントを取得
         _animator = GetComponent<Animator>();
+        // Playableグラフを初期化
         InitializePlayableGraph();
     }
 
     private void OnDestroy()
     {
+        // Playableリソースをクリーンアップ
         CleanupPlayable();
     }
 
     private void OnValidate()
     {
+        // カーブが設定されていない場合、デフォルトのカーブを生成
         if (_curve == null)
         {
             _curve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1));
@@ -68,6 +73,7 @@ public class InsertAnimationSystem : MonoBehaviour
 
     private void InitializePlayableGraph()
     {
+        // Playableグラフが無効な場合に新規作成
         if (!_playableGraph.IsValid())
         {
             _playableGraph = PlayableGraph.Create();
@@ -78,11 +84,13 @@ public class InsertAnimationSystem : MonoBehaviour
 
     public IEnumerator AnimationPlay(MatchTargetAnimationData animationClip)
     {
+        // アニメーションクリップのnullチェック
         MyExtensionClass.CheckArgumentNull(animationClip, nameof(animationClip));
 
+        // アニメーション中の状態をtrueに設定
         _reactivePropertyIsAnimation.Value = true;
 
-        // グラフの初期化を確実に行う
+        // Playableグラフの初期化を確実に行う
         InitializePlayableGraph();
 
         // 既存のPlayableをクリーンアップ
@@ -91,33 +99,39 @@ public class InsertAnimationSystem : MonoBehaviour
             _playable.Destroy();
         }
 
-        // 新しいPlayableの設定
+        // 新しいPlayableを設定
         SetupNewPlayable(animationClip.AnimationClip);
+        // ターゲットマッチモーションのデータを設定
         _targetMatchMove.SetMatchTargetAnimationData(animationClip, _targetPos);
 
+        // トランジション開始を待機
         yield return StartTransition(animationClip.AnimationClip.length / 2f, true, animationClip);
 
+        // Playableグラフを停止
         _playableGraph.Stop();
 
         float playTime = animationClip.AnimationClip.length - (animationClip.AnimationClip.length / 2f * 2);
 
+        // 残りの再生時間があれば待機
         if (playTime > 0)
         {
             yield return new WaitForSeconds(playTime);
         }
 
+        // Playableグラフを再生
         _playableGraph.Play();
-       
+
+        // トランジション終了を待機
         yield return EndTransition(animationClip.AnimationClip.length / 2f, false);
 
-        // Playableのクリーンアップのみを行い、グラフは維持
+        // Playableのクリーンアップを行い、グラフは維持
         if (_playable.IsValid())
         {
             _playable.Destroy();
         }
+        // アニメーション中の状態をfalseに設定
         _reactivePropertyIsAnimation.Value = false;
     }
-
 
     /// <summary>
     /// 割り込ませるアニメーションの生成メソッド
@@ -125,22 +139,23 @@ public class InsertAnimationSystem : MonoBehaviour
     /// <param name="animClip">割り込ませたいアニメクリップ</param>
     private void SetupNewPlayable(AnimationClip animClip)
     {
-        //割り込みアニメを生成
+        // 割り込みアニメをPlayableとして生成
         _playable = AnimationClipPlayable.Create(_playableGraph, animClip);
 
+        // Playable出力にセット
         _playableOutput.SetSourcePlayable(_playable);
+        // Playableグラフを再生
         _playableGraph.Play();
-
-        
     }
 
     private IEnumerator StartTransition(float duration, bool isIn, MatchTargetAnimationData animationData)
     {
         float startTime = Time.timeSinceLevelLoad;
         float endTime = startTime + duration;
-    
+
+        // トランジション期間中、カーブに基づいてウェイトを調整
         while (Time.timeSinceLevelLoad < endTime)
-        {         
+        {
             float nowTime = (Time.timeSinceLevelLoad - startTime) / duration;
             if (!isIn)
             {
@@ -150,7 +165,7 @@ public class InsertAnimationSystem : MonoBehaviour
             yield return null;
         }
 
-        // 最終的な重みを確実に設定
+        // 最終的なウェイトを確実に設定
         _playableOutput.SetWeight(isIn ? 1f : 0f);
     }
 
@@ -158,7 +173,8 @@ public class InsertAnimationSystem : MonoBehaviour
     {
         float startTime = Time.timeSinceLevelLoad;
         float endTime = startTime + duration;
-        print("EndTransition");
+
+        // トランジション期間中、カーブに基づいてウェイトを調整
         while (Time.timeSinceLevelLoad < endTime)
         {
             float nowTime = (Time.timeSinceLevelLoad - startTime) / duration;
@@ -170,17 +186,19 @@ public class InsertAnimationSystem : MonoBehaviour
             yield return null;
         }
 
-        // 最終的な重みを確実に設定
+        // 最終的なウェイトを確実に設定
         _playableOutput.SetWeight(isIn ? 1f : 0f);
     }
 
     private void CleanupPlayable()
     {
+        // Playableが有効な場合は破棄
         if (_playable.IsValid())
         {
             _playable.Destroy();
         }
 
+        // Playableグラフが有効な場合は破棄
         if (_playableGraph.IsValid())
         {
             _playableGraph.Destroy();
