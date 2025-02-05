@@ -58,6 +58,7 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
         Vector2 changeInput = GetDirectionToAnimationValue(moveDirection);
         _animator.SetFloat(_moveInputXHash, changeInput.x, _walkDamp, Time.deltaTime);
         _animator.SetFloat(_moveInputYHash, changeInput.y, _walkDamp, Time.deltaTime);
+
         _animator.SetBool(_isDashHash, true);
     }
 

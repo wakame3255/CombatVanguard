@@ -12,16 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53bd36005cc9ef245b7deb1a8b75aed2, type: 3}
   m_Name: JabAnimation
   m_EditorClassIdentifier: 
-  _animationClip: {fileID: 7400000, guid: b5fb9fa7a3e19744292c7a51adbb8560, type: 3}
+  _animationClip: {fileID: 7400000, guid: a67f067962a70b1429b476b7c0849bbe, type: 2}
   _animationTimeList:
-  - _startNormalizedTime: 0.162
-    _endNormalizedTime: 0.411
+  - _startNormalizedTime: 0
+    _endNormalizedTime: 0
     _targetBodyPart: 4
-    _movePositionWeight: 1
-  - _startNormalizedTime: 0.66
-    _endNormalizedTime: 0.921
-    _targetBodyPart: 4
-    _movePositionWeight: 1
+    _movePositionWeight: 0
   _matchPosition: {x: 1, y: 1, z: 1}
   _matchRotationEuler: {x: 1, y: 1, z: 1}
   _rotationWeight: 0

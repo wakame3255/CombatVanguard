@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53bd36005cc9ef245b7deb1a8b75aed2, type: 3}
   m_Name: SkidStopAnimation
   m_EditorClassIdentifier: 
-  _animationClip: {fileID: 7400006, guid: 4432557de1a86944aa8fabb8e92c3feb, type: 3}
+  _animationClip: {fileID: 7400006, guid: a57ac3f83414fb440b6c52cb6be60350, type: 3}
   _animationTimeList:
   - _startNormalizedTime: 0
     _endNormalizedTime: 0
