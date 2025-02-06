@@ -25,6 +25,6 @@ public class AttackStateData : StateDataBase
 
     public override void PlayAnimation(CharacterAnimation characterAnimation)
     {
-       UnityEngine.Debug.Log("AttackStateData PlayAnimation");
+        characterAnimation.DoAttackAnimation();
     }
 }

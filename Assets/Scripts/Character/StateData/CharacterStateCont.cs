@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 public class CharacterStateCont : ICurrentStateChange, IApplicationStateChange
 {
+    public StateDataBase CurrentStateData { get; private set; }
     public StateDataInformation StateDataInformation { get; private set; } 
 
     public ReactiveProperty<StateDataBase> CurrentStateDataReactiveProperty { get; private set; }
@@ -12,7 +13,8 @@ public class CharacterStateCont : ICurrentStateChange, IApplicationStateChange
     {
         CurrentStateDataReactiveProperty = new ReactiveProperty<StateDataBase>();
         StateDataInformation = new StateDataInformation(this);
-        CurrentStateDataReactiveProperty.Value = StateDataInformation.NormalStateData; 
+        CurrentStateDataReactiveProperty.Value = StateDataInformation.NormalStateData;
+        CurrentStateData = CurrentStateDataReactiveProperty.Value;
     }
 
     /// <summary>
@@ -21,7 +23,7 @@ public class CharacterStateCont : ICurrentStateChange, IApplicationStateChange
     /// <param name="stateData"></param>
     public bool ApplicationStateChange(StateDataBase stateData)
     {
-        Debug.WriteLine("ApplicationStateChange");
+
         return CurrentStateDataReactiveProperty.Value.CheckChangeState(stateData);
     }
 
@@ -31,7 +33,7 @@ public class CharacterStateCont : ICurrentStateChange, IApplicationStateChange
     /// <param name="stateData"></param>
     public void ChangeState(StateDataBase stateData)
     {
-        UnityEngine.Debug.Log(stateData);
+        CurrentStateData = stateData;
         CurrentStateDataReactiveProperty.Value = stateData;
     }
 }
@@ -39,6 +41,7 @@ public class CharacterStateCont : ICurrentStateChange, IApplicationStateChange
 
 public class StateDataInformation
 {
+    public DownStateData DownStateData { get; private set; }
     public AttackStateData AttackStateData { get; private set; }
     public GuardStateData GuardStateData { get; private set; }
     public NormalStateData NormalStateData { get; private set; }
@@ -48,5 +51,6 @@ public class StateDataInformation
         NormalStateData = new NormalStateData(currentStateChange);
         GuardStateData = new GuardStateData(currentStateChange);
         AttackStateData = new AttackStateData(currentStateChange);
+        DownStateData = new DownStateData(currentStateChange);
     }
 }

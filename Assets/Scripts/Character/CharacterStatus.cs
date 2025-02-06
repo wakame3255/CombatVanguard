@@ -10,6 +10,8 @@ public class CharacterStatus : MonoBehaviour, ISetAnimation
 
     private CharacterAnimation _characterAnimation;
 
+    private IApplicationStateChange _characterStateCont;
+
     private void Awake()
     {
         ReactivePropertyHp.Value = _hp;
@@ -17,17 +19,25 @@ public class CharacterStatus : MonoBehaviour, ISetAnimation
 
     public void DoDamage(int damage)
     {
-        _hp -= damage;
-        ReactivePropertyHp.Value -= damage;
+        if (CheckDoAnimation())
+        {
+            _hp -= damage;
+            ReactivePropertyHp.Value -= damage;
 
-        CheckDeath();
-
-        _characterAnimation.DoHitAnimation();
+            CheckDeath();
+        }
+      
+        
     }
 
     public void SetAnimationComponent(CharacterAnimation characterAnimation)
     {
         _characterAnimation = characterAnimation;
+    }
+
+    public void SetAnimationCont(IApplicationStateChange characterStateCont)
+    {
+        _characterStateCont = characterStateCont;
     }
 
     private void CheckDeath()
@@ -36,5 +46,10 @@ public class CharacterStatus : MonoBehaviour, ISetAnimation
         {
             gameObject.SetActive(false);
         }
+    }
+
+    private bool CheckDoAnimation()
+    {
+        return _characterStateCont.ApplicationStateChange(_characterStateCont.StateDataInformation.DownStateData); ;
     }
 }

@@ -35,6 +35,7 @@ public class PlayerAction : MonoBehaviour
         _animationPresenter = new AnimationPresenter(characterStateCont, _characterAnimation);
 
         _characterStateChange.ApplicationStateChange(characterStateCont.StateDataInformation.NormalStateData);
+        _characterStatus.SetAnimationCont(characterStateCont);
         SetInformationComponent();
     }
 

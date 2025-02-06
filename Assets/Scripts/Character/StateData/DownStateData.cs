@@ -1,24 +1,26 @@
 using System;
-using System.Diagnostics;
 
-
-public class NormalStateData : StateDataBase
+public class DownStateData : StateDataBase
 {
-
-    public NormalStateData(ICurrentStateChange currentStateChange)
+    public DownStateData(ICurrentStateChange currentStateChange)
     {
         _currentStateChange = currentStateChange;
     }
 
     public override bool CheckChangeState(StateDataBase stateType)
     {
-        UnityEngine.Debug.Log("NormalStateData");
+        switch (stateType)
+        {
+            case DownStateData:
+                return false;
+        }
+
         _currentStateChange.ChangeState(stateType);
         return true;
     }
 
     public override void PlayAnimation(CharacterAnimation characterAnimation)
     {
-
+        characterAnimation.DoHitAnimation();
     }
 }
