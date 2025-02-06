@@ -14,6 +14,8 @@ public class PlayerAction : MonoBehaviour
     private AttackAction _attackAction;
     private CharacterAnimation _characterAnimation;
     private CharacterStatus _characterStatus;
+    private IApplicationStateChange _characterStateChange;
+    private AnimationPresenter _animationPresenter;
     private CompositeDisposable _disposables = new CompositeDisposable();
 
     private static readonly Vector3 RESET_DIRECTION = new Vector3(1f, 0, 1f);
@@ -27,8 +29,24 @@ public class PlayerAction : MonoBehaviour
         _characterAnimation = this.CheckComponentMissing<CharacterAnimation>();
         _playerCamera = Camera.main.gameObject.transform;
 
+        CharacterStateCont characterStateCont = new CharacterStateCont();
+
+        _characterStateChange = characterStateCont;
+        _animationPresenter = new AnimationPresenter(characterStateCont, _characterAnimation);
+
+        _characterStateChange.ApplicationStateChange(characterStateCont.StateDataInformation.NormalStateData);
         SetInformationComponent();
     }
+
+    private void Update()
+    {
+        //アニメーションが終了したら通常状態に戻す
+        if (!_characterAnimation.IsAnimation)
+        {
+            _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.NormalStateData);
+        }
+    }
+       
 
     void OnDestroy()
     {
@@ -58,12 +76,15 @@ public class PlayerAction : MonoBehaviour
      .AddTo(_disposables);
 
         //攻撃ボタンの入力購読
-        inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack).Where(_ => !_characterAnimation.IsAnimation)
+        inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack)
+            .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AttackStateData))
             .Subscribe(isAttack => _attackAction.DoAction())
         .AddTo(_disposables);
 
         //ジャンプボタンの入力購読
-        inputInformation.ReactivePropertyJump.Where(_ => !_characterAnimation.IsAnimation).Where(isJump => isJump)
+        inputInformation.ReactivePropertyJump
+            .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AttackStateData))
+            .Where(isJump => isJump)
             .Subscribe(isJump => _characterAnimation.DoTurnAnimation())
         .AddTo(_disposables);
 

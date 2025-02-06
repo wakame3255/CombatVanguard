@@ -15,6 +15,8 @@ public class EnemyAction : MonoBehaviour
     private AttackAction _attackAction;
     private CharacterAnimation _characterAnimation;
     private CharacterStatus _characterStatus;
+    private CharacterStateCont _characterStateCont;
+    private AnimationPresenter _animationPresenter;
     private CompositeDisposable _disposables = new CompositeDisposable();
 
     private static readonly Vector3 RESET_DIRECTION = new Vector3(1f, 0, 1f);
@@ -26,6 +28,9 @@ public class EnemyAction : MonoBehaviour
         _rotationMove = this.CheckComponentMissing<RotationMove>(_actionPosition);
         _characterStatus = this.CheckComponentMissing<CharacterStatus>();
         _characterAnimation = this.CheckComponentMissing<CharacterAnimation>();
+
+        _characterStateCont = new CharacterStateCont();
+        _animationPresenter = new AnimationPresenter(_characterStateCont, _characterAnimation);
 
         SetInformationComponent();
     }
