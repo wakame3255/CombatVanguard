@@ -83,7 +83,7 @@ public class PlayerAction : MonoBehaviour
         .AddTo(_disposables);
 
         //ジャンプボタンの入力購読
-        inputInformation.ReactivePropertyJump
+        inputInformation.ReactivePropertyAvoidance
             .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AttackStateData))
             .Where(isJump => isJump)
             .Subscribe(isJump => _characterAnimation.DoTurnAnimation())

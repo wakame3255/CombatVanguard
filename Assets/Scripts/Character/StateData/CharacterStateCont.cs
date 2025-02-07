@@ -23,7 +23,6 @@ public class CharacterStateCont : ICurrentStateChange, IApplicationStateChange
     /// <param name="stateData"></param>
     public bool ApplicationStateChange(StateDataBase stateData)
     {
-
         return CurrentStateDataReactiveProperty.Value.CheckChangeState(stateData);
     }
 
@@ -36,11 +35,14 @@ public class CharacterStateCont : ICurrentStateChange, IApplicationStateChange
         CurrentStateData = stateData;
         CurrentStateDataReactiveProperty.Value = stateData;
     }
+
+    public void
 }
 
 
 public class StateDataInformation
 {
+    public AvoidanceStateData AvoidanceStateData { get; private set; }
     public DownStateData DownStateData { get; private set; }
     public AttackStateData AttackStateData { get; private set; }
     public GuardStateData GuardStateData { get; private set; }
@@ -52,5 +54,6 @@ public class StateDataInformation
         GuardStateData = new GuardStateData(currentStateChange);
         AttackStateData = new AttackStateData(currentStateChange);
         DownStateData = new DownStateData(currentStateChange);
+        AvoidanceStateData = new AvoidanceStateData(currentStateChange);
     }
 }

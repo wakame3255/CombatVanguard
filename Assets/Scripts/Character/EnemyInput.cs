@@ -7,14 +7,17 @@ public class EnemyInput : MonoBehaviour, IInputInformation
 {
     private ReactiveProperty<Vector2> _reactivePropertyMove = new ReactiveProperty<Vector2>();
     private ReactiveProperty<bool> _reactivePropertyAttack = new ReactiveProperty<bool>();
-    private ReactiveProperty<bool> _reactivePropertyJump = new ReactiveProperty<bool>();
+    private ReactiveProperty<bool> _reactivePropertyAvoidance = new ReactiveProperty<bool>();
     private ReactiveProperty<bool> _reactivePropertyDash = new ReactiveProperty<bool>();
+    private ReactiveProperty<bool> _reactivePropertyGuard = new ReactiveProperty<bool>();
+
 
     public static PlayerInput Instance { get; private set; }
 
     public ReactiveProperty<bool> ReactivePropertyAttack { get => _reactivePropertyAttack; }
-    public ReactiveProperty<bool> ReactivePropertyJump { get => _reactivePropertyJump; }
+    public ReactiveProperty<bool> ReactivePropertyAvoidance { get => _reactivePropertyAvoidance; }
     public ReactiveProperty<bool> ReactivePropertyDash { get => _reactivePropertyDash; }
+    public ReactiveProperty<bool> ReactivePropertyGuard { get => _reactivePropertyGuard; }
     public ReactiveProperty<Vector2> ReactivePropertyMove { get => _reactivePropertyMove; }
 
     public void SetMoveInfomation(Vector2 moveDirection)
@@ -32,4 +35,13 @@ public class EnemyInput : MonoBehaviour, IInputInformation
         _reactivePropertyDash.Value = isDash;
     }
 
+    public void DoAvoidance(bool isAvoidance)
+    {
+        _reactivePropertyAvoidance.Value = isAvoidance;
+    }
+
+    public void DoGuard(bool isGuard)
+    {
+        _reactivePropertyGuard.Value = isGuard;
+    }
 }

@@ -1,8 +1,12 @@
 using System;
 
-public class DamageHitStateData : StateDataBase
+public class AvoidanceStateData : StateDataBase
 {
 
+    public AvoidanceStateData(ICurrentStateChange currentStateChange)
+    {
+        _currentStateChange = currentStateChange;
+    }
 
     public override bool CheckChangeState(StateDataBase stateType)
     {
@@ -11,6 +15,6 @@ public class DamageHitStateData : StateDataBase
 
     public override void PlayAnimation(CharacterAnimation characterAnimation)
     {
-
+        throw new NotImplementedException();
     }
 }

@@ -68,7 +68,7 @@ public class EnemyAction : MonoBehaviour
         .AddTo(_disposables);
 
         //ジャンプボタンの入力購読
-        inputInformation.ReactivePropertyJump.Where(_ => !_characterAnimation.IsAnimation).Where(isJump => isJump)
+        inputInformation.ReactivePropertyAvoidance.Where(_ => !_characterAnimation.IsAnimation).Where(isJump => isJump)
             .Subscribe(isJump => _characterAnimation.DoTurnAnimation())
         .AddTo(_disposables);
 

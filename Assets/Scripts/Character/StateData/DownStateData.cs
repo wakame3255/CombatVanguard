@@ -14,7 +14,7 @@ public class DownStateData : StateDataBase
             case DownStateData:
                 return false;
         }
-
+        UnityEngine.Debug.Log("DownStateData");
         _currentStateChange.ChangeState(stateType);
         return true;
     }
