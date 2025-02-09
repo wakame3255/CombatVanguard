@@ -74,10 +74,11 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
     }
     public void DoHitAnimation()
     {
-        if (IsAnimation != true)
-        {
-            StartCoroutine(_walkAnimationSystem.AnimationPlay(_attackAnimationInfo.HitAnimation));
-        }   
+        StartCoroutine(_walkAnimationSystem.AnimationPlay(_attackAnimationInfo.HitAnimation));
+    }
+    public void DoAvoidanceAnimation()
+    {
+        StartCoroutine(_walkAnimationSystem.AnimationPlay(_walkAnimationInfo.AvoidanceAnimation));
     }
 
     public void SetCharacterTransform(Transform characterTransform)

@@ -15,7 +15,7 @@ public class EnemyAction : MonoBehaviour
     private AttackAction _attackAction;
     private CharacterAnimation _characterAnimation;
     private CharacterStatus _characterStatus;
-    private CharacterStateCont _characterStateCont;
+    private IApplicationStateChange _characterStateChange;
     private AnimationPresenter _animationPresenter;
     private CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -29,10 +29,23 @@ public class EnemyAction : MonoBehaviour
         _characterStatus = this.CheckComponentMissing<CharacterStatus>();
         _characterAnimation = this.CheckComponentMissing<CharacterAnimation>();
 
-        _characterStateCont = new CharacterStateCont();
-        _animationPresenter = new AnimationPresenter(_characterStateCont, _characterAnimation);
+        CharacterStateCont characterStateCont = new CharacterStateCont();
 
+        _characterStateChange = characterStateCont;
+        _animationPresenter = new AnimationPresenter(characterStateCont, _characterAnimation);
+
+        _characterStateChange.ApplicationStateChange(characterStateCont.StateDataInformation.NormalStateData);
+        _characterStatus.SetAnimationCont(characterStateCont);
         SetInformationComponent();
+    }
+
+    private void Update()
+    {
+        //アニメーションが終了したら通常状態に戻す
+        if (!_characterAnimation.IsAnimation)
+        {
+            _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.NormalStateData);
+        }
     }
 
     void OnDestroy()
@@ -63,13 +76,16 @@ public class EnemyAction : MonoBehaviour
      .AddTo(_disposables);
 
         //攻撃ボタンの入力購読
-        inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack).Where(_ => !_characterAnimation.IsAnimation)
+        inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack)
+            .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AttackStateData))
             .Subscribe(isAttack => _attackAction.DoAction())
         .AddTo(_disposables);
 
         //ジャンプボタンの入力購読
-        inputInformation.ReactivePropertyAvoidance.Where(_ => !_characterAnimation.IsAnimation).Where(isJump => isJump)
-            .Subscribe(isJump => _characterAnimation.DoTurnAnimation())
+        inputInformation.ReactivePropertyAvoidance
+            .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AvoidanceStateData))
+            .Where(isJump => isJump)
+            .Subscribe(isJump => _characterAnimation.DoAvoidanceAnimation())
         .AddTo(_disposables);
 
         //ダッシュボタンの入力購読

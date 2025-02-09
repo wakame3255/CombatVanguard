@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MoveState : MonoBehaviour, IEnemyState
+public class MoveState : IEnemyState
 {
     private Transform _transform;
     private Transform _targetTransform;
@@ -49,7 +49,17 @@ public class MoveState : MonoBehaviour, IEnemyState
 
             if (Vector3.Distance(_targetTransform.position, _transform.position) < 1f)
             {
-                _stateMachine.ChangeState(_stateMachine.AttackState);
+                int random = Random.Range(0, 2);
+                switch (random)
+                {
+                    case 0:
+                        _stateMachine.ChangeState(_stateMachine.AvoidanceState);
+                        break;
+                    case 1:
+                        _stateMachine.ChangeState(_stateMachine.AttackState);
+                        break;
+                }
+
             }
         }
         else

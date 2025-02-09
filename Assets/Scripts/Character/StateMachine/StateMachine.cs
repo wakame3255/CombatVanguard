@@ -11,14 +11,17 @@ namespace EnemyState
 
         private MoveState _moveState;
         private AttackState _attackState;
+        private AvoidanceState _avoidanceState;
 
         public MoveState MoveState { get => _moveState; }
         public AttackState AttackState { get => _attackState; }
+        public AvoidanceState AvoidanceState { get => _avoidanceState; }
 
         public StateMachine(EnemyCharacter enemyCharacter)
         {
             _moveState = new MoveState(enemyCharacter, this);
             _attackState = new AttackState(enemyCharacter, this);
+            _avoidanceState = new AvoidanceState(enemyCharacter, this);
 
             ChangeState(_moveState);
         }

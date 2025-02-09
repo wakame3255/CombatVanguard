@@ -10,11 +10,17 @@ public class AvoidanceStateData : StateDataBase
 
     public override bool CheckChangeState(StateDataBase stateType)
     {
-        throw new NotImplementedException();
+        if (stateType is NormalStateData)
+        {
+            _currentStateChange.ChangeState(stateType);
+            return true;
+        }
+
+        return false;
     }
 
     public override void PlayAnimation(CharacterAnimation characterAnimation)
     {
-        throw new NotImplementedException();
+       characterAnimation.DoAvoidanceAnimation();
     }
 }

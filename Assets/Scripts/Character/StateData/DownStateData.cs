@@ -9,14 +9,13 @@ public class DownStateData : StateDataBase
 
     public override bool CheckChangeState(StateDataBase stateType)
     {
-        switch (stateType)
+        if (stateType is NormalStateData)
         {
-            case DownStateData:
-                return false;
+            _currentStateChange.ChangeState(stateType);
+            return true;
         }
-        UnityEngine.Debug.Log("DownStateData");
-        _currentStateChange.ChangeState(stateType);
-        return true;
+
+        return false;
     }
 
     public override void PlayAnimation(CharacterAnimation characterAnimation)

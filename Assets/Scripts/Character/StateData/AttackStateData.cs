@@ -16,8 +16,9 @@ public class AttackStateData : StateDataBase
             case NormalStateData:
                 _currentStateChange.ChangeState(stateType);
                 return true;
-            case AttackStateData:
-                return false;
+            //case DownStateData:
+            //    _currentStateChange.ChangeState(stateType);
+            //    return true;
         }
 
         return false;

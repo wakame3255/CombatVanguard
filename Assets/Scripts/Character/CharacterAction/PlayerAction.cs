@@ -41,6 +41,7 @@ public class PlayerAction : MonoBehaviour
 
     private void Update()
     {
+        _characterStateChange.UpdateDebug();
         //アニメーションが終了したら通常状態に戻す
         if (!_characterAnimation.IsAnimation)
         {
@@ -84,9 +85,9 @@ public class PlayerAction : MonoBehaviour
 
         //ジャンプボタンの入力購読
         inputInformation.ReactivePropertyAvoidance
-            .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AttackStateData))
+            .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AvoidanceStateData))
             .Where(isJump => isJump)
-            .Subscribe(isJump => _characterAnimation.DoTurnAnimation())
+            .Subscribe(isJump => _characterAnimation.DoAvoidanceAnimation())
         .AddTo(_disposables);
 
         //ダッシュボタンの入力購読

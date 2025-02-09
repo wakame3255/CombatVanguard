@@ -36,7 +36,10 @@ public class CharacterStateCont : ICurrentStateChange, IApplicationStateChange
         CurrentStateDataReactiveProperty.Value = stateData;
     }
 
-    public void
+    public void UpdateDebug()
+    {
+        UnityEngine.Debug.Log(CurrentStateData);
+    }
 }
 
 

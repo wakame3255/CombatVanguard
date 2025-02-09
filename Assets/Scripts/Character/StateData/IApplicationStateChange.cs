@@ -9,4 +9,5 @@ public interface IApplicationStateChange
     public StateDataInformation StateDataInformation { get; }
     public StateDataBase CurrentStateData { get;}
     public bool ApplicationStateChange(StateDataBase stateData);
+    public void UpdateDebug();
 }

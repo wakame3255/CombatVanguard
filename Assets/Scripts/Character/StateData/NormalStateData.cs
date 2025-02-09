@@ -12,7 +12,6 @@ public class NormalStateData : StateDataBase
 
     public override bool CheckChangeState(StateDataBase stateType)
     {
-        UnityEngine.Debug.Log("NormalStateData");
         _currentStateChange.ChangeState(stateType);
         return true;
     }

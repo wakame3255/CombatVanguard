@@ -25,7 +25,11 @@ public class WalkTurnAnimationInformation
     [SerializeField]
     private MatchTargetAnimationData _forwardTurnAnimation;
 
+    [SerializeField]
+    private MatchTargetAnimationData _avoidanceAnimation;
+
     public MatchTargetAnimationData ForwardTurnAnimation { get => _forwardTurnAnimation; }
+    public MatchTargetAnimationData AvoidanceAnimation { get => _avoidanceAnimation; }
 }
 
 public class InsertAnimationSystem : MonoBehaviour
