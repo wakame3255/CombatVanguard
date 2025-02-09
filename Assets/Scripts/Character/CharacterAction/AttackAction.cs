@@ -19,7 +19,7 @@ public class AttackAction : MonoBehaviour, ISetAnimation, ISetTransform
 
     public void DoAction()
     {
-        int hitCount = Physics.SphereCastNonAlloc(_characterTransform.position + (_characterTransform.forward * 1f), 0.5f, _characterTransform.forward, _raycastHits, 1f, _hitLayerMask);
+        int hitCount = Physics.SphereCastNonAlloc(_characterTransform.position + (_characterTransform.forward * 0.1f), 0.5f, _characterTransform.forward, _raycastHits, 0.5f, _hitLayerMask);
 
         for (int i = 0; i < hitCount; i++)
         {

@@ -164,8 +164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4eb2f6931ce7e42b8234b2d6e37499, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walkSpeed: 1
-  _dashSpeed: 2
+  _walkSpeed: 0
+  _dashSpeed: 0
 --- !u!114 &150868592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,6 +314,7 @@ MonoBehaviour:
   _walkDamp: 0.1
   _walkAnimationInfo:
     _forwardTurnAnimation: {fileID: 11400000, guid: 2ceb0961ee30351409cbe7f034b12ac8, type: 2}
+    _avoidanceAnimation: {fileID: 0}
   _attackAnimationInfo:
     _jabAnimation: {fileID: 11400000, guid: 85a605d4332dc2d4bb72415ebd06815b, type: 2}
     _hitAnimation: {fileID: 11400000, guid: 04fd7b4dc78aa06419061cb726953875, type: 2}
@@ -321,6 +322,7 @@ MonoBehaviour:
   _moveInputXName: InputX
   _moveInputYName: InputY
   _isDashName: IsDash
+  _isGuard: IsGuard
 --- !u!95 &184573695
 Animator:
   serializedVersion: 7
@@ -3038,6 +3040,7 @@ MonoBehaviour:
   _walkDamp: 0.1
   _walkAnimationInfo:
     _forwardTurnAnimation: {fileID: 11400000, guid: 2ceb0961ee30351409cbe7f034b12ac8, type: 2}
+    _avoidanceAnimation: {fileID: 0}
   _attackAnimationInfo:
     _jabAnimation: {fileID: 11400000, guid: 85a605d4332dc2d4bb72415ebd06815b, type: 2}
     _hitAnimation: {fileID: 11400000, guid: 04fd7b4dc78aa06419061cb726953875, type: 2}
@@ -3045,6 +3048,7 @@ MonoBehaviour:
   _moveInputXName: InputX
   _moveInputYName: InputY
   _isDashName: IsDash
+  _isGuard: IsGuard
 --- !u!136 &1684789624
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3127,7 +3131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa3f1439c41a3934ab64dad10b08f21f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: {fileID: 184573696}
+  _target: {fileID: 0}
 --- !u!195 &1684789629
 NavMeshAgent:
   m_ObjectHideFlags: 0

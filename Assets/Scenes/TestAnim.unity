@@ -351,7 +351,7 @@ Animator:
   m_GameObject: {fileID: 674169375}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 24fc2c3e62c52bf4e9e63fd980b8e85d, type: 3}
-  m_Controller: {fileID: 9100000, guid: 93d28e4691d4a52478490e46b7079e7f, type: 2}
+  m_Controller: {fileID: 9100000, guid: f3f94ed29ee56e34498a767958f5243b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -363,6 +363,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &674169386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674169375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 808dc2bed33c48849b633da0d429e8d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 674169384}
+  _animationClip: {fileID: 7400000, guid: a67f067962a70b1429b476b7c0849bbe, type: 2}
 --- !u!1001 &1048406061
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -594,6 +608,7 @@ MonoBehaviour:
   _walkDamp: 0.1
   _walkAnimationInfo:
     _forwardTurnAnimation: {fileID: 11400000, guid: 2ceb0961ee30351409cbe7f034b12ac8, type: 2}
+    _avoidanceAnimation: {fileID: 0}
   _attackAnimationInfo:
     _jabAnimation: {fileID: 11400000, guid: 85a605d4332dc2d4bb72415ebd06815b, type: 2}
     _hitAnimation: {fileID: 11400000, guid: 04fd7b4dc78aa06419061cb726953875, type: 2}
@@ -601,6 +616,7 @@ MonoBehaviour:
   _moveInputXName: InputX
   _moveInputYName: InputY
   _isDashName: IsDash
+  _isGuard: IsGuard
 --- !u!136 &1090571475
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -634,7 +650,7 @@ Animator:
   m_GameObject: {fileID: 1090571467}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 24fc2c3e62c52bf4e9e63fd980b8e85d, type: 3}
-  m_Controller: {fileID: 9100000, guid: 772d720bee4d51542b7946c4cb5ca0a1, type: 2}
+  m_Controller: {fileID: 9100000, guid: f3f94ed29ee56e34498a767958f5243b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -943,7 +959,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8073086772555192299, guid: 64b182395c0b6744a920c74bce3ece13, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0.53
       objectReference: {fileID: 0}
     - target: {fileID: 8073086772555192299, guid: 64b182395c0b6744a920c74bce3ece13, type: 3}
       propertyPath: m_LocalPosition.z
@@ -987,6 +1003,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4132312772176831909, guid: 64b182395c0b6744a920c74bce3ece13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 674169383}
+    - targetCorrespondingSourceObject: {fileID: 4132312772176831909, guid: 64b182395c0b6744a920c74bce3ece13, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 674169386}
   m_SourcePrefab: {fileID: 100100000, guid: 64b182395c0b6744a920c74bce3ece13, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
