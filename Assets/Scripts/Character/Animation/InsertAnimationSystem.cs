@@ -88,6 +88,7 @@ public class InsertAnimationSystem : MonoBehaviour
 
     public IEnumerator AnimationPlay(MatchTargetAnimationData animationClip)
     {
+
         // アニメーションクリップのnullチェック
         MyExtensionClass.CheckArgumentNull(animationClip, nameof(animationClip));
 
@@ -109,7 +110,7 @@ public class InsertAnimationSystem : MonoBehaviour
         _targetMatchMove.SetMatchTargetAnimationData(animationClip, _targetPos);
 
         // トランジション開始を待機
-        yield return StartTransition(animationClip.AnimationClip.length / 2f, true, animationClip);
+        yield return AnimTransition(animationClip.AnimationClip.length / 2f, true, animationClip);
 
         // Playableグラフを停止
         _playableGraph.Stop();
@@ -126,7 +127,7 @@ public class InsertAnimationSystem : MonoBehaviour
         _playableGraph.Play();
 
         // トランジション終了を待機
-        yield return EndTransition(animationClip.AnimationClip.length / 2f, false);
+        yield return AnimTransition(animationClip.AnimationClip.length / 2f, false, animationClip);
 
         // Playableのクリーンアップを行い、グラフは維持
         if (_playable.IsValid())
@@ -152,28 +153,7 @@ public class InsertAnimationSystem : MonoBehaviour
         _playableGraph.Play();
     }
 
-    private IEnumerator StartTransition(float duration, bool isIn, MatchTargetAnimationData animationData)
-    {
-        float startTime = Time.timeSinceLevelLoad;
-        float endTime = startTime + duration;
-
-        // トランジション期間中、カーブに基づいてウェイトを調整
-        while (Time.timeSinceLevelLoad < endTime)
-        {
-            float nowTime = (Time.timeSinceLevelLoad - startTime) / duration;
-            if (!isIn)
-            {
-                nowTime = 1 - nowTime;
-            }
-            _playableOutput.SetWeight(_curve.Evaluate(nowTime));
-            yield return null;
-        }
-
-        // 最終的なウェイトを確実に設定
-        _playableOutput.SetWeight(isIn ? 1f : 0f);
-    }
-
-    private IEnumerator EndTransition(float duration, bool isIn)
+    private IEnumerator AnimTransition(float duration, bool isIn, MatchTargetAnimationData animationData)
     {
         float startTime = Time.timeSinceLevelLoad;
         float endTime = startTime + duration;

@@ -38,7 +38,7 @@ public class CharacterStateCont : ICurrentStateChange, IApplicationStateChange
 
     public void UpdateDebug()
     {
-        UnityEngine.Debug.Log(CurrentStateData);
+        //UnityEngine.Debug.Log(CurrentStateData);
     }
 }
 

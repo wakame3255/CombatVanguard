@@ -15,7 +15,7 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
     [SerializeField]
     private AttackAnimationInformation _attackAnimationInfo;
     [SerializeField]
-    private InsertAnimationSystem _walkAnimationSystem;
+    private InsertAnimationSystem _insertAnimationSystem;
 
     [SerializeField]
     private string _moveInputXName;
@@ -43,7 +43,7 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
         _moveInputYHash = Animator.StringToHash(_moveInputYName);
         _isDashHash = Animator.StringToHash(_isDashName);
 
-        _walkAnimationSystem.ReactivePropertyIsAnimation.Subscribe(isAnim => IsAnimation = isAnim);
+        _insertAnimationSystem.ReactivePropertyIsAnimation.Subscribe(isAnim => IsAnimation = isAnim);
     }
    
    public void DoWalkAnimation(Vector3 moveDirection)
@@ -66,19 +66,19 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
 
     public void DoTurnAnimation()
     {
-        StartCoroutine(_walkAnimationSystem.AnimationPlay(_walkAnimationInfo.ForwardTurnAnimation));
+        StartCoroutine(_insertAnimationSystem.AnimationPlay(_walkAnimationInfo.ForwardTurnAnimation));
     }
     public void DoAttackAnimation()
     {
-        StartCoroutine(_walkAnimationSystem.AnimationPlay(_attackAnimationInfo.JabAnimation));
+        StartCoroutine(_insertAnimationSystem.AnimationPlay(_attackAnimationInfo.JabAnimation));
     }
     public void DoHitAnimation()
     {
-        StartCoroutine(_walkAnimationSystem.AnimationPlay(_attackAnimationInfo.HitAnimation));
+        StartCoroutine(_insertAnimationSystem.AnimationPlay(_attackAnimationInfo.HitAnimation));
     }
     public void DoAvoidanceAnimation()
     {
-        StartCoroutine(_walkAnimationSystem.AnimationPlay(_walkAnimationInfo.AvoidanceAnimation));
+        StartCoroutine(_insertAnimationSystem.AnimationPlay(_walkAnimationInfo.AvoidanceAnimation));
     }
 
     public void SetCharacterTransform(Transform characterTransform)
