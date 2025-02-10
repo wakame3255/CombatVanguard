@@ -114,7 +114,7 @@ public class InsertAnimationSystem : MonoBehaviour
         // Playableグラフを停止
         _playableGraph.Stop();
 
-        float playTime = animationClip.AnimationClip.length - (animationClip.AnimationClip.length / 2f * 2);
+        float playTime = animationClip.AnimationClip.length - (animationClip.AnimationClip.length);
 
         // 残りの再生時間があれば待機
         if (playTime > 0)
