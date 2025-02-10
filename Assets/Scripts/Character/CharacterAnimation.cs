@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 using R3;
+using Cysharp.Threading.Tasks;
 
 [RequireComponent(typeof(Animator))]
 public class CharacterAnimation : MonoBehaviour, ISetTransform
@@ -66,19 +67,19 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
 
     public void DoTurnAnimation()
     {
-        StartCoroutine(_insertAnimationSystem.AnimationPlay(_walkAnimationInfo.ForwardTurnAnimation));
+        _insertAnimationSystem.AnimationPlay(_walkAnimationInfo.ForwardTurnAnimation).Forget();
     }
     public void DoAttackAnimation()
     {
-        StartCoroutine(_insertAnimationSystem.AnimationPlay(_attackAnimationInfo.JabAnimation));
+        _insertAnimationSystem.AnimationPlay(_attackAnimationInfo.JabAnimation).Forget();
     }
     public void DoHitAnimation()
     {
-        StartCoroutine(_insertAnimationSystem.AnimationPlay(_attackAnimationInfo.HitAnimation));
+        _insertAnimationSystem.AnimationPlay(_attackAnimationInfo.HitAnimation).Forget();
     }
     public void DoAvoidanceAnimation()
     {
-        StartCoroutine(_insertAnimationSystem.AnimationPlay(_walkAnimationInfo.AvoidanceAnimation));
+        _insertAnimationSystem.AnimationPlay(_walkAnimationInfo.AvoidanceAnimation).Forget();
     }
 
     public void SetCharacterTransform(Transform characterTransform)

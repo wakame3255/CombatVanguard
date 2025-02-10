@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 using R3;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 [Serializable]
 public class AttackAnimationInformation
@@ -46,6 +46,9 @@ public class InsertAnimationSystem : MonoBehaviour
     private Playable _playable;
     private AnimationPlayableOutput _playableOutput;
 
+    private CancellationTokenSource cancellationTokenSource;
+
+
     private ReactiveProperty<bool> _reactivePropertyIsAnimation = new ReactiveProperty<bool>(false);
 
     public ReactiveProperty<bool> ReactivePropertyIsAnimation { get => _reactivePropertyIsAnimation; }
@@ -86,8 +89,13 @@ public class InsertAnimationSystem : MonoBehaviour
         }
     }
 
-    public IEnumerator AnimationPlay(MatchTargetAnimationData animationClip)
+    // UniTaskを用いたアニメーション再生メソッド
+    public async UniTask AnimationPlay(MatchTargetAnimationData animationClip)
     {
+        OnCancelButtonClicked();
+        // 既存のトークンソースがあれば破棄して新規に作成
+        cancellationTokenSource?.Cancel();
+        cancellationTokenSource = new CancellationTokenSource();
 
         // アニメーションクリップのnullチェック
         MyExtensionClass.CheckArgumentNull(animationClip, nameof(animationClip));
@@ -109,25 +117,24 @@ public class InsertAnimationSystem : MonoBehaviour
         // ターゲットマッチモーションのデータを設定
         _targetMatchMove.SetMatchTargetAnimationData(animationClip, _targetPos);
 
-        // トランジション開始を待機
-        yield return AnimTransition(animationClip.AnimationClip.length / 2f, true, animationClip);
+            // トランジション開始を待機（アニメーション長の半分の時間）
+        await AnimTransition(animationClip.AnimationClip.length / 2f, true, cancellationTokenSource.Token);
 
         // Playableグラフを停止
         _playableGraph.Stop();
 
-        float playTime = animationClip.AnimationClip.length - (animationClip.AnimationClip.length);
-
+        float playTime = animationClip.AnimationClip.length - animationClip.AnimationClip.length;
         // 残りの再生時間があれば待機
         if (playTime > 0)
         {
-            yield return new WaitForSeconds(playTime);
+            await UniTask.Delay(TimeSpan.FromSeconds(playTime));
         }
 
         // Playableグラフを再生
         _playableGraph.Play();
 
         // トランジション終了を待機
-        yield return AnimTransition(animationClip.AnimationClip.length / 2f, false, animationClip);
+        await AnimTransition(animationClip.AnimationClip.length / 2f, false, cancellationTokenSource.Token);
 
         // Playableのクリーンアップを行い、グラフは維持
         if (_playable.IsValid())
@@ -149,11 +156,13 @@ public class InsertAnimationSystem : MonoBehaviour
 
         // Playable出力にセット
         _playableOutput.SetSourcePlayable(_playable);
+
         // Playableグラフを再生
         _playableGraph.Play();
     }
 
-    private IEnumerator AnimTransition(float duration, bool isIn, MatchTargetAnimationData animationData)
+    // UniTaskを用いたトランジション処理
+    private async UniTask AnimTransition(float duration, bool isIn, CancellationToken token)
     {
         float startTime = Time.timeSinceLevelLoad;
         float endTime = startTime + duration;
@@ -161,13 +170,15 @@ public class InsertAnimationSystem : MonoBehaviour
         // トランジション期間中、カーブに基づいてウェイトを調整
         while (Time.timeSinceLevelLoad < endTime)
         {
+            token.ThrowIfCancellationRequested();
+
             float nowTime = (Time.timeSinceLevelLoad - startTime) / duration;
             if (!isIn)
             {
                 nowTime = 1 - nowTime;
             }
             _playableOutput.SetWeight(_curve.Evaluate(nowTime));
-            yield return null;
+            await UniTask.Yield();
         }
 
         // 最終的なウェイトを確実に設定
@@ -186,6 +197,15 @@ public class InsertAnimationSystem : MonoBehaviour
         if (_playableGraph.IsValid())
         {
             _playableGraph.Destroy();
+        }
+    }
+
+    private void OnCancelButtonClicked()
+    {
+        // タスクが実行中の場合、キャンセルを要求する
+        if (cancellationTokenSource != null)
+        {
+            cancellationTokenSource.Cancel();
         }
     }
 
