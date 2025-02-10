@@ -5,6 +5,7 @@ using UnityEngine.Playables;
 using R3;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using Unity.VisualScripting;
 
 [Serializable]
 public class AttackAnimationInformation
@@ -177,7 +178,11 @@ public class InsertAnimationSystem : MonoBehaviour
             {
                 nowTime = 1 - nowTime;
             }
-            _playableOutput.SetWeight(_curve.Evaluate(nowTime));
+            if (_playableOutput.IsOutputValid())
+            {
+                _playableOutput.SetWeight(_curve.Evaluate(nowTime));
+            }
+           
             await UniTask.Yield();
         }
 
