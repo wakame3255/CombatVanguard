@@ -2,51 +2,22 @@ using R3;
 using System.ComponentModel.DataAnnotations;
 using UnityEngine;
 
-public class PlayerAction : MonoBehaviour
+public class PlayerAction : CharacterActionBase
 {
-    [SerializeField, Required]
-    [Header("アクションを置く親")]
-    private GameObject _actionPosition;
-
     private Transform _playerCamera;
-    private RotationMove _rotationMove;
-    private PositionMoveAction _moveAction;
-    private AttackAction _attackAction;
-    private CharacterAnimation _characterAnimation;
-    private CharacterStatus _characterStatus;
-    private IApplicationStateChange _characterStateChange;
-    private AnimationPresenter _animationPresenter;
-    private CompositeDisposable _disposables = new CompositeDisposable();
 
-    private static readonly Vector3 RESET_DIRECTION = new Vector3(1f, 0, 1f);
-
-    private void Awake()
+    protected override void Awake()
     {
-        _moveAction = this.CheckComponentMissing<PositionMoveAction>(_actionPosition);
-        _attackAction = this.CheckComponentMissing<AttackAction>(_actionPosition);
-        _rotationMove = this.CheckComponentMissing<RotationMove>(_actionPosition);
-        _characterStatus = this.CheckComponentMissing<CharacterStatus>();
-        _characterAnimation = this.CheckComponentMissing<CharacterAnimation>();
         _playerCamera = Camera.main.gameObject.transform;
 
-        CharacterStateCont characterStateCont = new CharacterStateCont();
-
-        _characterStateChange = characterStateCont;
-        _animationPresenter = new AnimationPresenter(characterStateCont, _characterAnimation);
-
-        _characterStateChange.ApplicationStateChange(characterStateCont.StateDataInformation.NormalStateData);
-        _characterStatus.SetAnimationCont(characterStateCont);
-        SetInformationComponent();
+        base.Awake();
     }
 
-    private void Update()
+    protected override void Update()
     {
         _characterStateChange.UpdateDebug();
-        //アニメーションが終了したら通常状態に戻す
-        if (!_characterAnimation.IsAnimation)
-        {
-            _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.NormalStateData);
-        }
+       
+        base.Update();
     }
        
 
@@ -96,36 +67,5 @@ public class PlayerAction : MonoBehaviour
            .Where(_ => !_characterAnimation.IsAnimation)
            .Subscribe(isDash => _moveAction.SetDashTrigger(isDash))
        .AddTo(_disposables);
-    }
-
-
-    /// <summary>
-    /// vecter2の入力をカメラ基準に変換するメソッド
-    /// </summary>
-    /// <param name="input">移動入力</param>
-    /// <param name="axisDir">向いている方向</param>
-    /// <returns>移動方向</returns>
-    private Vector3 GetChangeInput(Vector2 input, Vector3 axisDir)
-    {
-        //axisDirectionを基準にした進行方向
-        Vector3 axisForward = Vector3.Scale(axisDir, RESET_DIRECTION.normalized);
-        Vector3 inputMoveDirection = axisForward.normalized * input.y - Vector3.Cross(axisDir, transform.up).normalized * input.x;
-
-        return inputMoveDirection;
-    }
-
-    private void SetInformationComponent()
-    {
-        ISetTransform[] setTransforms = new ISetTransform[] { _moveAction, _rotationMove, _characterAnimation, _attackAction };
-        foreach (ISetTransform hasComp in setTransforms)
-        {
-            hasComp.SetCharacterTransform(transform);
-        }
-
-        ISetAnimation[] setAnimations = new ISetAnimation[] { _moveAction, _attackAction, _characterStatus };
-        foreach (ISetAnimation hasComp in setAnimations)
-        {
-            hasComp.SetAnimationComponent(_characterAnimation);
-        }
     }
 }

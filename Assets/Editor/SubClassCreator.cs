@@ -733,7 +733,7 @@ public class SubClassGenerator : EditorWindow
         }
         else
         {
-            Debug.LogError("Templateフォルダが見つかりません: " + templateFolderPath);
+            //Debug.LogError("Templateフォルダが見つかりません: " + templateFolderPath);
             _templateFiles = new string[0];
         }
     }
