@@ -21,15 +21,15 @@ public class AttackAnimationInformation
 }
 
 [Serializable]
-public class WalkTurnAnimationInformation
+public class InterruptionAnimationInformation
 {
     [SerializeField]
-    private MatchTargetAnimationData _forwardTurnAnimation;
+    private MatchTargetAnimationData _turnAnimation;
 
     [SerializeField]
     private MatchTargetAnimationData _avoidanceAnimation;
 
-    public MatchTargetAnimationData ForwardTurnAnimation { get => _forwardTurnAnimation; }
+    public MatchTargetAnimationData TurnAnimation { get => _turnAnimation; }
     public MatchTargetAnimationData AvoidanceAnimation { get => _avoidanceAnimation; }
 }
 

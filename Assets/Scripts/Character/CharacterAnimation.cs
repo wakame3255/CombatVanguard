@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
+
 using UnityEngine;
 using R3;
 using Cysharp.Threading.Tasks;
@@ -12,27 +10,17 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
     private float _walkDamp;
 
     [SerializeField]
-    private WalkTurnAnimationInformation _walkAnimationInfo;
+    private InterruptionAnimationInformation _interruptionAnimationInfo;
     [SerializeField]
     private AttackAnimationInformation _attackAnimationInfo;
     [SerializeField]
     private InsertAnimationSystem _insertAnimationSystem;
 
-    [SerializeField]
-    private string _moveInputXName;
-    [SerializeField]
-    private string _moveInputYName;
-    [SerializeField]
-    private string _isDashName = "IsDash";
-    [SerializeField]
-    private string _isGuard = "IsGuard";
-
     private Transform _characterTransform;
     private Animator _animator;
 
-    private int _moveInputXHash;
-    private int _moveInputYHash;
-    private int _isDashHash;
+    public InterruptionAnimationInformation InterruptionAnimationInfo { get => _interruptionAnimationInfo; }
+    public AttackAnimationInformation AttackAnimationInfo { get => _attackAnimationInfo; }
 
     public bool IsAnimation { get; private set; }
 
@@ -40,46 +28,30 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
     {
         _animator = this.CheckComponentMissing<Animator>();
 
-        _moveInputXHash = Animator.StringToHash(_moveInputXName);
-        _moveInputYHash = Animator.StringToHash(_moveInputYName);
-        _isDashHash = Animator.StringToHash(_isDashName);
-
         _insertAnimationSystem.ReactivePropertyIsAnimation.Subscribe(isAnim => IsAnimation = isAnim);
     }
    
    public void DoWalkAnimation(Vector3 moveDirection)
     {
         Vector2 changeInput = GetDirectionToAnimationValue(moveDirection);
-        _animator.SetFloat(_moveInputXHash, changeInput.x, _walkDamp, Time.deltaTime);
-        _animator.SetFloat(_moveInputYHash, changeInput.y, _walkDamp, Time.deltaTime);
+        _animator.SetFloat(AnimationStringUtility.MoveInputXName, changeInput.x, _walkDamp, Time.deltaTime);
+        _animator.SetFloat(AnimationStringUtility.MoveInputYName, changeInput.y, _walkDamp, Time.deltaTime);
 
-        _animator.SetBool(_isDashHash, false);
+        _animator.SetBool(AnimationStringUtility.IsDashName, false);
     }
 
     public void DoDashAnimation(Vector3 moveDirection)
     {
         Vector2 changeInput = GetDirectionToAnimationValue(moveDirection);
-        _animator.SetFloat(_moveInputXHash, changeInput.x, _walkDamp, Time.deltaTime);
-        _animator.SetFloat(_moveInputYHash, changeInput.y, _walkDamp, Time.deltaTime);
+        _animator.SetFloat(AnimationStringUtility.MoveInputXName, changeInput.x, _walkDamp, Time.deltaTime);
+        _animator.SetFloat(AnimationStringUtility.MoveInputYName, changeInput.y, _walkDamp, Time.deltaTime);
 
-        _animator.SetBool(_isDashHash, true);
+        _animator.SetBool(AnimationStringUtility.IsDashName, true);
     }
 
-    public void DoTurnAnimation()
+    public void DoAnimation(MatchTargetAnimationData animationData)
     {
-        _insertAnimationSystem.AnimationPlay(_walkAnimationInfo.ForwardTurnAnimation).Forget();
-    }
-    public void DoAttackAnimation()
-    {
-        _insertAnimationSystem.AnimationPlay(_attackAnimationInfo.JabAnimation).Forget();
-    }
-    public void DoHitAnimation()
-    {
-        _insertAnimationSystem.AnimationPlay(_attackAnimationInfo.HitAnimation).Forget();
-    }
-    public void DoAvoidanceAnimation()
-    {
-        _insertAnimationSystem.AnimationPlay(_walkAnimationInfo.AvoidanceAnimation).Forget();
+        _insertAnimationSystem.AnimationPlay(animationData).Forget();
     }
 
     public void SetCharacterTransform(Transform characterTransform)

@@ -21,6 +21,6 @@ public class AvoidanceStateData : StateDataBase
 
     public override void PlayAnimation(CharacterAnimation characterAnimation)
     {
-       characterAnimation.DoAvoidanceAnimation();
+       characterAnimation.DoAnimation(characterAnimation.InterruptionAnimationInfo.AvoidanceAnimation);
     }
 }

@@ -20,6 +20,6 @@ public class DownStateData : StateDataBase
 
     public override void PlayAnimation(CharacterAnimation characterAnimation)
     {
-        characterAnimation.DoHitAnimation();
+        characterAnimation.DoAnimation(characterAnimation.AttackAnimationInfo.HitAnimation);
     }
 }

@@ -26,6 +26,6 @@ public class AttackStateData : StateDataBase
 
     public override void PlayAnimation(CharacterAnimation characterAnimation)
     {
-        characterAnimation.DoAttackAnimation();
+        characterAnimation.DoAnimation(characterAnimation.AttackAnimationInfo.JabAnimation);
     }
 }
