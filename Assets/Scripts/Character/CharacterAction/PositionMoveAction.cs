@@ -28,7 +28,7 @@ public class PositionMoveAction : MonoBehaviour, ISetTransform, ISetAnimation
         {
             CheckDashTurn(moveDirection);
             DoMovePosition(moveDirection, _dashSpeed);
-            _characterAnimation.DoDashAnimation(moveDirection);        
+            _characterAnimation.DoWalkAnimation(moveDirection);        
         }    
         else
         {

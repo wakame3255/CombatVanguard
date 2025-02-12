@@ -9,11 +9,6 @@ public class EnemyAction : CharacterActionBase
        base.Awake();
     }
 
-    protected override void Update()
-    {
-        base.Update();
-    }
-
     void OnDestroy()
     {
         _disposables.Dispose();
@@ -50,8 +45,8 @@ public class EnemyAction : CharacterActionBase
         //ジャンプボタンの入力購読
         inputInformation.ReactivePropertyAvoidance
             .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AvoidanceStateData))
-            .Where(isJump => isJump)
-            .Subscribe(isJump => _characterAnimation.DoAnimation(_characterAnimation.InterruptionAnimationInfo.AvoidanceAnimation))
+            .Where(isAvoiding => isAvoiding)
+            .Subscribe(isAvoiding => _characterAnimation.DoAnimation(_characterAnimation.InterruptionAnimationInfo.AvoidanceAnimation))
         .AddTo(_disposables);
 
         //ダッシュボタンの入力購読

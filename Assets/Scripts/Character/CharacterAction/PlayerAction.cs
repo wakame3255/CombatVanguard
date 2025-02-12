@@ -13,11 +13,9 @@ public class PlayerAction : CharacterActionBase
         base.Awake();
     }
 
-    protected override void Update()
+     void Update()
     {
-        _characterStateChange.UpdateDebug();
-       
-        base.Update();
+        _characterStateChange.UpdateDebug();       
     }
        
 
@@ -57,8 +55,8 @@ public class PlayerAction : CharacterActionBase
         //ジャンプボタンの入力購読
         inputInformation.ReactivePropertyAvoidance
             .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AvoidanceStateData))
-            .Where(isJump => isJump)
-            .Subscribe(isJump => _characterAnimation.DoAnimation(_characterAnimation.InterruptionAnimationInfo.AvoidanceAnimation))
+            .Where(isAvoiding => isAvoiding)
+            .Subscribe(isAvoiding => _characterAnimation.DoAnimation(_characterAnimation.InterruptionAnimationInfo.AvoidanceAnimation))
         .AddTo(_disposables);
 
         //ダッシュボタンの入力購読

@@ -22,13 +22,12 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
     public InterruptionAnimationInformation InterruptionAnimationInfo { get => _interruptionAnimationInfo; }
     public AttackAnimationInformation AttackAnimationInfo { get => _attackAnimationInfo; }
 
+    public ReactiveProperty<bool> ReactivePropertyIsAnimation { get => _insertAnimationSystem.ReactivePropertyIsAnimation; }
     public bool IsAnimation { get; private set; }
 
     private void Awake()
     {
         _animator = this.CheckComponentMissing<Animator>();
-
-        _insertAnimationSystem.ReactivePropertyIsAnimation.Subscribe(isAnim => IsAnimation = isAnim);
     }
    
    public void DoWalkAnimation(Vector3 moveDirection)
@@ -36,22 +35,15 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
         Vector2 changeInput = GetDirectionToAnimationValue(moveDirection);
         _animator.SetFloat(AnimationStringUtility.MoveInputXName, changeInput.x, _walkDamp, Time.deltaTime);
         _animator.SetFloat(AnimationStringUtility.MoveInputYName, changeInput.y, _walkDamp, Time.deltaTime);
-
-        _animator.SetBool(AnimationStringUtility.IsDashName, false);
-    }
-
-    public void DoDashAnimation(Vector3 moveDirection)
-    {
-        Vector2 changeInput = GetDirectionToAnimationValue(moveDirection);
-        _animator.SetFloat(AnimationStringUtility.MoveInputXName, changeInput.x, _walkDamp, Time.deltaTime);
-        _animator.SetFloat(AnimationStringUtility.MoveInputYName, changeInput.y, _walkDamp, Time.deltaTime);
-
-        _animator.SetBool(AnimationStringUtility.IsDashName, true);
     }
 
     public void DoAnimation(MatchTargetAnimationData animationData)
     {
         _insertAnimationSystem.AnimationPlay(animationData).Forget();
+    }
+    public void SetDashBool(bool isDash)
+    {
+        _animator.SetBool(AnimationStringUtility.IsDashName, isDash);
     }
 
     public void SetCharacterTransform(Transform characterTransform)

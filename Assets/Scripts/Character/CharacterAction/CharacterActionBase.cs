@@ -26,22 +26,9 @@ public abstract class CharacterActionBase : MonoBehaviour
         _characterStatus = this.CheckComponentMissing<CharacterStatus>();
         _characterAnimation = this.CheckComponentMissing<CharacterAnimation>();
 
-        CharacterStateCont characterStateCont = new CharacterStateCont();
-
-        _characterStateChange = characterStateCont;
-        new AnimationPresenter(characterStateCont, _characterAnimation);
-
-        _characterStateChange.ApplicationStateChange(characterStateCont.StateDataInformation.NormalStateData);
-        _characterStatus.SetAnimationCont(characterStateCont);
+        SetCharacterStateCont(new CharacterStateCont());
+       
         SetInformationComponent();
-    }
-
-    protected virtual void Update()
-    {
-        if (!_characterAnimation.IsAnimation)
-        {
-            _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.NormalStateData);
-        }
     }
 
     /// <summary>
@@ -72,5 +59,22 @@ public abstract class CharacterActionBase : MonoBehaviour
         {
             hasComp.SetAnimationComponent(_characterAnimation);
         }
+    }
+
+    private void StateReset(bool isAnimation)
+    {
+        if (isAnimation) return;
+        print("StateReset");
+        _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.NormalStateData);       
+    }
+
+
+
+    private void SetCharacterStateCont(CharacterStateCont characterState)
+    {
+        _characterStateChange = characterState;
+        new AnimationPresenter(characterState, _characterAnimation);
+        _characterStatus.SetAnimationCont(characterState);
+        _characterAnimation.ReactivePropertyIsAnimation.Subscribe(isAnimation => StateReset(isAnimation));
     }
 }
