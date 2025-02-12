@@ -26,7 +26,7 @@ public class EnemyAction : CharacterActionBase
         Observable.EveryUpdate()
      .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
      .Where(_ => !_characterAnimation.IsAnimation)
-     .Subscribe(inputXY => _moveAction.DoMove(GetChangeInput(inputXY, Vector3.forward)))
+     .Subscribe(inputXY => _moveAction.DoMove(GetChangeInput(inputXY, Vector3.forward), _characterStateChange))
      .AddTo(_disposables);
 
         //毎フレーム更新の向き変更更新
@@ -53,7 +53,7 @@ public class EnemyAction : CharacterActionBase
         Observable.EveryUpdate()
            .WithLatestFrom(inputInformation.ReactivePropertyDash, (_, move) => move)
            .Where(_ => !_characterAnimation.IsAnimation)
-           .Subscribe(isDash => _moveAction.SetDashTrigger(isDash))
+           .Subscribe()
        .AddTo(_disposables);
     }
 }

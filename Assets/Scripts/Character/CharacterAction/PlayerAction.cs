@@ -6,6 +6,10 @@ public class PlayerAction : CharacterActionBase
 {
     private Transform _playerCamera;
 
+    private bool _isWalk = default;
+    private bool _isDash = default;
+    private bool _isGuard = default;
+
     protected override void Awake()
     {
         _playerCamera = Camera.main.gameObject.transform;
@@ -36,7 +40,7 @@ public class PlayerAction : CharacterActionBase
         Observable.EveryUpdate()
      .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
      .Where(_ => !_characterAnimation.IsAnimation)
-     .Subscribe(inputXY => _moveAction.DoMove(GetChangeInput(inputXY, _playerCamera.forward)))
+     .Subscribe(inputXY => _moveAction.DoMove(GetChangeInput(inputXY, _playerCamera.forward), _characterStateChange))
      .AddTo(_disposables);
 
         //毎フレーム更新の向き変更更新
@@ -62,8 +66,21 @@ public class PlayerAction : CharacterActionBase
         //ダッシュボタンの入力購読
         Observable.EveryUpdate()
            .WithLatestFrom(inputInformation.ReactivePropertyDash, (_, move) => move)
-           .Where(_ => !_characterAnimation.IsAnimation)
-           .Subscribe(isDash => _moveAction.SetDashTrigger(isDash))
+           .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.DashStateData))
+           .Subscribe()
        .AddTo(_disposables);
+
+
+        //ガードボタンの入力購読
+        Observable.EveryUpdate()
+           .WithLatestFrom(inputInformation.ReactivePropertyGuard, (_, move) => move)
+           .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.GuardStateData))
+           .Subscribe()
+       .AddTo(_disposables);
+    }
+
+    private void CheckState()
+    {
+        
     }
 }

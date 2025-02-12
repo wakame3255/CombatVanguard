@@ -15,5 +15,5 @@ public static class AnimationStringUtility
     public static string MoveInputXName { get => _moveInputXName; }
     public static string MoveInputYName { get => _moveInputYName; }
     public static string IsDashName { get => _isDashName; }
-    public static string IsGuard { get => _isGuard; }
+    public static string IsGuardName { get => _isGuard; }
 } 

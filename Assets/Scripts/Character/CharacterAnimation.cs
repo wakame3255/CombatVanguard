@@ -41,9 +41,9 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
     {
         _insertAnimationSystem.AnimationPlay(animationData).Forget();
     }
-    public void SetDashBool(bool isDash)
+    public void SetAnimationBool(string AnimName)
     {
-        _animator.SetBool(AnimationStringUtility.IsDashName, isDash);
+        AnimationReset(AnimName);
     }
 
     public void SetCharacterTransform(Transform characterTransform)
@@ -59,6 +59,19 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
         float inputY = Vector3.Dot(moveDirection, _characterTransform.forward);
 
         return new Vector2(inputX, inputY);
+    }
+
+    private void AnimationReset(string DoAnim)
+    {
+        _animator.SetBool(AnimationStringUtility.IsDashName, true);
+
+        foreach (AnimatorControllerParameter anim in _animator.parameters)
+        {
+            if (anim.name != DoAnim)
+            {
+                _animator.SetBool(anim.name, false);
+            }
+        }
     }
 }
 

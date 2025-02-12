@@ -21,6 +21,6 @@ public class DashStateData : StateDataBase
 
     public override void PlayAnimation(CharacterAnimation characterAnimation)
     {
-       characterAnimation.SetDashBool(true);
+       characterAnimation.SetAnimationBool(AnimationStringUtility.IsDashName);
     }
 }

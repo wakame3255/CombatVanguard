@@ -14,33 +14,28 @@ public class PositionMoveAction : MonoBehaviour, ISetTransform, ISetAnimation
 
     private Vector3 _cacheMoveDirecton;
 
-    private bool _isDash;
-
     private const float TURN_ANGLE = 100f;
 
     /// <summary>
     /// ìÆÇ≠ÉÅÉ\ÉbÉh
     /// </summary>
     /// <param name="moveDirection">à⁄ìÆÇ∑ÇÈï˚å¸</param>
-    public void DoMove(Vector3 moveDirection)
+    public void DoMove(Vector3 moveDirection, IApplicationStateChange characterState)
     {
-        if (_isDash)
+        switch (characterState.CurrentStateData)
         {
-            CheckDashTurn(moveDirection);
-            DoMovePosition(moveDirection, _dashSpeed);
-            _characterAnimation.DoWalkAnimation(moveDirection);        
-        }    
-        else
-        {
-            DoMovePosition(moveDirection, _walkSpeed); 
-            _characterAnimation.DoWalkAnimation(moveDirection);
+            case WalkStateData or GuardStateData:
+                DoMovePosition(moveDirection, _walkSpeed);
+                _characterAnimation.DoWalkAnimation(moveDirection);
+                break;
+
+            case DashStateData:
+                CheckDashTurn(moveDirection);
+                DoMovePosition(moveDirection, _dashSpeed);
+                _characterAnimation.DoWalkAnimation(moveDirection);
+                break;
         }
         _cacheMoveDirecton = moveDirection;
-    }
-
-    public void SetDashTrigger(bool isDash)
-    {
-        _isDash = isDash;
     }
    
     public void SetCharacterTransform(Transform characterTransform)

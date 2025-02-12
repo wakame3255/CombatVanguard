@@ -21,6 +21,6 @@ public class WalkStateData : StateDataBase
 
     public override void PlayAnimation(CharacterAnimation characterAnimation)
     {
-       characterAnimation.SetDashBool(false);
+       characterAnimation.SetAnimationBool("");
     }
 }

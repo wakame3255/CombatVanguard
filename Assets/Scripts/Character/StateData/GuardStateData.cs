@@ -9,11 +9,16 @@ public class GuardStateData : StateDataBase
 
     public override bool CheckChangeState(StateDataBase stateType)
     {
+        switch (stateType)
+        {
+            case GuardStateData:
+                return false;
+        }
         return true;
     }
 
     public override void PlayAnimation(CharacterAnimation characterAnimation)
     {
-
+        characterAnimation.SetAnimationBool(AnimationStringUtility.IsGuardName);
     }
 }
