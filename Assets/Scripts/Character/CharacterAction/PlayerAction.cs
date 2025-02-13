@@ -66,21 +66,26 @@ public class PlayerAction : CharacterActionBase
         //ダッシュボタンの入力購読
         Observable.EveryUpdate()
            .WithLatestFrom(inputInformation.ReactivePropertyDash, (_, move) => move)
-           .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.DashStateData))
-           .Subscribe()
+           .Subscribe(isDash => _isDash = isDash)
        .AddTo(_disposables);
 
 
         //ガードボタンの入力購読
         Observable.EveryUpdate()
            .WithLatestFrom(inputInformation.ReactivePropertyGuard, (_, move) => move)
-           .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.GuardStateData))
-           .Subscribe()
+           .Subscribe(isGuard => _isGuard = isGuard)
        .AddTo(_disposables);
     }
 
     private void CheckState()
     {
-        
+        if (_isGuard)
+        {
+            _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.GuardStateData);
+        }
+        else if (_isGuard)
+        {
+
+        }
     }
 }
