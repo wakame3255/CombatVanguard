@@ -10,17 +10,15 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
     private float _walkDamp;
 
     [SerializeField]
-    private InterruptionAnimationInformation _interruptionAnimationInfo;
-    [SerializeField]
-    private AttackAnimationInformation _attackAnimationInfo;
+    private AnimationData _animationData;
+ 
     [SerializeField]
     private InsertAnimationSystem _insertAnimationSystem;
 
     private Transform _characterTransform;
     private Animator _animator;
 
-    public InterruptionAnimationInformation InterruptionAnimationInfo { get => _interruptionAnimationInfo; }
-    public AttackAnimationInformation AttackAnimationInfo { get => _attackAnimationInfo; }
+   public AnimationData AnimationData { get => _animationData; }
 
     public ReactiveProperty<bool> ReactivePropertyIsAnimation { get => _insertAnimationSystem.ReactivePropertyIsAnimation; }
     public bool IsAnimation { get; private set; }

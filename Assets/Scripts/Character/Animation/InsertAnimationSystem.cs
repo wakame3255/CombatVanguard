@@ -14,10 +14,18 @@ public class AttackAnimationInformation
     private MatchTargetAnimationData _jabAnimation;
 
     [SerializeField]
+    private MatchTargetAnimationData _mirrorJabAnimation;
+
+    [SerializeField]
     private MatchTargetAnimationData _hitAnimation;
 
+    [SerializeField]
+    private MatchTargetAnimationData _guardHitAnimation;
+
     public MatchTargetAnimationData JabAnimation { get => _jabAnimation; }
+    public MatchTargetAnimationData MirrorJabAnimation { get => _mirrorJabAnimation; }
     public MatchTargetAnimationData HitAnimation { get => _hitAnimation; }
+    public MatchTargetAnimationData GuardHitAnimation { get => _guardHitAnimation; }
 }
 
 [Serializable]

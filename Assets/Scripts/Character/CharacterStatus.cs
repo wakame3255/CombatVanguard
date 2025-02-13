@@ -50,6 +50,16 @@ public class CharacterStatus : MonoBehaviour, ISetAnimation
 
     private bool CheckDoAnimation()
     {
-        return _characterStateCont.ApplicationStateChange(_characterStateCont.StateDataInformation.DownStateData); ;
+        switch (_characterStateCont.CurrentStateData)
+        {
+            case AvoidanceStateData:
+                return false;
+
+            case GuardStateData:
+                 _characterStateCont.ApplicationStateChange(_characterStateCont.StateDataInformation.GuardHitStateData);
+                return false;
+        }
+        _characterStateCont.ApplicationStateChange(_characterStateCont.StateDataInformation.DownStateData);
+        return true;
     }
 }

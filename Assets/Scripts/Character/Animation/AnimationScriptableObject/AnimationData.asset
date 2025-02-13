@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d090ef324cf9c394fafd47a8479906da, type: 3}
+  m_Name: AnimationData
+  m_EditorClassIdentifier: 
+  attackAnimation:
+    _jabAnimation: {fileID: 11400000, guid: 85a605d4332dc2d4bb72415ebd06815b, type: 2}
+    _mirrorJabAnimation: {fileID: 11400000, guid: e90169e6baed0dd498bf28665e891259, type: 2}
+    _hitAnimation: {fileID: 11400000, guid: 04fd7b4dc78aa06419061cb726953875, type: 2}
+    _guardHitAnimation: {fileID: 11400000, guid: 7ad4b12484c7b6d42b96d76135427c67, type: 2}
+  interruptionAnimation:
+    _turnAnimation: {fileID: 11400000, guid: 2ceb0961ee30351409cbe7f034b12ac8, type: 2}
+    _avoidanceAnimation: {fileID: 11400000, guid: a5c75da56b20e5a4e83d98ee51b079f7, type: 2}

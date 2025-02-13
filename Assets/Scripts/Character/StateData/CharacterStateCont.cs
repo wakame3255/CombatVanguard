@@ -38,7 +38,7 @@ public class CharacterStateCont : ICurrentStateChange, IApplicationStateChange
 
     public void UpdateDebug()
     {
-        UnityEngine.Debug.Log(CurrentStateData);
+        //UnityEngine.Debug.Log(CurrentStateData);
     }
 
     public void CheckMoveState(bool isDash, bool isGuard)
@@ -65,6 +65,7 @@ public class StateDataInformation
     public DownStateData DownStateData { get; private set; }
     public AttackStateData AttackStateData { get; private set; }
     public GuardStateData GuardStateData { get; private set; }
+    public GuardHitStateData GuardHitStateData { get; private set; }
     public WalkStateData WalkStateData { get; private set; }
     public DashStateData DashStateData { get; private set; }
     public NormalStateData NormalStateData { get; private set; }
@@ -75,6 +76,7 @@ public class StateDataInformation
         WalkStateData = new WalkStateData(currentStateChange);
         DashStateData = new DashStateData(currentStateChange);
         GuardStateData = new GuardStateData(currentStateChange);
+        GuardHitStateData = new GuardHitStateData(currentStateChange);
         AttackStateData = new AttackStateData(currentStateChange);
         DownStateData = new DownStateData(currentStateChange);
         AvoidanceStateData = new AvoidanceStateData(currentStateChange);

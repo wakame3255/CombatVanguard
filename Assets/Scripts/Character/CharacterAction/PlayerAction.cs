@@ -56,7 +56,7 @@ public class PlayerAction : CharacterActionBase
         inputInformation.ReactivePropertyAvoidance
             .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AvoidanceStateData))
             .Where(isAvoiding => isAvoiding)
-            .Subscribe(isAvoiding => _characterAnimation.DoAnimation(_characterAnimation.InterruptionAnimationInfo.AvoidanceAnimation))
+            .Subscribe(isAvoiding => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AvoidanceStateData))
         .AddTo(_disposables);
 
         //ガードボタン,ダッシュボタンの購読

@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 public class AttackStateData : StateDataBase
 {
+    bool _isJab;
     public AttackStateData(ICurrentStateChange currentStateChange)
     {
         _currentStateChange = currentStateChange;
@@ -26,6 +27,15 @@ public class AttackStateData : StateDataBase
 
     public override void PlayAnimation(CharacterAnimation characterAnimation)
     {
-        characterAnimation.DoAnimation(characterAnimation.AttackAnimationInfo.JabAnimation);
+        if (_isJab)
+        {
+            characterAnimation.DoAnimation(characterAnimation.AnimationData.AttackAnimation.JabAnimation);
+            _isJab = false;
+        }
+        else
+        {
+            characterAnimation.DoAnimation(characterAnimation.AnimationData.AttackAnimation.MirrorJabAnimation);
+            _isJab = true;
+        }
     }
 }
