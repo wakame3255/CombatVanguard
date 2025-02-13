@@ -10,4 +10,5 @@ public interface IApplicationStateChange
     public StateDataBase CurrentStateData { get;}
     public bool ApplicationStateChange(StateDataBase stateData);
     public void UpdateDebug();
+    public void CheckMoveState(bool isDash, bool isGuard);
 }

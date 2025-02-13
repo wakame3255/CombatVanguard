@@ -16,6 +16,7 @@ public class WalkStateData : StateDataBase
                 return false;
         }
 
+        _currentStateChange.ChangeState(stateType);
         return true;
     }
 

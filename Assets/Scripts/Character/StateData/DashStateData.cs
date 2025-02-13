@@ -16,6 +16,7 @@ public class DashStateData : StateDataBase
                 return false;
         }
 
+        _currentStateChange.ChangeState(stateType);
         return true;
     }
 

@@ -61,15 +61,21 @@ public abstract class CharacterActionBase : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// キャラクターの状態をリセットするメソッド
+    /// </summary>
+    /// <param name="isAnimation"></param>
     private void StateReset(bool isAnimation)
     {
         if (isAnimation) return;
-        print("StateReset");
         _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.NormalStateData);       
     }
 
 
-
+    /// <summary>
+    /// キャラクターの状態を管理するクラスの生成
+    /// </summary>
+    /// <param name="characterState">ステート管理クラス</param>
     private void SetCharacterStateCont(CharacterStateCont characterState)
     {
         _characterStateChange = characterState;

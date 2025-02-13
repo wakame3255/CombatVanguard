@@ -55,5 +55,15 @@ public class EnemyAction : CharacterActionBase
            .Where(_ => !_characterAnimation.IsAnimation)
            .Subscribe()
        .AddTo(_disposables);
+
+        //ガードボタン,ダッシュボタンの購読
+        Observable.EveryUpdate()
+             .Subscribe(_ =>
+             {
+                 bool isDash = inputInformation.ReactivePropertyDash.Value;
+                 bool isGuard = inputInformation.ReactivePropertyGuard.Value;
+                 _characterStateChange.CheckMoveState(isDash, isGuard);
+             })
+             .AddTo(_disposables);
     }
 }

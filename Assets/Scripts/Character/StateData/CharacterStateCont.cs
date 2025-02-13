@@ -40,6 +40,22 @@ public class CharacterStateCont : ICurrentStateChange, IApplicationStateChange
     {
         UnityEngine.Debug.Log(CurrentStateData);
     }
+
+    public void CheckMoveState(bool isDash, bool isGuard)
+    {
+        if (isGuard)
+        {
+            ApplicationStateChange(StateDataInformation.GuardStateData);
+        }
+        else if (isDash)
+        {
+            ApplicationStateChange(StateDataInformation.DashStateData);
+        }
+        else
+        {
+            ApplicationStateChange(StateDataInformation.WalkStateData);
+        }
+    }
 }
 
 

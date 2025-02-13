@@ -6,10 +6,6 @@ public class PlayerAction : CharacterActionBase
 {
     private Transform _playerCamera;
 
-    private bool _isWalk = default;
-    private bool _isDash = default;
-    private bool _isGuard = default;
-
     protected override void Awake()
     {
         _playerCamera = Camera.main.gameObject.transform;
@@ -19,7 +15,7 @@ public class PlayerAction : CharacterActionBase
 
      void Update()
     {
-        _characterStateChange.UpdateDebug();       
+        _characterStateChange.UpdateDebug();
     }
        
 
@@ -63,29 +59,16 @@ public class PlayerAction : CharacterActionBase
             .Subscribe(isAvoiding => _characterAnimation.DoAnimation(_characterAnimation.InterruptionAnimationInfo.AvoidanceAnimation))
         .AddTo(_disposables);
 
-        //ダッシュボタンの入力購読
+        //ガードボタン,ダッシュボタンの購読
         Observable.EveryUpdate()
-           .WithLatestFrom(inputInformation.ReactivePropertyDash, (_, move) => move)
-           .Subscribe(isDash => _isDash = isDash)
-       .AddTo(_disposables);
-
-
-        //ガードボタンの入力購読
-        Observable.EveryUpdate()
-           .WithLatestFrom(inputInformation.ReactivePropertyGuard, (_, move) => move)
-           .Subscribe(isGuard => _isGuard = isGuard)
-       .AddTo(_disposables);
+             .Subscribe(_ =>
+             {
+                bool isDash = inputInformation.ReactivePropertyDash.Value;
+                bool isGuard = inputInformation.ReactivePropertyGuard.Value;
+                 _characterStateChange.CheckMoveState(isDash, isGuard);
+             })
+             .AddTo(_disposables);
     }
 
-    private void CheckState()
-    {
-        if (_isGuard)
-        {
-            _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.GuardStateData);
-        }
-        else if (_isGuard)
-        {
-
-        }
-    }
+   
 }

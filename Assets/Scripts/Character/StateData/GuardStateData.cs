@@ -14,6 +14,8 @@ public class GuardStateData : StateDataBase
             case GuardStateData:
                 return false;
         }
+
+        _currentStateChange.ChangeState(stateType);
         return true;
     }
 

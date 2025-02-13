@@ -63,11 +63,19 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
 
     private void AnimationReset(string DoAnim)
     {
-        _animator.SetBool(AnimationStringUtility.IsDashName, true);
+      
 
         foreach (AnimatorControllerParameter anim in _animator.parameters)
         {
-            if (anim.name != DoAnim)
+            if (anim.type  != AnimatorControllerParameterType.Bool)
+            {
+                continue;
+            }
+            if (anim.name == DoAnim)
+            {              
+                _animator.SetBool(anim.name, true);
+            }
+            else
             {
                 _animator.SetBool(anim.name, false);
             }
