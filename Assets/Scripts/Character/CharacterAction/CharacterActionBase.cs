@@ -59,6 +59,8 @@ public abstract class CharacterActionBase : MonoBehaviour
         {
             hasComp.SetAnimationComponent(_characterAnimation);
         }
+
+        _attackAction.SetStateCont(_characterStateChange);
     }
 
     /// <summary>

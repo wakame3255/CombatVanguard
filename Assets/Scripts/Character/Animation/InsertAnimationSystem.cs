@@ -55,7 +55,7 @@ public class InsertAnimationSystem : MonoBehaviour
     private Playable _playable;
     private AnimationPlayableOutput _playableOutput;
 
-    private CancellationTokenSource cancellationTokenSource;
+    private CancellationTokenSource _cancellationTokenSource;
 
 
     private ReactiveProperty<bool> _reactivePropertyIsAnimation = new ReactiveProperty<bool>(false);
@@ -102,8 +102,8 @@ public class InsertAnimationSystem : MonoBehaviour
     public async UniTask AnimationPlay(MatchTargetAnimationData animationClip)
     {
         // 既存のトークンソースがあれば破棄して新規に作成
-        cancellationTokenSource?.Cancel();
-        cancellationTokenSource = new CancellationTokenSource();
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource = new CancellationTokenSource();
 
         // アニメーションクリップのnullチェック
         MyExtensionClass.CheckArgumentNull(animationClip, nameof(animationClip));
@@ -126,7 +126,7 @@ public class InsertAnimationSystem : MonoBehaviour
         _targetMatchMove.SetMatchTargetAnimationData(animationClip, _targetPos);
 
             // トランジション開始を待機（アニメーション長の半分の時間）
-        await AnimTransition(animationClip.AnimationClip.length / 2f, true, cancellationTokenSource.Token);
+        await AnimTransition(animationClip.AnimationClip.length / 2f, true, _cancellationTokenSource.Token);
 
         // Playableグラフを停止
         _playableGraph.Stop();
@@ -142,7 +142,7 @@ public class InsertAnimationSystem : MonoBehaviour
         _playableGraph.Play();
 
         // トランジション終了を待機
-        await AnimTransition(animationClip.AnimationClip.length / 2f, false, cancellationTokenSource.Token);
+        await AnimTransition(animationClip.AnimationClip.length / 2f, false, _cancellationTokenSource.Token);
 
         // Playableのクリーンアップを行い、グラフは維持
         if (_playable.IsValid())

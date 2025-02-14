@@ -1,15 +1,20 @@
 
 using UnityEngine;
 using R3;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 
 public class AttackAction : MonoBehaviour, ISetTransform, ISetStateCont
 {
+    [SerializeField]
+    private LayerMask _hitLayerMask;
+
     private Transform _characterTransform;
 
     private CompositeDisposable _disposables = new CompositeDisposable();
 
-    [SerializeField]
-    private LayerMask _hitLayerMask;
+    private CancellationTokenSource _cancellationTokenSource;
 
     private RaycastHit[] _raycastHits;
 
@@ -23,24 +28,12 @@ public class AttackAction : MonoBehaviour, ISetTransform, ISetStateCont
     /// 攻撃を行ってくれるクラス
     /// </summary>
     /// <param name="animationClip">アニメーションに準拠して攻撃判定を行う</param>
-    public void DoAction(AnimationClip animationClip)
+    public async void DoAction(MatchTargetAnimationData animationClip)
     {
-        int hitCount = Physics.SphereCastNonAlloc(_characterTransform.position + (_characterTransform.forward * 0.1f), 0.5f, _characterTransform.forward, _raycastHits, 0.5f, _hitLayerMask);
-
-        for (int i = 0; i < hitCount; i++)
-        {
-            if (_raycastHits[i].collider.TryGetComponent<CharacterStatus>(out CharacterStatus character))
-            {
-                character.DoDamage(1);
-            }      
-        }
+        List<Collider> hitList = new List<Collider>();
+        await DoActionAsync(animationClip, _cancellationTokenSource.Token, hitList);
+        DebugUtility.Log("攻撃終了");
     }
-
-　//private UniTask DoActionAsync(AnimationClip animationClip, )
- //   {
- //       DoAction(animationClip);
- //       return UniTask.CompletedTask;
- //   }
 
     public void SetCharacterTransform(Transform characterTransform)
     {
@@ -53,8 +46,61 @@ public class AttackAction : MonoBehaviour, ISetTransform, ISetStateCont
             .AddTo(_disposables);
     }
 
+    private async UniTask DoActionAsync(MatchTargetAnimationData animationClip, CancellationToken token, List<Collider> hitList)
+    {
+        float startTime = Time.timeSinceLevelLoad;
+        float endTime = startTime + animationClip.AnimationClip.length;
+
+        while (Time.timeSinceLevelLoad < endTime)
+        {
+            foreach (MatchTargetAnimationData.StartAnimationTimeList timeList in animationClip.AnimationTimeList)
+            {
+                float normalizedTime = (animationClip.AnimationClip.length - (endTime - Time.timeSinceLevelLoad)) / animationClip.AnimationClip.length;
+                if (normalizedTime >= timeList.StartNormalizedTime && normalizedTime <= timeList.EndNormalizedTime)
+                {
+                    DoAttack(hitList);
+                }
+            }
+
+            await UniTask.Yield(PlayerLoopTiming.Update, token);
+        }
+    }
+
+    private void DoAttack(List<Collider> hitList)
+    {
+        int hitCount = Physics.SphereCastNonAlloc(_characterTransform.position + (_characterTransform.forward * 0.1f), 0.5f, _characterTransform.forward, _raycastHits, 0.5f, _hitLayerMask);
+        for (int i = 0; i < hitCount; i++)
+        {
+            bool isHit = false;
+
+            foreach (Collider collider in hitList)
+            {
+                if (collider == _raycastHits[i].collider)
+                {
+                    isHit = true;
+                    break; ;
+                }
+            }
+
+            if (isHit)
+            {
+                continue;
+            }
+
+            if (_raycastHits[i].collider.TryGetComponent<CharacterStatus>(out CharacterStatus character))
+            {
+                character.DoDamage(1);
+                hitList.Add(_raycastHits[i].collider);
+            }
+        }
+    }
+
     private void UpDateState(StateDataBase stateData)
     {
-
+        if (!(stateData is AttackStateData))
+        {
+            _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource = new CancellationTokenSource();
+        }
     }
 }
