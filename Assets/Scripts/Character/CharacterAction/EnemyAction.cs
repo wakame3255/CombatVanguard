@@ -9,6 +9,11 @@ public class EnemyAction : CharacterActionBase
        base.Awake();
     }
 
+    private void Update()
+    {
+        //_characterStateChange.UpdateDebug();
+    }
+
     void OnDestroy()
     {
         _disposables.Dispose();

@@ -39,6 +39,16 @@ public class PlayerAction : CharacterActionBase
      .Subscribe(inputXY => _moveAction.DoMove(GetChangeInput(inputXY, _playerCamera.forward), _characterStateChange))
      .AddTo(_disposables);
 
+        //舞フレームガードボタン,ダッシュボタンの購読
+        Observable.EveryUpdate()
+             .Subscribe(_ =>
+             {
+                 bool isDash = inputInformation.ReactivePropertyDash.Value;
+                 bool isGuard = inputInformation.ReactivePropertyGuard.Value;
+                 _characterStateChange.CheckMoveState(isDash, isGuard);
+             })
+             .AddTo(_disposables);
+
         //毎フレーム更新の向き変更更新
         Observable.EveryUpdate()
      .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
@@ -52,22 +62,12 @@ public class PlayerAction : CharacterActionBase
             .Subscribe(isAttack => _attackAction.DoAction(_characterAnimation.AnimationData.AttackAnimation.JabAnimation))
         .AddTo(_disposables);
 
-        //ジャンプボタンの入力購読
+        //回避の入力購読
         inputInformation.ReactivePropertyAvoidance
             .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AvoidanceStateData))
             .Where(isAvoiding => isAvoiding)
             .Subscribe(isAvoiding => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AvoidanceStateData))
         .AddTo(_disposables);
-
-        //ガードボタン,ダッシュボタンの購読
-        Observable.EveryUpdate()
-             .Subscribe(_ =>
-             {
-                bool isDash = inputInformation.ReactivePropertyDash.Value;
-                bool isGuard = inputInformation.ReactivePropertyGuard.Value;
-                 _characterStateChange.CheckMoveState(isDash, isGuard);
-             })
-             .AddTo(_disposables);
     }
 
    

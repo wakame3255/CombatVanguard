@@ -27,9 +27,17 @@ public class CharacterStatus : MonoBehaviour, ISetAnimation
             ReactivePropertyHp.Value -= damage;
 
             CheckDeath();
+        }     
+    }
+
+    public bool HitParry()
+    {
+        if (_characterStateCont.CurrentStateData is AttackStateData)
+        {
+           _characterStateCont.ApplicationStateChange(_characterStateCont.StateDataInformation.HitParryStateData);
+            return true;
         }
-      
-        
+        return false;
     }
 
     public void SetAnimationComponent(CharacterAnimation characterAnimation)
@@ -55,6 +63,9 @@ public class CharacterStatus : MonoBehaviour, ISetAnimation
         switch (_characterStateCont.CurrentStateData)
         {
             case AvoidanceStateData:
+                return false;
+
+            case ParryStateData:
                 return false;
 
             case GuardStateData:

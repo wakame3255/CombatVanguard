@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53bd36005cc9ef245b7deb1a8b75aed2, type: 3}
-  m_Name: HitAnimation
+  m_Name: ParryAnimation
   m_EditorClassIdentifier: 
-  _animationClip: {fileID: 7400000, guid: 267bef2cda2e3da4daa4e537c0cfd41c, type: 3}
+  _animationClip: {fileID: 7400000, guid: 60197457ef7982e499d828f5500231c2, type: 3}
   _animationTimeList:
   - _startNormalizedTime: 0
     _endNormalizedTime: 0
-    _targetBodyPart: 4
-    _movePositionWeight: 0
-  _matchPosition: {x: 1, y: 1, z: 1}
-  _matchRotationEuler: {x: 1, y: 1, z: 1}
+    _targetBodyPart: 0
+    _movePositionWeight: 1
+  _matchPosition: {x: 0, y: 0, z: 0}
+  _matchRotationEuler: {x: 0, y: 0, z: 0}
   _rotationWeight: 0

@@ -37,8 +37,16 @@ public class InterruptionAnimationInformation
     [SerializeField]
     private MatchTargetAnimationData _avoidanceAnimation;
 
+    [SerializeField]
+    private MatchTargetAnimationData _parryAnimation;
+
+    [SerializeField]
+    private MatchTargetAnimationData _hitParryAnimation;
+
     public MatchTargetAnimationData TurnAnimation { get => _turnAnimation; }
     public MatchTargetAnimationData AvoidanceAnimation { get => _avoidanceAnimation; }
+    public MatchTargetAnimationData ParryAnimation { get => _parryAnimation; }
+    public MatchTargetAnimationData HitParryAnimation { get => _hitParryAnimation; }
 }
 
 public class InsertAnimationSystem : MonoBehaviour
