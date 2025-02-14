@@ -12,6 +12,8 @@ public class CharacterStatus : MonoBehaviour, ISetAnimation
 
     private IApplicationStateChange _characterStateCont;
 
+    public IApplicationStateChange CharacterStateData { get => _characterStateCont; }
+
     private void Awake()
     {
         ReactivePropertyHp.Value = _hp;

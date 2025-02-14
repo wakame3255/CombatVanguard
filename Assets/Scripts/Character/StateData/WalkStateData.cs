@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class WalkStateData : StateDataBase
 {
@@ -20,8 +21,10 @@ public class WalkStateData : StateDataBase
         return true;
     }
 
-    public override void PlayAnimation(CharacterAnimation characterAnimation)
+    public override AnimationClip PlayAnimation(CharacterAnimation characterAnimation)
     {
        characterAnimation.SetAnimationBool("");
+
+        return null;
     }
 }

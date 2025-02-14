@@ -101,7 +101,6 @@ public class InsertAnimationSystem : MonoBehaviour
     // UniTaskを用いたアニメーション再生メソッド
     public async UniTask AnimationPlay(MatchTargetAnimationData animationClip)
     {
-        OnCancelButtonClicked();
         // 既存のトークンソースがあれば破棄して新規に作成
         cancellationTokenSource?.Cancel();
         cancellationTokenSource = new CancellationTokenSource();
@@ -210,15 +209,6 @@ public class InsertAnimationSystem : MonoBehaviour
         if (_playableGraph.IsValid())
         {
             _playableGraph.Destroy();
-        }
-    }
-
-    private void OnCancelButtonClicked()
-    {
-        // タスクが実行中の場合、キャンセルを要求する
-        if (cancellationTokenSource != null)
-        {
-            cancellationTokenSource.Cancel();
         }
     }
 

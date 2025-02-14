@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class DownStateData : StateDataBase
 {
@@ -18,8 +19,10 @@ public class DownStateData : StateDataBase
         return false;
     }
 
-    public override void PlayAnimation(CharacterAnimation characterAnimation)
+    public override AnimationClip PlayAnimation(CharacterAnimation characterAnimation)
     {
         characterAnimation.DoAnimation(characterAnimation.AnimationData.AttackAnimation.HitAnimation);
+
+        return characterAnimation.AnimationData.AttackAnimation.HitAnimation.AnimationClip;
     }
 }

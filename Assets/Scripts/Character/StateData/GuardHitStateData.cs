@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class GuardHitStateData : StateDataBase
 {
@@ -18,8 +19,10 @@ public class GuardHitStateData : StateDataBase
         return false;
     }
 
-    public override void PlayAnimation(CharacterAnimation characterAnimation)
+    public override AnimationClip PlayAnimation(CharacterAnimation characterAnimation)
     {
         characterAnimation.DoAnimation(characterAnimation.AnimationData.AttackAnimation.GuardHitAnimation);
+
+        return characterAnimation.AnimationData.AttackAnimation.GuardHitAnimation.AnimationClip;
     }
 }

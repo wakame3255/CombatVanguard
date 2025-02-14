@@ -35,7 +35,7 @@ public class CameraContllor : MonoBehaviour
         Vector3 cameraDirection = (_PlayerPos.position - _mainCamera.transform.position);
 
         int hitCount = Physics.BoxCastNonAlloc
-            (_mainCamera.transform.position, Vector3.forward * _distance, cameraDirection.normalized, _raycastHits, Quaternion.identity, _distance, _hitLayerMask);
+            (_mainCamera.transform.position, Vector3.one * _distance, cameraDirection.normalized, _raycastHits, Quaternion.identity, _distance, _hitLayerMask);
 
         for (int i = 0; i < hitCount; i++)
         {

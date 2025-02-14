@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class DashStateData : StateDataBase
 {
@@ -20,8 +21,10 @@ public class DashStateData : StateDataBase
         return true;
     }
 
-    public override void PlayAnimation(CharacterAnimation characterAnimation)
+    public override AnimationClip PlayAnimation(CharacterAnimation characterAnimation)
     {
        characterAnimation.SetAnimationBool(AnimationStringUtility.IsDashName);
+
+        return null;
     }
 }

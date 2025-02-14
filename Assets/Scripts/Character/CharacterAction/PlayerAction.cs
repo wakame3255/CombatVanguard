@@ -49,7 +49,7 @@ public class PlayerAction : CharacterActionBase
         //攻撃ボタンの入力購読
         inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack)
             .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AttackStateData))
-            .Subscribe(isAttack => _attackAction.DoAction())
+            .Subscribe(isAttack => _attackAction.DoAction(_characterAnimation.AnimationData.AttackAnimation.JabAnimation.AnimationClip))
         .AddTo(_disposables);
 
         //ジャンプボタンの入力購読

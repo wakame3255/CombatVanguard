@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class GuardStateData : StateDataBase
 {
@@ -19,8 +20,10 @@ public class GuardStateData : StateDataBase
         return true;
     }
 
-    public override void PlayAnimation(CharacterAnimation characterAnimation)
+    public override AnimationClip PlayAnimation(CharacterAnimation characterAnimation)
     {
         characterAnimation.SetAnimationBool(AnimationStringUtility.IsGuardName);
+
+        return null;
     }
 }

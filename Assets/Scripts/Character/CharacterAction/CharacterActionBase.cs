@@ -54,7 +54,7 @@ public abstract class CharacterActionBase : MonoBehaviour
             hasComp.SetCharacterTransform(transform);
         }
 
-        ISetAnimation[] setAnimations = new ISetAnimation[] { _moveAction, _attackAction, _characterStatus };
+        ISetAnimation[] setAnimations = new ISetAnimation[] { _moveAction, _characterStatus };
         foreach (ISetAnimation hasComp in setAnimations)
         {
             hasComp.SetAnimationComponent(_characterAnimation);

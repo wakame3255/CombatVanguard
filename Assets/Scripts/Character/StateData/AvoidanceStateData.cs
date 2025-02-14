@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class AvoidanceStateData : StateDataBase
 {
@@ -19,8 +20,10 @@ public class AvoidanceStateData : StateDataBase
         return false;
     }
 
-    public override void PlayAnimation(CharacterAnimation characterAnimation)
+    public override AnimationClip PlayAnimation(CharacterAnimation characterAnimation)
     {
        characterAnimation.DoAnimation(characterAnimation.AnimationData.InterruptionAnimation.AvoidanceAnimation);
+
+        return characterAnimation.AnimationData.InterruptionAnimation.AvoidanceAnimation.AnimationClip;
     }
 }
