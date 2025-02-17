@@ -12,7 +12,7 @@ public class GuardHitStateData : StateDataBase
     {
         switch (stateType)
         {
-            case GuardStateData:
+            case NormalStateData:
                 _currentStateChange.ChangeState(stateType);
                 return true;
         }

@@ -44,7 +44,7 @@ public class EnemyAction : CharacterActionBase
         //攻撃ボタンの入力購読
         inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack)
             .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AttackStateData))
-            .Subscribe(isAttack => _attackAction.DoAction(_characterAnimation.AnimationData.AttackAnimation.JabAnimation))
+            .Subscribe(async isAttack => await _attackAction.DoAction(_characterAnimation.AnimationData.AttackAnimation.JabAnimation))
         .AddTo(_disposables);
 
         //ジャンプボタンの入力購読

@@ -59,7 +59,7 @@ public class PlayerAction : CharacterActionBase
         //UŒ‚ƒ{ƒ^ƒ“‚Ì“ü—Íw“Ç
         inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack)
             .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AttackStateData))
-            .Subscribe(isAttack => _attackAction.DoAction(_characterAnimation.AnimationData.AttackAnimation.JabAnimation))
+            .Subscribe(async isAttack => await _attackAction.DoAction(_characterAnimation.AnimationData.AttackAnimation.JabAnimation))
         .AddTo(_disposables);
 
         //‰ñ”ğ‚Ì“ü—Íw“Ç

@@ -20,6 +20,7 @@ public class AttackAction : MonoBehaviour, ISetTransform, ISetStateCont
 
     private void Awake()
     {
+        _cancellationTokenSource = new CancellationTokenSource();
         _raycastHits = new RaycastHit[1];
     }
 
@@ -28,11 +29,10 @@ public class AttackAction : MonoBehaviour, ISetTransform, ISetStateCont
     /// 攻撃を行ってくれるクラス
     /// </summary>
     /// <param name="animationClip">アニメーションに準拠して攻撃判定を行う</param>
-    public async void DoAction(MatchTargetAnimationData animationClip)
+    public async UniTask DoAction(MatchTargetAnimationData animationClip)
     {
         List<Collider> hitList = new List<Collider>();
         await DoActionAsync(animationClip, _cancellationTokenSource.Token, hitList);
-        DebugUtility.Log("攻撃終了");
     }
 
     public void SetCharacterTransform(Transform characterTransform)

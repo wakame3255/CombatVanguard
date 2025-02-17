@@ -32,7 +32,6 @@ public class ParryAction : MonoBehaviour, ISetTransform, ISetStateCont
 
     private void CheckParry(StateDataBase stateData)
     {
-        print("パリーのチェック");
         if (!(stateData is GuardStateData))
         {
             return;

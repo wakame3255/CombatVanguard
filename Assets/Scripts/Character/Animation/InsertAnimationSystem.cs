@@ -6,6 +6,8 @@ using R3;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using Unity.VisualScripting;
+using System.Collections.Generic;
+using UnityEngine.InputSystem.Utilities;
 
 [Serializable]
 public class AttackAnimationInformation
@@ -69,7 +71,6 @@ public class InsertAnimationSystem : MonoBehaviour
     private ReactiveProperty<bool> _reactivePropertyIsAnimation = new ReactiveProperty<bool>(false);
 
     public ReactiveProperty<bool> ReactivePropertyIsAnimation { get => _reactivePropertyIsAnimation; }
-
     private void Awake()
     {
         // TargetMatchMoveコンポーネントを追加
