@@ -2,10 +2,14 @@
 using UnityEngine;
 using R3;
 using Cysharp.Threading.Tasks;
+using System;
+using UnityEngine.SceneManagement;
+using UnityEditor.Search.Providers;
 
 [RequireComponent(typeof(Animator))]
 public class CharacterAnimation : MonoBehaviour, ISetTransform
 {
+
     [SerializeField]
     private float _walkDamp;
 

@@ -68,6 +68,9 @@ public class CharacterStatus : MonoBehaviour, ISetAnimation
             case ParryStateData:
                 return false;
 
+            case DownStateData:
+                return false;
+
             case GuardStateData:
                  _characterStateCont.ApplicationStateChange(_characterStateCont.StateDataInformation.GuardHitStateData);
                 return false;
