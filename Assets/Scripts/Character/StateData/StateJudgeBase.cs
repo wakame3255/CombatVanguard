@@ -1,7 +1,10 @@
 
 using UnityEngine;
 
-public abstract class StateDataBase
+/// <summary>
+/// ステートデータの基底クラス
+/// </summary>
+public abstract class StateJudgeBase
 {
    protected ICurrentStateChange _currentStateChange;
 
@@ -10,6 +13,5 @@ public abstract class StateDataBase
     /// </summary>
     /// <param name="stateType">次に遷移したいノード</param>
     /// <returns>可能かどうか</returns>
-    public abstract bool CheckChangeState(StateDataBase stateType);
-    public abstract AnimationClip PlayAnimation(CharacterAnimation characterAnimation);
+    public abstract bool CheckChangeState(StateJudgeBase stateType);
 }

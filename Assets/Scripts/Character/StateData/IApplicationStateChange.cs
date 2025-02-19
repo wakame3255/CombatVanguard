@@ -7,9 +7,9 @@ public interface IApplicationStateChange
     /// ステートのデータのみを取得する
     /// </summary>
     public StateDataInformation StateDataInformation { get; }
-    public StateDataBase CurrentStateData { get;}
-    public ReactiveProperty<StateDataBase> CurrentStateDataReactiveProperty { get; }
-    public bool ApplicationStateChange(StateDataBase stateData);
+    public StateJudgeBase CurrentStateData { get;}
+    public ReactiveProperty<StateJudgeBase> CurrentStateDataReactiveProperty { get; }
+    public bool ApplicationStateChange(StateJudgeBase stateData);
     public void UpdateDebug();
     public void CheckMoveState(bool isDash, bool isGuard);
 }

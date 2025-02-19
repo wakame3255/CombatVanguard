@@ -2,6 +2,9 @@ using R3;
 using System.ComponentModel.DataAnnotations;
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーの行動を管理するクラス
+/// </summary>
 public class PlayerAction : CharacterActionBase
 {
     private Transform _playerCamera;
@@ -30,13 +33,22 @@ public class PlayerAction : CharacterActionBase
     /// <param name="inputInformation"></param>
     public void SetInputEvent(IInputInformation inputInformation)
     {
-        MyExtensionClass.CheckArgumentNull(inputInformation, nameof(inputInformation));
+        MyExtensionClass.CheckArgumentNull(inputInformation, nameof(inputInformation));      
+
+        Debug.LogWarning("いろいろ分けてください");
 
         //舞フレーム更新の移動入力購読
         Observable.EveryUpdate()
      .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
      .Where(_ => !_characterAnimation.IsAnimation)
      .Subscribe(inputXY => _moveAction.DoMove(GetChangeInput(inputXY, _playerCamera.forward), _characterStateChange))
+     .AddTo(_disposables);
+
+        //毎フレーム更新の向き変更更新
+        Observable.EveryUpdate()
+     .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
+     .Where(_ => !_characterAnimation.IsAnimation)
+     .Subscribe(inputXY => _rotationMove.DoRotation(GetChangeInput(inputXY, _playerCamera.forward)))
      .AddTo(_disposables);
 
         //舞フレームガードボタン,ダッシュボタンの購読
@@ -49,15 +61,9 @@ public class PlayerAction : CharacterActionBase
              })
              .AddTo(_disposables);
 
-        //毎フレーム更新の向き変更更新
-        Observable.EveryUpdate()
-     .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
-      .Where(_ => !_characterAnimation.IsAnimation)
-     .Subscribe(inputXY => _rotationMove.DoRotation(GetChangeInput(inputXY, _playerCamera.forward)))
-     .AddTo(_disposables);
-
         //攻撃ボタンの入力購読
         inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack)
+            //攻撃のステートに変更があった時の購読
             .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AttackStateData))
             .Subscribe(async isAttack => await _attackAction.DoAction(_characterAnimation.AnimationData.AttackAnimation.JabAnimation))
         .AddTo(_disposables);

@@ -68,6 +68,7 @@ public class EnemyAction : CharacterActionBase
                  bool isDash = inputInformation.ReactivePropertyDash.Value;
                  bool isGuard = inputInformation.ReactivePropertyGuard.Value;
                  _characterStateChange.CheckMoveState(isDash, isGuard);
+                 print("isDash" + isDash + "isGuard" + isGuard);
              })
              .AddTo(_disposables);
     }

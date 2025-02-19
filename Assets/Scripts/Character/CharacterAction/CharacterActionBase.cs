@@ -28,7 +28,7 @@ public abstract class CharacterActionBase : MonoBehaviour
         _characterStatus = this.CheckComponentMissing<CharacterStatus>();
         _characterAnimation = this.CheckComponentMissing<CharacterAnimation>();
 
-        SetCharacterStateCont(new CharacterStateCont());
+        SetCharacterStateCont(new CharacterStateCont(_characterAnimation));
        
         SetInformationComponent();
     }
@@ -85,7 +85,6 @@ public abstract class CharacterActionBase : MonoBehaviour
     private void SetCharacterStateCont(CharacterStateCont characterState)
     {
         _characterStateChange = characterState;
-        new AnimationPresenter(characterState, _characterAnimation);
         _characterStatus.SetAnimationCont(characterState);
         _characterAnimation.ReactivePropertyIsAnimation.Subscribe(isAnimation => StateReset(isAnimation));
     }

@@ -65,8 +65,6 @@ public class CharacterAnimation : MonoBehaviour, ISetTransform
 
     private void AnimationReset(string DoAnim)
     {
-      
-
         foreach (AnimatorControllerParameter anim in _animator.parameters)
         {
             if (anim.type  != AnimatorControllerParameterType.Bool)
