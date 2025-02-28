@@ -32,7 +32,7 @@ public class CharacterStatus : MonoBehaviour, ISetAnimation
 
     public bool HitParry()
     {
-        if (_characterStateCont.CurrentStateData is AttackStateJudge)
+        if (_characterStateCont.CurrentStateData is AttackStateData)
         {
            _characterStateCont.ApplicationStateChange(_characterStateCont.StateDataInformation.HitParryStateData);
             return true;
@@ -62,16 +62,13 @@ public class CharacterStatus : MonoBehaviour, ISetAnimation
     {
         switch (_characterStateCont.CurrentStateData)
         {
-            case AvoidanceStateJudge:
+            case AvoidanceStateData:
                 return false;
 
-            case ParryStateJudge:
+            case ParryStateData:
                 return false;
 
-            case DownStateJudge:
-                return false;
-
-            case GuardStateJudge:
+            case GuardStateData:
                  _characterStateCont.ApplicationStateChange(_characterStateCont.StateDataInformation.GuardHitStateData);
                 return false;
         }

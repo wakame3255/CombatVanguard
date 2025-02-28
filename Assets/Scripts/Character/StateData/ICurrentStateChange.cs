@@ -12,5 +12,5 @@ public interface ICurrentStateChange
     /// ステートの変更を行う
     /// </summary>
     /// <param name="stateData">変更指定</param>
-    public void ChangeState(StateJudgeBase stateData);
+    public void ChangeState(StateDataBase stateData);
 }

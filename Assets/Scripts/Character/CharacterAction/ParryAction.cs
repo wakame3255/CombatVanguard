@@ -30,9 +30,9 @@ public class ParryAction : MonoBehaviour, ISetTransform, ISetStateCont
         stateCont.CurrentStateDataReactiveProperty.Subscribe(stateData => CheckParry(stateData));
     }
 
-    private void CheckParry(StateJudgeBase stateData)
+    private void CheckParry(StateDataBase stateData)
     {
-        if (!(stateData is GuardStateJudge))
+        if (!(stateData is GuardStateData))
         {
             return;
         }
