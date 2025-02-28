@@ -55,7 +55,7 @@ public class CharacterAnimationJudge
 
         //Loopアニメーション群
         //SetLoopAnimationDictionary<WalkStateJudge>();
-        DebugUtility.Log("kokokara");
+     
     }
 
     /// <summary>
