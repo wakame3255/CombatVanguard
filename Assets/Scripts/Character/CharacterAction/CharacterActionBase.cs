@@ -11,6 +11,7 @@ public abstract class CharacterActionBase : MonoBehaviour
     protected RotationMove _rotationMove;
     protected PositionMoveAction _moveAction;
     protected AttackAction _attackAction;
+    protected ParryAction _parryAction;
     protected CharacterAnimation _characterAnimation;
     protected CharacterStatus _characterStatus;
     protected IApplicationStateChange _characterStateChange;
@@ -22,6 +23,7 @@ public abstract class CharacterActionBase : MonoBehaviour
     {
         _moveAction = this.CheckComponentMissing<PositionMoveAction>(_actionPosition);
         _attackAction = this.CheckComponentMissing<AttackAction>(_actionPosition);
+        _parryAction = this.CheckComponentMissing<ParryAction>(_actionPosition);
         _rotationMove = this.CheckComponentMissing<RotationMove>(_actionPosition);
         _characterStatus = this.CheckComponentMissing<CharacterStatus>();
         _characterAnimation = this.CheckComponentMissing<CharacterAnimation>();
@@ -48,28 +50,38 @@ public abstract class CharacterActionBase : MonoBehaviour
 
     protected void SetInformationComponent()
     {
-        ISetTransform[] setTransforms = new ISetTransform[] { _moveAction, _rotationMove, _characterAnimation, _attackAction };
+        ISetTransform[] setTransforms = new ISetTransform[] 
+        { _moveAction, _rotationMove, _characterAnimation, _attackAction, _parryAction};
         foreach (ISetTransform hasComp in setTransforms)
         {
             hasComp.SetCharacterTransform(transform);
         }
 
-        ISetAnimation[] setAnimations = new ISetAnimation[] { _moveAction, _attackAction, _characterStatus };
+        ISetAnimation[] setAnimations = new ISetAnimation[] { _moveAction, _characterStatus };
         foreach (ISetAnimation hasComp in setAnimations)
         {
             hasComp.SetAnimationComponent(_characterAnimation);
         }
+
+        _attackAction.SetStateCont(_characterStateChange);
+        _parryAction.SetStateCont(_characterStateChange);
     }
 
+    /// <summary>
+    /// キャラクターの状態をリセットするメソッド
+    /// </summary>
+    /// <param name="isAnimation"></param>
     private void StateReset(bool isAnimation)
     {
         if (isAnimation) return;
-        print("StateReset");
         _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.NormalStateData);       
     }
 
 
-
+    /// <summary>
+    /// キャラクターの状態を管理するクラスの生成
+    /// </summary>
+    /// <param name="characterState">ステート管理クラス</param>
     private void SetCharacterStateCont(CharacterStateCont characterState)
     {
         _characterStateChange = characterState;

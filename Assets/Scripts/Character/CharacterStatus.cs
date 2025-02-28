@@ -12,6 +12,8 @@ public class CharacterStatus : MonoBehaviour, ISetAnimation
 
     private IApplicationStateChange _characterStateCont;
 
+    public IApplicationStateChange CharacterStateData { get => _characterStateCont; }
+
     private void Awake()
     {
         ReactivePropertyHp.Value = _hp;
@@ -25,9 +27,17 @@ public class CharacterStatus : MonoBehaviour, ISetAnimation
             ReactivePropertyHp.Value -= damage;
 
             CheckDeath();
+        }     
+    }
+
+    public bool HitParry()
+    {
+        if (_characterStateCont.CurrentStateData is AttackStateData)
+        {
+           _characterStateCont.ApplicationStateChange(_characterStateCont.StateDataInformation.HitParryStateData);
+            return true;
         }
-      
-        
+        return false;
     }
 
     public void SetAnimationComponent(CharacterAnimation characterAnimation)
@@ -50,6 +60,19 @@ public class CharacterStatus : MonoBehaviour, ISetAnimation
 
     private bool CheckDoAnimation()
     {
-        return _characterStateCont.ApplicationStateChange(_characterStateCont.StateDataInformation.DownStateData); ;
+        switch (_characterStateCont.CurrentStateData)
+        {
+            case AvoidanceStateData:
+                return false;
+
+            case ParryStateData:
+                return false;
+
+            case GuardStateData:
+                 _characterStateCont.ApplicationStateChange(_characterStateCont.StateDataInformation.GuardHitStateData);
+                return false;
+        }
+        _characterStateCont.ApplicationStateChange(_characterStateCont.StateDataInformation.DownStateData);
+        return true;
     }
 }

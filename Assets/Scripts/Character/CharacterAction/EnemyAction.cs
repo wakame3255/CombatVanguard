@@ -9,6 +9,11 @@ public class EnemyAction : CharacterActionBase
        base.Awake();
     }
 
+    private void Update()
+    {
+        //_characterStateChange.UpdateDebug();
+    }
+
     void OnDestroy()
     {
         _disposables.Dispose();
@@ -39,14 +44,14 @@ public class EnemyAction : CharacterActionBase
         //攻撃ボタンの入力購読
         inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack)
             .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AttackStateData))
-            .Subscribe(isAttack => _attackAction.DoAction())
+            .Subscribe(async isAttack => await _attackAction.DoAction(_characterAnimation.AnimationData.AttackAnimation.JabAnimation))
         .AddTo(_disposables);
 
         //ジャンプボタンの入力購読
         inputInformation.ReactivePropertyAvoidance
             .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AvoidanceStateData))
             .Where(isAvoiding => isAvoiding)
-            .Subscribe(isAvoiding => _characterAnimation.DoAnimation(_characterAnimation.InterruptionAnimationInfo.AvoidanceAnimation))
+            .Subscribe(isAvoiding => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AvoidanceStateData))
         .AddTo(_disposables);
 
         //ダッシュボタンの入力購読
@@ -55,5 +60,15 @@ public class EnemyAction : CharacterActionBase
            .Where(_ => !_characterAnimation.IsAnimation)
            .Subscribe()
        .AddTo(_disposables);
+
+        //ガードボタン,ダッシュボタンの購読
+        Observable.EveryUpdate()
+             .Subscribe(_ =>
+             {
+                 bool isDash = inputInformation.ReactivePropertyDash.Value;
+                 bool isGuard = inputInformation.ReactivePropertyGuard.Value;
+                 _characterStateChange.CheckMoveState(isDash, isGuard);
+             })
+             .AddTo(_disposables);
     }
 }

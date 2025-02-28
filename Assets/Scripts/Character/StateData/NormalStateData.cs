@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using UnityEngine;
 
 
 public class NormalStateData : StateDataBase
@@ -16,8 +17,8 @@ public class NormalStateData : StateDataBase
         return true;
     }
 
-    public override void PlayAnimation(CharacterAnimation characterAnimation)
+    public override AnimationClip PlayAnimation(CharacterAnimation characterAnimation)
     {
-
+        return null;
     }
 }

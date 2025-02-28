@@ -59,7 +59,7 @@ public class PlayerInput : MonoBehaviour, IInputInformation
     {
         _reactivePropertyAttack.Value = Mouse.current.leftButton.wasPressedThisFrame;
 
-        _reactivePropertyGuard.Value = Mouse.current.rightButton.wasPressedThisFrame;
+        _reactivePropertyGuard.Value = Mouse.current.rightButton.isPressed;
 
         _reactivePropertyAvoidance.Value = Keyboard.current.spaceKey.wasPressedThisFrame;
 

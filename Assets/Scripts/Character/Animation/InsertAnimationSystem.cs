@@ -6,6 +6,8 @@ using R3;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using Unity.VisualScripting;
+using System.Collections.Generic;
+using UnityEngine.InputSystem.Utilities;
 
 [Serializable]
 public class AttackAnimationInformation
@@ -14,10 +16,18 @@ public class AttackAnimationInformation
     private MatchTargetAnimationData _jabAnimation;
 
     [SerializeField]
+    private MatchTargetAnimationData _mirrorJabAnimation;
+
+    [SerializeField]
     private MatchTargetAnimationData _hitAnimation;
 
+    [SerializeField]
+    private MatchTargetAnimationData _guardHitAnimation;
+
     public MatchTargetAnimationData JabAnimation { get => _jabAnimation; }
+    public MatchTargetAnimationData MirrorJabAnimation { get => _mirrorJabAnimation; }
     public MatchTargetAnimationData HitAnimation { get => _hitAnimation; }
+    public MatchTargetAnimationData GuardHitAnimation { get => _guardHitAnimation; }
 }
 
 [Serializable]
@@ -29,8 +39,16 @@ public class InterruptionAnimationInformation
     [SerializeField]
     private MatchTargetAnimationData _avoidanceAnimation;
 
+    [SerializeField]
+    private MatchTargetAnimationData _parryAnimation;
+
+    [SerializeField]
+    private MatchTargetAnimationData _hitParryAnimation;
+
     public MatchTargetAnimationData TurnAnimation { get => _turnAnimation; }
     public MatchTargetAnimationData AvoidanceAnimation { get => _avoidanceAnimation; }
+    public MatchTargetAnimationData ParryAnimation { get => _parryAnimation; }
+    public MatchTargetAnimationData HitParryAnimation { get => _hitParryAnimation; }
 }
 
 public class InsertAnimationSystem : MonoBehaviour
@@ -47,13 +65,12 @@ public class InsertAnimationSystem : MonoBehaviour
     private Playable _playable;
     private AnimationPlayableOutput _playableOutput;
 
-    private CancellationTokenSource cancellationTokenSource;
+    private CancellationTokenSource _cancellationTokenSource;
 
 
     private ReactiveProperty<bool> _reactivePropertyIsAnimation = new ReactiveProperty<bool>(false);
 
     public ReactiveProperty<bool> ReactivePropertyIsAnimation { get => _reactivePropertyIsAnimation; }
-
     private void Awake()
     {
         // TargetMatchMoveコンポーネントを追加
@@ -93,10 +110,9 @@ public class InsertAnimationSystem : MonoBehaviour
     // UniTaskを用いたアニメーション再生メソッド
     public async UniTask AnimationPlay(MatchTargetAnimationData animationClip)
     {
-        OnCancelButtonClicked();
         // 既存のトークンソースがあれば破棄して新規に作成
-        cancellationTokenSource?.Cancel();
-        cancellationTokenSource = new CancellationTokenSource();
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource = new CancellationTokenSource();
 
         // アニメーションクリップのnullチェック
         MyExtensionClass.CheckArgumentNull(animationClip, nameof(animationClip));
@@ -119,7 +135,7 @@ public class InsertAnimationSystem : MonoBehaviour
         _targetMatchMove.SetMatchTargetAnimationData(animationClip, _targetPos);
 
             // トランジション開始を待機（アニメーション長の半分の時間）
-        await AnimTransition(animationClip.AnimationClip.length / 2f, true, cancellationTokenSource.Token);
+        await AnimTransition(animationClip.AnimationClip.length / 2f, true, _cancellationTokenSource.Token);
 
         // Playableグラフを停止
         _playableGraph.Stop();
@@ -135,7 +151,7 @@ public class InsertAnimationSystem : MonoBehaviour
         _playableGraph.Play();
 
         // トランジション終了を待機
-        await AnimTransition(animationClip.AnimationClip.length / 2f, false, cancellationTokenSource.Token);
+        await AnimTransition(animationClip.AnimationClip.length / 2f, false, _cancellationTokenSource.Token);
 
         // Playableのクリーンアップを行い、グラフは維持
         if (_playable.IsValid())
@@ -202,15 +218,6 @@ public class InsertAnimationSystem : MonoBehaviour
         if (_playableGraph.IsValid())
         {
             _playableGraph.Destroy();
-        }
-    }
-
-    private void OnCancelButtonClicked()
-    {
-        // タスクが実行中の場合、キャンセルを要求する
-        if (cancellationTokenSource != null)
-        {
-            cancellationTokenSource.Cancel();
         }
     }
 

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animationClip: {fileID: 7400000, guid: a67f067962a70b1429b476b7c0849bbe, type: 2}
   _animationTimeList:
-  - _startNormalizedTime: 0
-    _endNormalizedTime: 0.403
+  - _startNormalizedTime: 0.37
+    _endNormalizedTime: 0.4
     _targetBodyPart: 4
     _movePositionWeight: 1
   _matchPosition: {x: 1, y: 1, z: 1}

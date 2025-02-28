@@ -6,10 +6,6 @@ public class PlayerAction : CharacterActionBase
 {
     private Transform _playerCamera;
 
-    private bool _isWalk = default;
-    private bool _isDash = default;
-    private bool _isGuard = default;
-
     protected override void Awake()
     {
         _playerCamera = Camera.main.gameObject.transform;
@@ -19,7 +15,7 @@ public class PlayerAction : CharacterActionBase
 
      void Update()
     {
-        _characterStateChange.UpdateDebug();       
+        _characterStateChange.UpdateDebug();
     }
        
 
@@ -43,6 +39,16 @@ public class PlayerAction : CharacterActionBase
      .Subscribe(inputXY => _moveAction.DoMove(GetChangeInput(inputXY, _playerCamera.forward), _characterStateChange))
      .AddTo(_disposables);
 
+        //舞フレームガードボタン,ダッシュボタンの購読
+        Observable.EveryUpdate()
+             .Subscribe(_ =>
+             {
+                 bool isDash = inputInformation.ReactivePropertyDash.Value;
+                 bool isGuard = inputInformation.ReactivePropertyGuard.Value;
+                 _characterStateChange.CheckMoveState(isDash, isGuard);
+             })
+             .AddTo(_disposables);
+
         //毎フレーム更新の向き変更更新
         Observable.EveryUpdate()
      .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
@@ -53,34 +59,16 @@ public class PlayerAction : CharacterActionBase
         //攻撃ボタンの入力購読
         inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack)
             .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AttackStateData))
-            .Subscribe(isAttack => _attackAction.DoAction())
+            .Subscribe(async isAttack => await _attackAction.DoAction(_characterAnimation.AnimationData.AttackAnimation.JabAnimation))
         .AddTo(_disposables);
 
-        //ジャンプボタンの入力購読
+        //回避の入力購読
         inputInformation.ReactivePropertyAvoidance
             .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AvoidanceStateData))
             .Where(isAvoiding => isAvoiding)
-            .Subscribe(isAvoiding => _characterAnimation.DoAnimation(_characterAnimation.InterruptionAnimationInfo.AvoidanceAnimation))
+            .Subscribe(isAvoiding => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AvoidanceStateData))
         .AddTo(_disposables);
-
-        //ダッシュボタンの入力購読
-        Observable.EveryUpdate()
-           .WithLatestFrom(inputInformation.ReactivePropertyDash, (_, move) => move)
-           .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.DashStateData))
-           .Subscribe()
-       .AddTo(_disposables);
-
-
-        //ガードボタンの入力購読
-        Observable.EveryUpdate()
-           .WithLatestFrom(inputInformation.ReactivePropertyGuard, (_, move) => move)
-           .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.GuardStateData))
-           .Subscribe()
-       .AddTo(_disposables);
     }
 
-    private void CheckState()
-    {
-        
-    }
+   
 }

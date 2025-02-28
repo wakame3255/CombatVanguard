@@ -1,9 +1,11 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
 public class AttackStateData : StateDataBase
 {
+    private bool _isJab;
     public AttackStateData(ICurrentStateChange currentStateChange)
     {
         _currentStateChange = currentStateChange;
@@ -19,13 +21,28 @@ public class AttackStateData : StateDataBase
             case DownStateData:
                 _currentStateChange.ChangeState(stateType);
                 return true;
+
+            case HitParryStateData:
+                _currentStateChange.ChangeState(stateType);
+                return true;
         }
 
         return false;
     }
 
-    public override void PlayAnimation(CharacterAnimation characterAnimation)
+    public override AnimationClip PlayAnimation(CharacterAnimation characterAnimation)
     {
-        characterAnimation.DoAnimation(characterAnimation.AttackAnimationInfo.JabAnimation);
+        if (_isJab)
+        {
+            characterAnimation.DoAnimation(characterAnimation.AnimationData.AttackAnimation.JabAnimation);
+            _isJab = false;
+            return characterAnimation.AnimationData.AttackAnimation.JabAnimation.AnimationClip;
+        }
+        else
+        {
+            characterAnimation.DoAnimation(characterAnimation.AnimationData.AttackAnimation.MirrorJabAnimation);
+            _isJab = true;
+            return characterAnimation.AnimationData.AttackAnimation.MirrorJabAnimation.AnimationClip;
+        }
     }
 }

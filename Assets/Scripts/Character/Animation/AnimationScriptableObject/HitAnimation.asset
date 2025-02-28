@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53bd36005cc9ef245b7deb1a8b75aed2, type: 3}
   m_Name: HitAnimation
   m_EditorClassIdentifier: 
-  _animationClip: {fileID: 7400000, guid: 388fff0909e6e7f4ca4e39640b02fea5, type: 3}
+  _animationClip: {fileID: 7400000, guid: 267bef2cda2e3da4daa4e537c0cfd41c, type: 3}
   _animationTimeList:
   - _startNormalizedTime: 0
     _endNormalizedTime: 0

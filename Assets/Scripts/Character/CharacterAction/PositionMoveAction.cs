@@ -61,7 +61,7 @@ public class PositionMoveAction : MonoBehaviour, ISetTransform, ISetAnimation
     {
         if (Vector3.Angle(moveDirection, _cacheMoveDirecton) > TURN_ANGLE)
         {
-            _characterAnimation.DoAnimation(_characterAnimation.InterruptionAnimationInfo.TurnAnimation);
+            _characterAnimation.DoAnimation(_characterAnimation.AnimationData.InterruptionAnimation.TurnAnimation);
         }
     }
 }

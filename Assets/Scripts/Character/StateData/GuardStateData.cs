@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class GuardStateData : StateDataBase
 {
@@ -14,11 +15,15 @@ public class GuardStateData : StateDataBase
             case GuardStateData:
                 return false;
         }
+
+        _currentStateChange.ChangeState(stateType);
         return true;
     }
 
-    public override void PlayAnimation(CharacterAnimation characterAnimation)
+    public override AnimationClip PlayAnimation(CharacterAnimation characterAnimation)
     {
         characterAnimation.SetAnimationBool(AnimationStringUtility.IsGuardName);
+
+        return null;
     }
 }

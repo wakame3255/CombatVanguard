@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 public abstract class StateDataBase
 {
    protected ICurrentStateChange _currentStateChange;
@@ -9,5 +11,5 @@ public abstract class StateDataBase
     /// <param name="stateType">Ÿ‚É‘JˆÚ‚µ‚½‚¢ƒm[ƒh</param>
     /// <returns>‰Â”\‚©‚Ç‚¤‚©</returns>
     public abstract bool CheckChangeState(StateDataBase stateType);
-    public abstract void PlayAnimation(CharacterAnimation characterAnimation);
+    public abstract AnimationClip PlayAnimation(CharacterAnimation characterAnimation);
 }
