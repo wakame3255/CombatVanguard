@@ -10,6 +10,8 @@ public class AnimationData : ScriptableObject
     [SerializeField]
     private InterruptionAnimationInformation interruptionAnimation;
 
+    
+
     public AttackAnimationInformation AttackAnimation { get => attackAnimation; }
     public InterruptionAnimationInformation InterruptionAnimation { get => interruptionAnimation; }
 }

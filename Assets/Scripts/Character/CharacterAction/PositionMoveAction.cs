@@ -24,12 +24,12 @@ public class PositionMoveAction : MonoBehaviour, ISetTransform, ISetAnimation
     {
         switch (characterState.CurrentStateData)
         {
-            case WalkStateData or GuardStateData:
+            case WalkStateJudge or GuardStateJudge:
                 DoMovePosition(moveDirection, _walkSpeed);
                 _characterAnimation.DoWalkAnimation(moveDirection);
                 break;
 
-            case DashStateData:
+            case DashStateJudge:
                 CheckDashTurn(moveDirection);
                 DoMovePosition(moveDirection, _dashSpeed);
                 _characterAnimation.DoWalkAnimation(moveDirection);

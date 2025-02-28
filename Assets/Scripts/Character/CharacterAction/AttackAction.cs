@@ -95,9 +95,9 @@ public class AttackAction : MonoBehaviour, ISetTransform, ISetStateCont
         }
     }
 
-    private void UpDateState(StateDataBase stateData)
+    private void UpDateState(StateJudgeBase stateData)
     {
-        if (!(stateData is AttackStateData))
+        if (!(stateData is AttackStateJudge))
         {
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource = new CancellationTokenSource();
