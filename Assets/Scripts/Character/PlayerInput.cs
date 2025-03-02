@@ -30,7 +30,6 @@ public class PlayerInput : MonoBehaviour, IInputInformation
         {
             Debug.LogError(transform.root.name + "複数のインスタンスが存在します");
         }
-        print(Instance);
     }
 
     private void Update()

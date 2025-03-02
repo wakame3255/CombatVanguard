@@ -17,6 +17,7 @@ public class CharacterAnimationJudge
     public CharacterAnimationJudge(CharacterAnimation characterAnimation)
     {
         _insertAnimationDictionary = new Dictionary<Type, MatchTargetAnimationData>();
+        _loopAnimationDictionary = new Dictionary<Type, string>();
 
         _characterAnimation = characterAnimation;
 
@@ -35,7 +36,10 @@ public class CharacterAnimationJudge
             return;
         }
 
-        //Debug.LogWarning($"アニメーションが見つかりません: {stateData.GetType()}");
+        if (_loopAnimationDictionary.TryGetValue(stateData.GetType(), out string animationBoolName))
+        {
+            _characterAnimation.SetAnimationBool(animationBoolName);
+        }
 
     }
 
@@ -54,8 +58,10 @@ public class CharacterAnimationJudge
         SetInsertAnimationDictionary<ParryStateJudge>(characterAnimation.AnimationData.InterruptionAnimation.ParryAnimation);
 
         //Loopアニメーション群
-        //SetLoopAnimationDictionary<WalkStateJudge>();
-     
+        SetLoopAnimationDictionary<WalkStateJudge>("isWalk");
+        SetLoopAnimationDictionary<DashStateJudge>("IsDash");
+        SetLoopAnimationDictionary<GuardStateJudge>("IsGuard");
+
     }
 
     /// <summary>
@@ -71,7 +77,5 @@ public class CharacterAnimationJudge
     private void SetLoopAnimationDictionary<T>(string animationData) where T : StateJudgeBase
     {
         _loopAnimationDictionary.Add(typeof(T), animationData);
-
-
     }
 }

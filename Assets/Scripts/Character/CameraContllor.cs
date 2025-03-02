@@ -39,7 +39,7 @@ public class CameraContllor : MonoBehaviour
 
         for (int i = 0; i < hitCount; i++)
         {
-            print(_raycastHits[i].collider.name);
+          
         }
     }
 }
