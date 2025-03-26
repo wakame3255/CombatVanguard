@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d090ef324cf9c394fafd47a8479906da, type: 3}
-  m_Name: AnimationData
+  m_Name: AnimationDatas
   m_EditorClassIdentifier: 
   attackAnimation:
     _jabAnimation: {fileID: 11400000, guid: 85a605d4332dc2d4bb72415ebd06815b, type: 2}

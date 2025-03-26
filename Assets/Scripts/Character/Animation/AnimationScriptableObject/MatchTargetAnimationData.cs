@@ -5,7 +5,7 @@ using System;
 /// <summary>
 /// アニメーション中のターゲットのマッチングデータを保持するクラス
 /// </summary>
-[CreateAssetMenu(fileName = "MatchTargetAnimationData", menuName = "Animation/MatchTargetAnimationData")]
+[CreateAssetMenu(fileName = "MatchTargetAnimationData", menuName = "Custom/Animation/MatchTargetAnimationData")]
 public class MatchTargetAnimationData : ScriptableObject
 {
     /// <summary>
