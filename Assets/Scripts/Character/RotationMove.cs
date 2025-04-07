@@ -21,7 +21,7 @@ public class RotationMove : MonoBehaviour, ISetTransform
             return;
         }
 
-        if (moveDirection == Vector3.zero && !_cameraContllor.RPIsLockOn.CurrentValue)
+        if (moveDirection != Vector3.zero && !_cameraContllor.RPIsLockOn.CurrentValue)
         {
             DoRotation(moveDirection);
         }
@@ -33,19 +33,23 @@ public class RotationMove : MonoBehaviour, ISetTransform
 
     private void DoRotation(Vector3 lookDirection)
     {
-        Quaternion lookQuaternion;
+        if (lookDirection != Vector3.zero)
+        {
+            //ターゲットの方向を向くクオータニオン
+            Quaternion axisQuaternion = Quaternion.LookRotation(lookDirection);
 
-        //ターゲットの方向を向くクオータニオン
-        Quaternion axisQuaternion = Quaternion.LookRotation(lookDirection);
+            //Y軸の回転角度のみを取得
+            float targetYRotation = axisQuaternion.eulerAngles.y;
 
-        //向きたい角度
-        Vector3 targetRotation = axisQuaternion.eulerAngles;
+            //Y軸のみの回転を作成
+            Quaternion lookQuaternion = Quaternion.Euler(0, targetYRotation, 0);
 
-        //角度の変更
-        lookQuaternion = Quaternion.Euler(targetRotation.x, targetRotation.y, targetRotation.z);
-
-        //角度の適応      
-        _characterTransform.rotation = Quaternion.RotateTowards(transform.rotation, lookQuaternion, Time.fixedDeltaTime * _rotationSpeed);
+            //角度の適応（Y軸のみ）     
+            _characterTransform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                lookQuaternion,
+                Time.fixedDeltaTime * _rotationSpeed);
+        }
     }
 
     public void SetCharacterTransform(Transform characterTransform)
