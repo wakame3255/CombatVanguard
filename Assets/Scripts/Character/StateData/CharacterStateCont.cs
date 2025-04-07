@@ -49,7 +49,7 @@ public class CharacterStateCont : ICurrentStateChange, IApplicationStateChange
     /// </summary>
     public void UpdateDebug()
     {
-        DebugUtility.Log(CurrentStateData.ToString());
+        //DebugUtility.Log(CurrentStateData.ToString());
     }
 
     public void CheckMoveState(bool isDash, bool isGuard)

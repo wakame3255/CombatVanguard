@@ -29,10 +29,10 @@ public class AttackAction : MonoBehaviour, ISetTransform, ISetStateCont
     /// 攻撃を行ってくれるクラス
     /// </summary>
     /// <param name="animationClip">アニメーションに準拠して攻撃判定を行う</param>
-    public async UniTask DoAction(MatchTargetAnimationData animationClip)
+    public void DoAction(MatchTargetAnimationData animationClip)
     {
         List<Collider> hitList = new List<Collider>();
-        await DoActionAsync(animationClip, _cancellationTokenSource.Token, hitList);
+        _ = DoActionAsync(animationClip, _cancellationTokenSource.Token, hitList);
     }
 
     public void SetCharacterTransform(Transform characterTransform)

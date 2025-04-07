@@ -35,8 +35,6 @@ public class PlayerAction : CharacterActionBase
     {
         MyExtensionClass.CheckArgumentNull(inputInformation, nameof(inputInformation));      
 
-        Debug.LogWarning("いろいろ分けてください");
-
         //舞フレーム更新の移動入力購読
         Observable.EveryUpdate()
      .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
@@ -65,7 +63,7 @@ public class PlayerAction : CharacterActionBase
         inputInformation.ReactivePropertyAttack.Where(isAttack => isAttack)
             //攻撃のステートに変更があった時の購読
             .Where(_ => _characterStateChange.ApplicationStateChange(_characterStateChange.StateDataInformation.AttackStateData))
-            .Subscribe(async isAttack => await _attackAction.DoAction(_characterAnimation.AnimationData.AttackAnimation.JabAnimation))
+            .Subscribe(isAttack => _attackAction.DoAction(_characterAnimation.AnimationData.AttackAnimation.JabAnimation))
         .AddTo(_disposables);
 
         //回避の入力購読
