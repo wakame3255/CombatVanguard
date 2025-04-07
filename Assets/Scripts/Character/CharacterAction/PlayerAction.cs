@@ -46,7 +46,7 @@ public class PlayerAction : CharacterActionBase
         Observable.EveryUpdate()
      .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
      .Where(_ => !_characterAnimation.IsAnimation)
-     .Subscribe(inputXY => _rotationMove.DoRotation(GetChangeInput(inputXY, _playerCamera.forward)))
+     .Subscribe(inputXY => _rotationMove.CheckRotation(GetChangeInput(inputXY, _playerCamera.forward)))
      .AddTo(_disposables);
 
         //舞フレームガードボタン,ダッシュボタンの購読
