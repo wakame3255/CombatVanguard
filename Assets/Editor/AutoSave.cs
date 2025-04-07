@@ -8,7 +8,8 @@ using System;
 public class AutoSaveConfig : ScriptableObject
 {
     public bool isEnabled = true;
-    public float saveInterval = 60f; // 5分（秒単位）
+    public float saveInterval = 30f;
+    public bool saveOnlyModified = true; // 変更があった場合のみ保存する設定を追加
 }
 
 [InitializeOnLoad]
@@ -17,10 +18,8 @@ public class AutoSave
     private static AutoSaveConfig config;
     private static DateTime lastSaveTime;
 
-    // コンストラクタ（エディター起動時に実行）
     static AutoSave()
     {
-        // 設定の読み込み
         config = ScriptableObject.CreateInstance<AutoSaveConfig>();
         EditorApplication.update += Update;
         lastSaveTime = DateTime.Now;
@@ -31,7 +30,6 @@ public class AutoSave
         if (!config.isEnabled)
             return;
 
-        // 設定された間隔で保存を実行
         if ((DateTime.Now - lastSaveTime).TotalSeconds >= config.saveInterval)
         {
             SaveAll();
@@ -39,15 +37,33 @@ public class AutoSave
         }
     }
 
-    // シーンとアセットの保存を実行
     static void SaveAll()
     {
-        if (!EditorApplication.isPlaying)
+        if (EditorApplication.isPlaying)
+            return;
+
+        bool shouldSave = !config.saveOnlyModified;
+
+        // シーンが変更されているか確認
+        if (config.saveOnlyModified)
+        {
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene scene = SceneManager.GetSceneAt(i);
+                if (scene.isDirty)
+                {
+                    shouldSave = true;
+                    break;
+                }
+            }
+        }
+
+        if (shouldSave)
         {
             EditorSceneManager.SaveOpenScenes();
             AssetDatabase.SaveAssets();
             Debug.Log($"[AutoSave] プロジェクトを自動保存しました: {DateTime.Now}");
-        } 
+        }
     }
 }
 
@@ -69,6 +85,7 @@ public class AutoSaveSettingsWindow : EditorWindow
 
         config.isEnabled = EditorGUILayout.Toggle("Auto Save Enabled", config.isEnabled);
         config.saveInterval = EditorGUILayout.FloatField("Save Interval (seconds)", config.saveInterval);
+        config.saveOnlyModified = EditorGUILayout.Toggle("Save Only Modified Scenes", config.saveOnlyModified);
 
         if (GUILayout.Button("設定の保存"))
         {
