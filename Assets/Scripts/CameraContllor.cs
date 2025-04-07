@@ -106,7 +106,6 @@ public class CameraContllor : MonoBehaviour
         RaycastHit[] hitColliders = Physics.BoxCastAll(_PlayerPos.position + (_cameraTransform.forward * _searchSize), Vector3.one * _searchSize, _cameraTransform.forward, Quaternion.identity, _lockOnRange, _hitLayerMask);
         
         Transform nearestTarget = null;
-        float nearestDistance = float.MaxValue;
 
         foreach (RaycastHit hitCollider in hitColliders)
         {
@@ -114,20 +113,6 @@ public class CameraContllor : MonoBehaviour
 
             if (hitCollider.collider.TryGetComponent<CharacterStatus>(out CharacterStatus character))
             {
-                //Vector3 targetPos = hitCollider.transform.position;
-                //float distance = Vector3.Distance(_PlayerPos.position, targetPos);
-                
-                //// カメラの向きとターゲットの方向のなす角を計算
-                //Vector3 toTarget = (targetPos - _PlayerPos.position).normalized;
-                //float angle = Vector3.Angle(_mainCamera.transform.forward, toTarget);
-                
-                //// 視界内（例：60度以内）かつ最も近い敵を選択
-                //if (angle < 60f && distance < nearestDistance && distance <= _lockOnRange)
-                //{
-                //    nearestDistance = distance;
-                //    nearestTarget = hitCollider.transform;
-                //}
-
                 nearestTarget = hitCollider.transform;
             }
         }
