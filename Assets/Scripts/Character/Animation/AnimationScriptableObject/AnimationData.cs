@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "AnimationData", menuName = "Animation/AnimationData")]
+[CreateAssetMenu(fileName = "AnimationData", menuName = "Custom/Animation/AnimationData")]
 public class AnimationData : ScriptableObject
 {
     [SerializeField]

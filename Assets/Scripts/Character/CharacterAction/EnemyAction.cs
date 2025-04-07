@@ -38,7 +38,7 @@ public class EnemyAction : CharacterActionBase
         Observable.EveryUpdate()
      .WithLatestFrom(inputInformation.ReactivePropertyMove, (_, move) => move)
       .Where(_ => !_characterAnimation.IsAnimation)
-     .Subscribe(inputXY => _rotationMove.DoRotation(GetChangeInput(inputXY, Vector3.forward)))
+     .Subscribe(inputXY => _rotationMove.CheckRotation(GetChangeInput(inputXY, Vector3.forward)))
      .AddTo(_disposables);
 
         //UŒ‚ƒ{ƒ^ƒ“‚Ì“ü—Íw“Ç
