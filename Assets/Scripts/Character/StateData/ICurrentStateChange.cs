@@ -1,16 +1,17 @@
 
-
+/// <summary>
+/// 現在のステート変更を行うためのインターフェース
+/// </summary>
 public interface ICurrentStateChange
 {
     /// <summary>
-    /// �X�e�[�g�̃f�[�^�݂̂��擾����
+    /// ステートのデータのみを取得する
     /// </summary>
     public StateDataInformation StateDataInformation { get;}
 
-
     /// <summary>
-    /// �X�e�[�g�̕ύX���s��
+    /// ステートの変更を行う
     /// </summary>
-    /// <param name="stateData">�ύX�w��</param>
+    /// <param name="stateData">変更先のステートデータ</param>
     public void ChangeState(StateJudgeBase stateData);
 }

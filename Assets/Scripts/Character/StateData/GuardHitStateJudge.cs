@@ -1,21 +1,34 @@
-using System;
 using UnityEngine;
 
+/// <summary>
+/// ガード被弾ステートの判定クラス
+/// ガード中に攻撃を受けた状態から通常ステートへのみ遷移可能
+/// </summary>
 public class GuardHitStateJudge : StateJudgeBase
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="currentStateChange">ステート変更インターフェース</param>
     public GuardHitStateJudge(ICurrentStateChange currentStateChange)
     {
         _currentStateChange = currentStateChange;
     }
 
+    /// <summary>
+    /// ステート変更をチェックする
+    /// 通常ステートへのみ遷移可能
+    /// </summary>
+    /// <param name="stateType">遷移先のステート</param>
+    /// <returns>遷移可能な場合true</returns>
     public override bool CheckChangeState(StateJudgeBase stateType)
     {
-        switch (stateType)
+        if (stateType is NormalStateJudge)
         {
-            case NormalStateJudge:
-                _currentStateChange.ChangeState(stateType);
-                return true;
+            _currentStateChange.ChangeState(stateType);
+            return true;
         }
+
         return false;
     }
 }
