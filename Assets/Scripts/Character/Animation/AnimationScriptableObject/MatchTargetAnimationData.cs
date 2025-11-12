@@ -1,118 +1,108 @@
-
 using UnityEngine;
 using System;
 
 /// <summary>
-/// ƒAƒjƒ[ƒVƒ‡ƒ“’†‚Ìƒ^[ƒQƒbƒg‚Ìƒ}ƒbƒ`ƒ“ƒOƒf[ƒ^‚ğ•Û‚·‚éƒNƒ‰ƒX
+/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ä¸­ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ãƒãƒƒãƒãƒ³ã‚°ãƒ‡ãƒ¼ã‚¿ã‚’ä¿æŒã™ã‚‹ã‚¯ãƒ©ã‚¹
+/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ç‰¹å®šãƒ•ãƒ¬ãƒ¼ãƒ ã§ã‚¿ãƒ¼ã‚²ãƒƒãƒˆä½ç½®ã«åˆã‚ã›ã‚‹å‡¦ç†ã‚’å®šç¾©ã™ã‚‹
 /// </summary>
 [CreateAssetMenu(fileName = "MatchTargetAnimationData", menuName = "Custom/Animation/MatchTargetAnimationData")]
 public class MatchTargetAnimationData : ScriptableObject
 {
     /// <summary>
-    /// ƒAƒjƒ[ƒVƒ‡ƒ““à‚Ì“Á’èŠÔ”ÍˆÍ‚Å‚Ìƒ^[ƒQƒbƒgƒ}ƒbƒ`ƒ“ƒOî•ñ‚ğ•Û‚·‚éƒNƒ‰ƒX
+    /// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ä¸­ã®ç‰¹å®šæ™‚é–“ç¯„å›²ã§ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒãƒƒãƒãƒ³ã‚°æƒ…å ±ã‚’ä¿æŒã™ã‚‹ã‚¯ãƒ©ã‚¹
     /// </summary>
     [Serializable]
     public class StartAnimationTimeList
     {
+        /// <summary>ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹æ™‚ã®æ­£è¦åŒ–æ™‚é–“ï¼ˆ0ï½1ï¼‰</summary>
         [SerializeField, Range(0, 1)]
-        private float _startNormalizedTime = 0; // ƒAƒjƒ[ƒVƒ‡ƒ“ŠJn‚Ì³‹K‰»ŠÔi0`1j
+        private float _startNormalizedTime = 0;
 
+        /// <summary>ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†æ™‚ã®æ­£è¦åŒ–æ™‚é–“ï¼ˆ0ï½1ï¼‰</summary>
         [SerializeField, Range(0, 1)]
-        private float _endNormalizedTime = 1; // ƒAƒjƒ[ƒVƒ‡ƒ“I—¹‚Ì³‹K‰»ŠÔi0`1j
+        private float _endNormalizedTime = 1;
 
+        /// <summary>ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã™ã‚‹ãƒœãƒ‡ã‚£ãƒ‘ãƒ¼ãƒ„</summary>
         [SerializeField]
-        private AvatarTarget _targetBodyPart = AvatarTarget.Root; // ƒ^[ƒQƒbƒg‚Æ‚·‚éƒ{ƒfƒBƒp[ƒc
+        private AvatarTarget _targetBodyPart = AvatarTarget.Root;
 
-        [Header("”ä—¦")]
+        /// <summary>ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¸ã®ç§»å‹•ã®é‡ã¿</summary>
+        [Header("æ¯”ç‡")]
         [SerializeField, Range(0, 1)]
-        private float _movePositionWeight = 1; // ƒ^[ƒQƒbƒg‚Ö‚ÌˆÚ“®‚Ìd‚İ
+        private float _movePositionWeight = 1;
 
-        /// <summary>
-        /// ƒAƒjƒ[ƒVƒ‡ƒ“ŠJn‚Ì³‹K‰»ŠÔ‚ğæ“¾‚µ‚Ü‚·
-        /// </summary>
+        /// <summary>ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹æ™‚ã®æ­£è¦åŒ–æ™‚é–“ã‚’å–å¾—ã—ã¾ã™</summary>
         public float StartNormalizedTime { get => _startNormalizedTime; }
 
-        /// <summary>
-        /// ƒAƒjƒ[ƒVƒ‡ƒ“I—¹‚Ì³‹K‰»ŠÔ‚ğæ“¾‚µ‚Ü‚·
-        /// </summary>
+        /// <summary>ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†æ™‚ã®æ­£è¦åŒ–æ™‚é–“ã‚’å–å¾—ã—ã¾ã™</summary>
         public float EndNormalizedTime { get => _endNormalizedTime; }
 
-        /// <summary>
-        /// ƒ^[ƒQƒbƒg‚Æ‚·‚éƒ{ƒfƒBƒp[ƒc‚ğæ“¾‚µ‚Ü‚·
-        /// </summary>
+        /// <summary>ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã™ã‚‹ãƒœãƒ‡ã‚£ãƒ‘ãƒ¼ãƒ„ã‚’å–å¾—ã—ã¾ã™</summary>
         public AvatarTarget TargetBodyPart { get => _targetBodyPart; }
 
-        /// <summary>
-        /// ƒ^[ƒQƒbƒg‚Ö‚ÌˆÚ“®‚Ìd‚İ‚ğæ“¾‚µ‚Ü‚·
-        /// </summary>
+        /// <summary>ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¸ã®ç§»å‹•ã®é‡ã¿ã‚’å–å¾—ã—ã¾ã™</summary>
         public float MovePositionWeight { get => _movePositionWeight; }
 
 #if UNITY_EDITOR
         /// <summary>
-        /// ƒGƒfƒBƒ^ã‚ÅƒvƒƒpƒeƒB‚ª•ÏX‚³‚ê‚½Û‚ÉŒÄ‚Ño‚³‚êAI—¹ŠÔ‚ªŠJnŠÔ‚ğ‰º‰ñ‚ç‚È‚¢‚æ‚¤’²®‚µ‚Ü‚·
+        /// ã‚¨ãƒ‡ã‚£ã‚¿ã§ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå¤‰æ›´ã•ã‚ŒãŸéš›ã«å‘¼ã³å‡ºã•ã‚Œã€çµ‚äº†æ™‚é–“ãŒé–‹å§‹æ™‚é–“ã‚ˆã‚Šå°ã•ããªã‚‰ãªã„ã‚ˆã†ã«èª¿æ•´ã—ã¾ã™
         /// </summary>
         private void OnValidate()
         {
-            // startNormalizedTime ‚ª endNormalizedTime ‚ğ’´‚¦‚È‚¢‚æ‚¤‚É’²®
+            // startNormalizedTime ãŒ endNormalizedTime ã‚’è¶…ãˆãªã„ã‚ˆã†ã«èª¿æ•´
             _endNormalizedTime = Mathf.Max(_startNormalizedTime, _endNormalizedTime);
         }
 #endif
     }
 
+    /// <summary>å¯¾è±¡ã¨ãªã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—</summary>
     [SerializeField]
-    private AnimationClip _animationClip; // ‘ÎÛ‚Æ‚È‚éƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒv
+    private AnimationClip _animationClip;
 
+    /// <summary>å„æ™‚é–“ç¯„å›²ã§ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒãƒƒãƒãƒ³ã‚°æƒ…å ±ã®é…åˆ—</summary>
     [SerializeField]
-    private StartAnimationTimeList[] _animationTimeList; // ŠeŠÔ”ÍˆÍ‚Å‚Ìƒ^[ƒQƒbƒgƒ}ƒbƒ`ƒ“ƒOî•ñ‚Ì”z—ñ
+    private StartAnimationTimeList[] _animationTimeList;
 
-    [Header("‘ÎÛ•¨")]
+    /// <summary>ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã™ã‚‹ä½ç½®</summary>
+    [Header("å¯¾è±¡å€¤")]
     [SerializeField]
-    private Vector3 _matchPosition; // ƒ^[ƒQƒbƒg‚Æ‚·‚éˆÊ’u
+    private Vector3 _matchPosition;
 
+    /// <summary>ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã™ã‚‹å›è»¢ï¼ˆã‚ªã‚¤ãƒ©ãƒ¼è§’ï¼‰</summary>
     [SerializeField]
-    private Vector3 _matchRotationEuler; // ƒ^[ƒQƒbƒg‚Æ‚·‚é‰ñ“]iƒIƒCƒ‰[Špj
+    private Vector3 _matchRotationEuler;
 
+    /// <summary>å›è»¢ã®é‡ã¿</summary>
     [SerializeField, Range(0, 1)]
-    private float _rotationWeight = 0; // ‰ñ“]‚Ìd‚İ
+    private float _rotationWeight = 0;
 
-    private MatchTargetWeightMask _weightMask; // ƒAƒjƒ[ƒVƒ‡ƒ“ƒ}ƒbƒ`ƒ“ƒO‚ÌƒEƒFƒCƒgƒ}ƒXƒN
+    /// <summary>ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒƒãƒãƒ³ã‚°ã®ã‚¦ã‚§ã‚¤ãƒˆãƒã‚¹ã‚¯</summary>
+    private MatchTargetWeightMask _weightMask;
 
-    /// <summary>
-    /// ƒAƒjƒ[ƒVƒ‡ƒ“ƒNƒŠƒbƒv‚ğæ“¾‚µ‚Ü‚·
-    /// </summary>
+    /// <summary>ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã‚’å–å¾—ã—ã¾ã™</summary>
     public AnimationClip AnimationClip { get => _animationClip; }
 
-    /// <summary>
-    /// ƒAƒjƒ[ƒVƒ‡ƒ“ŠÔƒŠƒXƒg‚ğæ“¾‚µ‚Ü‚·
-    /// </summary>
+    /// <summary>ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ™‚é–“ãƒªã‚¹ãƒˆã‚’å–å¾—ã—ã¾ã™</summary>
     public StartAnimationTimeList[] AnimationTimeList { get => _animationTimeList; }
 
-    /// <summary>
-    /// ƒ^[ƒQƒbƒg‚ÌˆÊ’u‚ğæ“¾‚µ‚Ü‚·
-    /// </summary>
+    /// <summary>ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ä½ç½®ã‚’å–å¾—ã—ã¾ã™</summary>
     public Vector3 MatchPosition { get => _matchPosition; }
 
-    /// <summary>
-    /// ƒ^[ƒQƒbƒg‚Ì‰ñ“]‚ğæ“¾‚µ‚Ü‚·iƒNƒH[ƒ^ƒjƒIƒ“Œ`®j
-    /// </summary>
+    /// <summary>ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®å›è»¢ã‚’å–å¾—ã—ã¾ã™ï¼ˆã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³å½¢å¼ï¼‰</summary>
     public Quaternion MatchRotation { get => Quaternion.Euler(_matchRotationEuler); }
 
-    /// <summary>
-    /// ƒ}ƒbƒ`ƒ“ƒO‚ÌƒEƒFƒCƒgƒ}ƒXƒN‚ğæ“¾‚µ‚Ü‚·
-    /// </summary>
+    /// <summary>ãƒãƒƒãƒãƒ³ã‚°ç”¨ã®ã‚¦ã‚§ã‚¤ãƒˆãƒã‚¹ã‚¯ã‚’å–å¾—ã—ã¾ã™</summary>
     public MatchTargetWeightMask WeightMask { get => _weightMask; }
 
-    /// <summary>
-    /// ‰ñ“]‚Ìd‚İ‚ğæ“¾‚µ‚Ü‚·
-    /// </summary>
+    /// <summary>å›è»¢ã®é‡ã¿ã‚’å–å¾—ã—ã¾ã™</summary>
     public float RotationWeight { get => _rotationWeight; }
 
     /// <summary>
-    /// ƒXƒNƒŠƒvƒg‚Ì‰Šú‰»‚ÉƒEƒFƒCƒgƒ}ƒXƒN‚ğİ’è‚µ‚Ü‚·
+    /// ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®åˆæœŸåŒ–æ™‚ã«ã‚¦ã‚§ã‚¤ãƒˆãƒã‚¹ã‚¯ã‚’è¨­å®šã—ã¾ã™
     /// </summary>
     private void Awake()
     {
-        // WeightMask‚Ì‰Šú‰»iˆÊ’u‘S‘Ì‚ğƒ}ƒXƒN‚µA‰ñ“]‚Íw’è‚³‚ê‚½d‚İ‚Åƒ}ƒXƒNj
+        // WeightMaskã®åˆæœŸåŒ–ï¼ˆä½ç½®ã¯å…¨ã¦ã‚’ãƒã‚¹ã‚¯ã€å›è»¢ã¯æŒ‡å®šã•ã‚ŒãŸé‡ã¿ã§ãƒã‚¹ã‚¯ï¼‰
         _weightMask = new MatchTargetWeightMask(Vector3.one, _rotationWeight);
     }
 }

@@ -6,52 +6,78 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
+/// <summary>
+/// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å‹•çš„ã«æŒ¿å…¥ã™ã‚‹ã‚·ã‚¹ãƒ†ãƒ ã®æ‹¡å¼µç‰ˆ
+/// Playable APIã‚’ä½¿ç”¨ã—ã¦ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å‹•çš„ã«å†ç”Ÿã™ã‚‹
+/// </summary>
 public class InsertAnimationSystemPlus : IDisposable
 {
+    /// <summary>
+    /// å¯¾è±¡ã®Animator
+    /// </summary>
     private Animator _animator;
 
+    /// <summary>
+    /// PlayableGraphã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
+    /// </summary>
     private PlayableGraph _playableGraph;
 
+    /// <summary>
+    /// ç¾åœ¨å†ç”Ÿä¸­ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—
+    /// </summary>
     private AnimationClip _currentAnimationClip;
 
+    /// <summary>
+    /// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—ã®Playable
+    /// </summary>
     private AnimationClipPlayable _clipPlayable;
 
+    /// <summary>
+    /// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+    /// </summary>
+    /// <param name="animator">å¯¾è±¡ã®Animator</param>
     public InsertAnimationSystemPlus(Animator animator)
     {
         _animator = animator;
     }
 
     /// <summary>
-    /// ƒvƒŒ‚ ‚Ô‚éƒOƒ‰ƒt‚ÌƒŠ[ƒN‚ğ–h‚®
+    /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æœ¬ä½“ã®ãƒ¯ãƒ¼ã‚¯è§£æ”¾
+    /// ãƒªã‚½ãƒ¼ã‚¹ã‚’è§£æ”¾ã—ã¦PlayableGraphã‚’ç ´æ£„ã™ã‚‹
     /// </summary>
     public void Dispose()
     {
-        DebugUtility.Log("ƒvƒŒƒCƒAƒuƒ‹‚Ì”jŠü");
-        //ƒvƒŒƒCƒAƒuƒ‹ƒOƒ‰ƒt‚ªÁ‚³‚ê‚¸c‚Á‚Ä‚¢‚é‚Ì‚©
+        DebugUtility.Log("ãƒ—ãƒ¬ã‚¤ã‚¢ãƒ–ãƒ«ã®ç ´æ£„");
+        // ãƒ—ãƒ¬ã‚¤ã‚¢ãƒ–ãƒ«ã‚°ãƒ©ãƒ•ãŒç”Ÿæˆã•ã‚Œãšæ®‹ã£ã¦ã„ã‚‹ã®ã‹
         if (_playableGraph.IsValid())
         {
-            //ƒvƒŒƒCƒAƒuƒ‹ƒOƒ‰ƒt‚ğ”jŠü
+            // ãƒ—ãƒ¬ã‚¤ã‚¢ãƒ–ãƒ«ã‚°ãƒ©ãƒ•ã‚’ç ´æ£„
             _playableGraph.Destroy();
-            //ƒvƒŒƒCƒAƒuƒ‹ƒOƒ‰ƒt‚ğ‰Šú‰»
+            // ãƒ—ãƒ¬ã‚¤ã‚¢ãƒ–ãƒ«ã‚°ãƒ©ãƒ•ã‚’åˆæœŸåŒ–
             _playableGraph = default;
         }
 
         _animator = null;
     }
 
+    /// <summary>
+    /// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’æŒ¿å…¥ã—ã¦å†ç”Ÿã™ã‚‹
+    /// åŒã˜ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å ´åˆã¯æœ€åˆã‹ã‚‰å†ç”Ÿã™ã‚‹
+    /// </summary>
+    /// <param name="animationClip">å†ç”Ÿã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒªãƒƒãƒ—</param>
     public void InsertAnimation(AnimationClip animationClip)
     {
-        //“¯‚¶ƒAƒjƒ[ƒVƒ‡ƒ“‚¾‚Á‚½ê‡‚ÌŠª‚«–ß‚µ
+        // åŒã˜ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å ´åˆã®æ—©æœŸãƒªã‚¿ãƒ¼ãƒ³
         if (_currentAnimationClip == animationClip)
         {
-            //ƒvƒŒ‚ ‚Ô‚éAPI‚Ìƒ[ƒJƒ‹ƒ^ƒCƒ€‚ÌƒZƒbƒg
+            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æœ¬ä½“ã®APIã®ãƒ­ãƒ¼ã‚«ãƒ«ã‚¿ã‚¤ãƒ ã®ã‚»ãƒƒãƒˆ
             _clipPlayable.SetTime(0);
-            //ƒAƒjƒ[ƒVƒ‡ƒ“‚ªŠ®—¹‚µ‚Ä‚¢‚È‚¢ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+            // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒå®Œäº†ã—ã¦ã„ãªã„ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
             _clipPlayable.SetDone(false);
             return;
         }
 
-        //Œ³‚ÌƒOƒ‰ƒt‚ğíœ
+        // å‰ã®ã‚°ãƒ©ãƒ•ã‚’å‰Šé™¤
         Stop();
 
        AnimationClipPlayable clipPlayable = AnimationPlayableUtilities.PlayClip(_animator, animationClip, out _playableGraph);
@@ -62,15 +88,15 @@ public class InsertAnimationSystemPlus : IDisposable
     }
 
     /// <summary>
-    /// Ä¶’†‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğ’â~‚³‚¹‚éB
+    /// å†ç”Ÿä¸­ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’åœæ­¢ã™ã‚‹
     /// </summary>
     public void Stop()
     {
         if (_clipPlayable.IsValid())
         {
-            //ƒvƒŒƒCƒAƒuƒ‹ƒOƒ‰ƒt‚ğ”jŠü
+            // ãƒ—ãƒ¬ã‚¤ã‚¢ãƒ–ãƒ«ã‚°ãƒ©ãƒ•ã‚’ç ´æ£„
             _playableGraph.Destroy();
-            //ƒvƒŒƒCƒAƒuƒ‹ƒOƒ‰ƒt‚ğ‰Šú‰»
+            // ãƒ—ãƒ¬ã‚¤ã‚¢ãƒ–ãƒ«ã‚°ãƒ©ãƒ•ã‚’åˆæœŸåŒ–
             _playableGraph = default;
         }
 

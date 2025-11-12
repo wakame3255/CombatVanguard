@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Transformを設定するためのインターフェース
+/// キャラクターのTransformを外部から設定可能にする
+/// </summary>
 public interface ISetTransform
 {
     /// <summary>
-    /// �g�����X�t�H�[�������炤���\�b�h
+    /// キャラクターのTransformを設定するメソッド
     /// </summary>
-    /// <param name="characterTransform">�L�����N�^�[�̃g�����X�t�H�[��</param>
+    /// <param name="characterTransform">キャラクターのTransform</param>
     public void SetCharacterTransform(Transform characterTransform);
 }

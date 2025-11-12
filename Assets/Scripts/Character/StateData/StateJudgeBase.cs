@@ -1,17 +1,20 @@
-
 using UnityEngine;
 
 /// <summary>
-/// ƒXƒe[ƒgƒf[ƒ^‚ÌŠî’êƒNƒ‰ƒX
+/// ã‚¹ãƒ†ãƒ¼ãƒˆãƒ‡ãƒ¼ã‚¿ã®åŸºåº•ã‚¯ãƒ©ã‚¹
+/// å…¨ã¦ã®ã‚¹ãƒ†ãƒ¼ãƒˆåˆ¤å®šã‚¯ãƒ©ã‚¹ãŒç¶™æ‰¿ã™ã‚‹
 /// </summary>
 public abstract class StateJudgeBase
 {
+   /// <summary>
+   /// ã‚¹ãƒ†ãƒ¼ãƒˆå¤‰æ›´ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹
+   /// </summary>
    protected ICurrentStateChange _currentStateChange;
 
     /// <summary>
-    /// Ÿ‚ÌƒXƒe[ƒg‚É‘JˆÚ‚Å‚«‚é‚©ƒ`ƒFƒbƒN‚·‚é
+    /// ä»–ã®ã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»ã§ãã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
     /// </summary>
-    /// <param name="stateType">Ÿ‚É‘JˆÚ‚µ‚½‚¢ƒm[ƒh</param>
-    /// <returns>‰Â”\‚©‚Ç‚¤‚©</returns>
+    /// <param name="stateType">é·ç§»å…ˆã®ã‚¹ãƒ†ãƒ¼ãƒˆ</param>
+    /// <returns>é·ç§»å¯èƒ½ã‹ã©ã†ã‹</returns>
     public abstract bool CheckChangeState(StateJudgeBase stateType);
 }

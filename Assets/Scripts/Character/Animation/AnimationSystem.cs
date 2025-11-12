@@ -2,14 +2,40 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
+/// <summary>
+/// Playable APIを使用したアニメーションシステム
+/// ロコモーション（移動）とワンショットアニメーションを管理する
+/// 現在は未使用の可能性あり
+/// </summary>
 public class AnimationSystem : MonoBehaviour
 {
+    /// <summary>
+    /// PlayableGraphのインスタンス
+    /// </summary>
     PlayableGraph _playableGraph;
+
+    /// <summary>
+    /// トップレベルのミキサー
+    /// </summary>
     readonly AnimationMixerPlayable topLevelMixer;
+
+    /// <summary>
+    /// ロコモーション（移動）用のミキサー
+    /// </summary>
     readonly AnimationMixerPlayable locomotionMixer;
 
+    /// <summary>
+    /// ワンショット再生用のPlayable
+    /// </summary>
     AnimationClipPlayable oneShotPlayable;
 
+    /// <summary>
+    /// コンストラクタ
+    /// PlayableGraphを構築し、アニメーションシステムを初期化する
+    /// </summary>
+    /// <param name="animator">対象のAnimator</param>
+    /// <param name="idleClip">待機アニメーション</param>
+    /// <param name="walkClip">歩行アニメーション</param>
     public AnimationSystem(Animator animator, AnimationClip idleClip, AnimationClip walkClip)
     {
         _playableGraph = PlayableGraph.Create("AnimationSystem");
@@ -35,7 +61,12 @@ public class AnimationSystem : MonoBehaviour
         _playableGraph.Play();
     }
 
-
+    /// <summary>
+    /// ロコモーションのブレンドを更新する
+    /// 速度に応じて待機と歩行アニメーションをブレンドする
+    /// </summary>
+    /// <param name="velocity">現在の速度</param>
+    /// <param name="maxSpeed">最大速度</param>
     public void UpdateLocomotion(Vector3 velocity, float maxSpeed)
     {
         float weight = Mathf.InverseLerp(0f, maxSpeed, velocity.magnitude);
@@ -43,6 +74,9 @@ public class AnimationSystem : MonoBehaviour
         locomotionMixer.SetInputWeight(1, weight);
     }
 
+    /// <summary>
+    /// PlayableGraphを破棄する
+    /// </summary>
     public void Destroy()
     {
         if (_playableGraph.IsValid())
